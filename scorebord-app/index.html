@@ -3,212 +3,336 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#161a22">
+<meta name="theme-color" content="#090c12">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Scorebord">
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="icon.svg">
 <link rel="apple-touch-icon" href="icon.svg">
 <title>Oude mij vs Toekomstige mij</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Manrope:wght@400;500;600;700;800&display=swap">
 <style>
   :root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
   body { margin: 0; }
-  [hidden] { display: none !important; }
+  img { max-width: 100%; }
 
-  /* Layout: één smalle kolom zoals een stadion-scorebord; twee tabbladen: Vandaag en Overzicht. */
+  /* Layout: app-scherm in één kolom. Bovenaan een donker "arena"-scorebord, daaronder kaarten, onderin een vaste menubalk. */
   :root {
-    --bg: #eef0f3; --surface: #ffffff; --line: #d7dbe2; --fg: #161a22; --muted: #5d6573;
-    --old: #c2372b; --old-soft: #f6dedb; --future: #0f8a6a; --future-soft: #d6f0e8; --accent: #1f3a8a;
-    --chart-old: #c2372b; --chart-future: #0f8a6a; --grid: #e4e7ec;
-    --board: #161a22; --board-fg: #f3f4f6; --board-muted: #9aa3b2; --chip: #262b35;
+    --bg: #f2f3f6; --surface: #ffffff; --surface-2: #f6f7f9; --line: #e3e6ec; --fg: #12151c; --muted: #677084;
+    --old: #c9372a; --old-soft: #fbe4e0; --future: #0e8a68; --future-soft: #daf2e9;
+    --gold: #a97a12; --gold-soft: #f6ecd2; --focus: #3557d6;
+    --chart-old: #c2372b; --chart-future: #0f8a6a; --grid: #e8ebf0;
+    --shadow: 0 1px 2px rgba(18,21,28,.05), 0 10px 28px -12px rgba(18,21,28,.14);
+    --nav-bg: rgba(255,255,255,.86);
+    /* arena: bewust donker in beide thema's */
+    --ink-1: #090c12; --ink-2: #1b2232; --board-fg: #f5f6f8; --board-muted: #8a93a6; --board-line: rgba(255,255,255,.08);
+    --board-old: #ff6a5c; --board-future: #3ee0ad; --board-gold: #e8b85a;
     --display: "Big Shoulders Display", "Arial Narrow", Impact, sans-serif;
-    --body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --body: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --r-lg: 22px; --r-md: 14px;
   }
   @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
-    --bg: #0e1116; --surface: #171b22; --line: #2a303b; --fg: #eef0f3; --muted: #9aa3b2;
-    --old: #ff6b5e; --old-soft: #3a1f1d; --future: #3fd3a6; --future-soft: #173229; --accent: #8fa8ff;
-    --chart-old: #f2584a; --chart-future: #22a982; --grid: #232833;
-    --board: #05070a; --board-fg: #f3f4f6; --board-muted: #8a93a3; --chip: #161a22; color-scheme: dark; } }
+    --bg: #090b10; --surface: #12161e; --surface-2: #181d27; --line: #232a37; --fg: #eef0f4; --muted: #8e97a9;
+    --old: #ff6b5e; --old-soft: #351a1a; --future: #3fd3a6; --future-soft: #11302a;
+    --gold: #e8b85a; --gold-soft: #33290f; --focus: #8fa8ff;
+    --chart-old: #f2584a; --chart-future: #22a982; --grid: #1f2530;
+    --shadow: 0 0 0 1px rgba(255,255,255,.02), 0 12px 30px -14px rgba(0,0,0,.7);
+    --nav-bg: rgba(18,22,30,.86); color-scheme: dark; } }
   :root[data-theme="dark"] {
-    --bg: #0e1116; --surface: #171b22; --line: #2a303b; --fg: #eef0f3; --muted: #9aa3b2;
-    --old: #ff6b5e; --old-soft: #3a1f1d; --future: #3fd3a6; --future-soft: #173229; --accent: #8fa8ff;
-    --chart-old: #f2584a; --chart-future: #22a982; --grid: #232833;
-    --board: #05070a; --board-fg: #f3f4f6; --board-muted: #8a93a3; --chip: #161a22; color-scheme: dark; }
+    --bg: #090b10; --surface: #12161e; --surface-2: #181d27; --line: #232a37; --fg: #eef0f4; --muted: #8e97a9;
+    --old: #ff6b5e; --old-soft: #351a1a; --future: #3fd3a6; --future-soft: #11302a;
+    --gold: #e8b85a; --gold-soft: #33290f; --focus: #8fa8ff;
+    --chart-old: #f2584a; --chart-future: #22a982; --grid: #1f2530;
+    --shadow: 0 0 0 1px rgba(255,255,255,.02), 0 12px 30px -14px rgba(0,0,0,.7);
+    --nav-bg: rgba(18,22,30,.86); color-scheme: dark; }
 
   * { box-sizing: border-box; }
-  body { background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 15px; }
-  main { max-width: 540px; margin: 0 auto; padding-block: 16px 40px;
+  body { background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 15px; -webkit-font-smoothing: antialiased; }
+  main { max-width: 560px; margin: 0 auto; padding-block: 14px calc(96px + env(safe-area-inset-bottom, 0px));
     padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
     display: flex; flex-direction: column; gap: 14px; }
-  button { font: inherit; }
-  h2 { font-size: 1rem; margin: 0; text-wrap: balance; }
+  button { font: inherit; color: inherit; }
+  svg { display: block; }
+  h2 { font-size: 1.02rem; font-weight: 800; margin: 0; letter-spacing: -.01em; text-wrap: balance; }
   .muted { color: var(--muted); }
+  .eyebrow { font-size: .7rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
 
-  /* scorebord */
-  .board { background: var(--board); color: var(--board-fg); border-radius: 18px; padding: 16px 14px 14px; }
-  .teams { display: grid; grid-template-columns: 1fr auto 1fr; align-items: end; text-align: center; }
-  .team-name { font-size: .76rem; text-transform: uppercase; letter-spacing: .08em; color: var(--board-muted); margin-bottom: 4px; }
-  .score { font-family: var(--display); font-weight: 900; font-size: clamp(4.2rem, 22vw, 6.2rem); line-height: .9; font-variant-numeric: tabular-nums; }
-  .old .score { color: var(--old); } .future .score { color: var(--future); }
-  .sep { font-family: var(--display); font-size: 3.2rem; color: var(--board-muted); padding: 0 6px 8px; }
-  .status { margin-top: 10px; text-align: center; font-size: .9rem; color: var(--board-muted); }
-  .chips { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 12px; }
-  .chip { background: var(--chip); border-radius: 10px; padding: 8px 6px; text-align: center; min-width: 0; }
-  .chip b { display: block; font-family: var(--display); font-size: 1.45rem; font-weight: 900; font-variant-numeric: tabular-nums; line-height: 1.1; }
-  .chip span { font-size: .7rem; color: var(--board-muted); text-transform: uppercase; letter-spacing: .06em; }
+  /* kop */
+  .top { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 4px 2px 0; }
+  .greet { font-size: 1.35rem; font-weight: 800; letter-spacing: -.02em; margin: 2px 0 0; }
+  .flame { display: inline-flex; align-items: center; gap: 6px; background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow);
+    border-radius: 99px; padding: 7px 12px 7px 9px; font-weight: 800; font-variant-numeric: tabular-nums; }
+  .flame svg { width: 18px; height: 18px; color: var(--gold); }
 
-  /* tabs */
-  .tabs { display: grid; grid-template-columns: 1fr 1fr; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 4px; gap: 4px; }
-  .tab { border: 0; background: none; color: var(--muted); padding: 10px; border-radius: 9px; font-weight: 700; cursor: pointer; }
-  .tab[aria-selected="true"] { background: var(--fg); color: var(--bg); }
+  /* arena */
+  .arena { position: relative; overflow: hidden; border-radius: 26px; color: var(--board-fg); padding: 18px 16px 16px;
+    background:
+      radial-gradient(120% 80% at 0% 0%, rgba(255,106,92,.18), transparent 55%),
+      radial-gradient(120% 80% at 100% 0%, rgba(62,224,173,.18), transparent 55%),
+      linear-gradient(180deg, var(--ink-2), var(--ink-1));
+    box-shadow: 0 24px 48px -24px rgba(9,12,18,.6), inset 0 1px 0 rgba(255,255,255,.06); }
+  .arena::after { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .5;
+    background-image: radial-gradient(rgba(255,255,255,.07) 1px, transparent 1px); background-size: 6px 6px;
+    mask-image: linear-gradient(180deg, #000 0%, transparent 70%); -webkit-mask-image: linear-gradient(180deg, #000 0%, transparent 70%); }
+  .arena > * { position: relative; z-index: 1; }
+  .teams { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; text-align: center; }
+  [hidden] { display: none !important; }
+  .team-name { white-space: nowrap; font-size: .66rem; font-weight: 800; text-transform: uppercase; letter-spacing: .1em; color: var(--board-muted); display: flex; align-items: center; justify-content: center; gap: 6px; }
+  .team-name i { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+  .old .team-name i { background: var(--board-old); box-shadow: 0 0 10px var(--board-old); }
+  .future .team-name i { background: var(--board-future); box-shadow: 0 0 10px var(--board-future); }
+  .score { font-family: var(--display); font-weight: 900; font-size: clamp(5rem, 27vw, 7.4rem); line-height: .86; font-variant-numeric: tabular-nums; margin-top: 6px; }
+  .old .score { color: var(--board-old); text-shadow: 0 0 28px rgba(255,106,92,.45); }
+  .future .score { color: var(--board-future); text-shadow: 0 0 28px rgba(62,224,173,.45); }
+  .score.bump { animation: bump .6s cubic-bezier(.2,1.4,.4,1); }
+  @keyframes bump { 0% { transform: scale(1); } 35% { transform: scale(1.22); } 100% { transform: scale(1); } }
+  .vs { width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; margin: 0 6px;
+    font-family: var(--display); font-weight: 800; font-size: 1.05rem; letter-spacing: .04em; color: var(--board-gold);
+    border: 1px solid rgba(232,184,90,.45); background: rgba(232,184,90,.08); }
+  .momentum { margin-top: 14px; }
+  .mbar { display: flex; height: 6px; border-radius: 99px; overflow: hidden; background: var(--board-line); gap: 2px; }
+  .mbar span { display: block; height: 100%; transition: width .5s ease; }
+  .mbar .m-old { background: var(--board-old); border-radius: 99px 0 0 99px; }
+  .mbar .m-future { background: var(--board-future); border-radius: 0 99px 99px 0; }
+  .status { margin-top: 9px; text-align: center; font-size: .86rem; font-weight: 600; color: var(--board-muted); }
+  .chips { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 14px; }
+  .chip { border: 1px solid var(--board-line); background: rgba(255,255,255,.035); border-radius: 14px; padding: 10px 8px; text-align: center; min-width: 0; }
+  .chip svg { width: 16px; height: 16px; margin: 0 auto 4px; color: var(--board-gold); }
+  .chip b { display: block; font-family: var(--display); font-size: 1.55rem; font-weight: 800; font-variant-numeric: tabular-nums; line-height: 1; }
+  .chip span { display: block; margin-top: 4px; font-size: .62rem; font-weight: 800; color: var(--board-muted); text-transform: uppercase; letter-spacing: .12em; }
 
-  .panel { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 16px; }
-  .panel-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 10px; }
-  .meta { display: flex; justify-content: space-between; font-size: .82rem; color: var(--muted); margin-bottom: 6px; font-variant-numeric: tabular-nums; }
-  .bar { height: 8px; background: var(--line); border-radius: 99px; overflow: hidden; margin-bottom: 6px; }
-  .bar span { display: block; height: 100%; width: 0; background: var(--future); transition: width .2s; }
+  /* kaarten */
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 18px; box-shadow: var(--shadow); }
+  .card-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .card-head .title { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .ico { width: 34px; height: 34px; border-radius: 11px; display: grid; place-items: center; background: var(--surface-2); border: 1px solid var(--line); color: var(--fg); flex: none; }
+  .ico svg { width: 18px; height: 18px; }
+  .sub { font-size: .8rem; color: var(--muted); margin-top: 1px; }
 
+  /* voortgangsring */
+  .today-head { display: flex; align-items: center; gap: 16px; margin-bottom: 8px; }
+  .ring { position: relative; width: 78px; height: 78px; flex: none; }
+  .ring svg { width: 78px; height: 78px; transform: rotate(-90deg); }
+  .ring .track { stroke: var(--surface-2); }
+  .ring .prog { stroke: var(--future); transition: stroke-dashoffset .5s ease; }
+  .ring .pct { position: absolute; inset: 0; display: grid; place-items: center; font-family: var(--display); font-weight: 800; font-size: 1.45rem; font-variant-numeric: tabular-nums; }
+  .today-text { flex: 1; min-width: 0; }
+  .today-text h2 { font-size: 1.08rem; line-height: 1.25; }
+  .today-text .sub { margin-top: 4px; }
+  .head-actions { display: flex; gap: 8px; }
+
+  /* taken */
   ul { list-style: none; margin: 0; padding: 0; }
-  .task { border-bottom: 1px solid var(--line); }
-  .task:last-child { border-bottom: 0; }
+  .task { border-top: 1px solid var(--line); }
   .task-row { display: flex; align-items: center; gap: 6px; }
-  .task label { flex: 1; min-width: 0; display: flex; align-items: center; gap: 12px; padding: 12px 2px; cursor: pointer; font-size: 1.02rem; overflow-wrap: anywhere; }
-  .task input[type=checkbox] { width: 24px; height: 24px; accent-color: var(--future); flex: none; margin: 0; }
-  .task.done .txt { color: var(--muted); text-decoration: line-through; }
-  .badge { font-size: .7rem; font-weight: 700; padding: 2px 7px; border-radius: 99px; background: var(--bg); color: var(--muted); border: 1px solid var(--line); white-space: nowrap; margin-left: 6px; }
-  .badge.x2 { background: var(--old-soft); color: var(--old); border-color: transparent; }
+  .task label { flex: 1; min-width: 0; display: flex; align-items: center; gap: 14px; padding: 13px 2px; cursor: pointer; font-size: 1rem; font-weight: 600; overflow-wrap: anywhere; }
+  .task input[type=checkbox] { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .check { width: 28px; height: 28px; flex: none; border-radius: 50%; border: 2px solid var(--line); display: grid; place-items: center; transition: background .2s, border-color .2s, transform .2s; }
+  .check svg { width: 15px; height: 15px; stroke: var(--surface); stroke-width: 3; fill: none; stroke-dasharray: 24; stroke-dashoffset: 24; transition: stroke-dashoffset .25s ease .05s; }
+  .task.done .check { background: var(--future); border-color: var(--future); }
+  .task.done .check svg { stroke-dashoffset: 0; }
+  .task label:active .check { transform: scale(.88); }
+  .task input:focus-visible + .check { outline: 3px solid var(--focus); outline-offset: 2px; }
+  .txt { transition: color .2s; }
+  .task.done .txt { color: var(--muted); text-decoration: line-through; text-decoration-thickness: 1.5px; }
+  .badge { display: inline-block; vertical-align: 1px; font-size: .68rem; font-weight: 800; padding: 2px 8px; border-radius: 99px; background: var(--surface-2); color: var(--muted); border: 1px solid var(--line); white-space: nowrap; margin-left: 6px; text-decoration: none; }
+  .badge.x2 { background: var(--gold-soft); color: var(--gold); border-color: transparent; }
   .badge.money { background: var(--future-soft); color: var(--future); border-color: transparent; }
-  .icon-btn { display: none; background: var(--bg); border: 1px solid var(--line); color: var(--fg); border-radius: 8px; width: 34px; height: 34px; cursor: pointer; flex: none; }
-  .icon-btn:disabled { opacity: .35; }
-  .editing .icon-btn { display: inline-grid; place-items: center; }
+  .icon-btn { display: none; background: var(--surface-2); border: 1px solid var(--line); border-radius: 10px; width: 36px; height: 36px; cursor: pointer; flex: none; }
+  .icon-btn svg { width: 16px; height: 16px; margin: auto; }
+  .icon-btn:disabled { opacity: .3; cursor: default; }
+  .editing .icon-btn { display: grid; place-items: center; }
   .editing .task label { cursor: default; }
-  .settings { display: flex; flex-direction: column; gap: 10px; padding: 4px 2px 14px; }
-  .settings .lbl { font-size: .8rem; color: var(--muted); }
-  .days { display: flex; gap: 4px; flex-wrap: wrap; }
-  .day { border: 1px solid var(--line); background: var(--bg); color: var(--muted); border-radius: 8px; padding: 6px 0; width: 40px; font-size: .8rem; font-weight: 700; cursor: pointer; }
-  .day[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
-  .field { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-  .field input.amount, .add input, textarea { padding: 10px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg); color: var(--fg); font: inherit; }
-  .field input.amount { width: 110px; }
-  .field input[type=checkbox] { width: 20px; height: 20px; accent-color: var(--old); }
-  .btn-del { align-self: flex-start; background: none; border: 1px solid var(--old); color: var(--old); border-radius: 10px; padding: 8px 12px; font-weight: 700; cursor: pointer; }
-  .empty { color: var(--muted); padding: 12px 2px; font-size: .92rem; }
-  .notToday { font-size: .82rem; color: var(--muted); margin: 10px 0 0; }
-
-  .add { display: none; gap: 8px; margin-top: 12px; }
+  .editing .check { display: none; }
+  .settings { display: flex; flex-direction: column; gap: 12px; padding: 4px 2px 16px; }
+  .settings .lbl { font-size: .78rem; font-weight: 700; color: var(--muted); margin-bottom: 6px; }
+  .days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; }
+  .day { border: 1px solid var(--line); background: var(--surface-2); color: var(--muted); border-radius: 10px; padding: 8px 0; font-size: .78rem; font-weight: 800; cursor: pointer; }
+  .day[aria-pressed="true"] { background: var(--fg); color: var(--surface); border-color: var(--fg); }
+  .toggle { display: flex; align-items: center; justify-content: space-between; gap: 12px; font-weight: 700; font-size: .92rem; }
+  .switch { position: relative; width: 46px; height: 28px; flex: none; }
+  .switch input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; z-index: 1; }
+  .switch span { position: absolute; inset: 0; border-radius: 99px; background: var(--line); transition: background .2s; }
+  .switch span::after { content: ""; position: absolute; top: 3px; left: 3px; width: 22px; height: 22px; border-radius: 50%; background: var(--surface); box-shadow: 0 1px 3px rgba(0,0,0,.25); transition: transform .2s; }
+  .switch input:checked + span { background: var(--gold); }
+  .switch input:checked + span::after { transform: translateX(18px); }
+  .switch input:focus-visible + span { outline: 3px solid var(--focus); outline-offset: 2px; }
+  .money-field { display: flex; align-items: center; gap: 8px; }
+  .money-field .pre { font-weight: 800; color: var(--muted); }
+  .input, textarea { padding: 11px 12px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface-2); color: var(--fg); font: inherit; font-weight: 600; }
+  .input.amount { width: 120px; }
+  .btn-del { align-self: flex-start; display: inline-flex; align-items: center; gap: 6px; background: none; border: 1px solid var(--old); color: var(--old); border-radius: 12px; padding: 9px 14px; font-weight: 800; cursor: pointer; }
+  .btn-del svg { width: 15px; height: 15px; }
+  .empty { color: var(--muted); padding: 14px 2px; font-size: .92rem; border-top: 1px solid var(--line); }
+  .notToday { font-size: .8rem; color: var(--muted); margin: 6px 0 0; padding-top: 10px; border-top: 1px dashed var(--line); }
+  .add { display: none; gap: 8px; margin-top: 14px; }
   .editing .add { display: flex; }
-  .add input { flex: 1; min-width: 0; }
-  textarea { width: 100%; min-height: 80px; resize: vertical; }
+  .add .input { flex: 1; min-width: 0; }
+  textarea { width: 100%; min-height: 86px; resize: vertical; line-height: 1.5; font-weight: 500; }
 
-  .btn { border: 0; border-radius: 12px; padding: 12px 16px; font-weight: 700; cursor: pointer; }
-  .btn:focus-visible, .tab:focus-visible, .icon-btn:focus-visible, .day:focus-visible, input:focus-visible, textarea:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
-  .btn-quiet { background: var(--bg); color: var(--fg); border: 1px solid var(--line); padding: 9px 14px; font-size: .88rem; }
-  .btn-main { width: 100%; background: var(--fg); color: var(--bg); padding: 16px; font-size: 1.05rem; }
-  .btn-main:disabled { opacity: .45; cursor: default; }
-  .btn-yes { background: var(--accent); color: var(--surface); }
-  .verdict { display: flex; flex-direction: column; gap: 12px; }
-  .verdict p { margin: 0; font-size: .95rem; }
-  .outcome { font-family: var(--display); font-weight: 900; font-size: 1.7rem; }
+  /* knoppen */
+  .btn { border: 0; border-radius: 14px; padding: 12px 16px; font-weight: 800; cursor: pointer; }
+  .btn-quiet { background: var(--surface-2); color: var(--fg); border: 1px solid var(--line); padding: 9px 14px; font-size: .85rem; }
+  .btn-main { width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 17px; font-size: 1.05rem; letter-spacing: .01em;
+    color: #fff; background: linear-gradient(180deg, #232b3d, #0b0e14); box-shadow: 0 12px 24px -12px rgba(9,12,18,.7), inset 0 1px 0 rgba(255,255,255,.12); }
+  .btn-main svg { width: 20px; height: 20px; color: var(--board-gold); }
+  .btn-main:disabled { opacity: .4; cursor: default; }
+  .btn-yes { background: var(--future); color: #fff; }
+  .btn:focus-visible, .icon-btn:focus-visible, .day:focus-visible, .input:focus-visible, textarea:focus-visible, .nav button:focus-visible, .flame:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+  .verdict { display: flex; flex-direction: column; gap: 14px; text-align: center; }
+  .verdict p { margin: 0; font-size: .92rem; color: var(--muted); }
+  .outcome { font-family: var(--display); font-weight: 900; font-size: 2.1rem; line-height: 1; }
   .outcome.old { color: var(--old); } .outcome.future { color: var(--future); } .outcome.draw { color: var(--muted); }
   .row { display: flex; gap: 8px; } .row .btn { flex: 1; }
-  .rules { font-size: .82rem; color: var(--muted); margin: 10px 0 0; line-height: 1.5; }
+  .rules { display: grid; gap: 8px; margin: 14px 0 0; padding: 0; }
+  .rules li { display: flex; gap: 10px; align-items: baseline; font-size: .82rem; color: var(--muted); line-height: 1.45; }
+  .rules i { width: 8px; height: 8px; border-radius: 50%; flex: none; transform: translateY(-1px); }
+  .tools { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
 
   /* overzicht */
   .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .stat { background: var(--bg); border-radius: 12px; padding: 12px; min-width: 0; }
-  .stat b { display: block; font-family: var(--display); font-weight: 900; font-size: 1.8rem; font-variant-numeric: tabular-nums; line-height: 1.1; }
-  .stat span { font-size: .78rem; color: var(--muted); }
+  .stat { background: var(--surface-2); border: 1px solid var(--line); border-radius: var(--r-md); padding: 14px; min-width: 0; }
+  .stat svg { width: 18px; height: 18px; color: var(--gold); margin-bottom: 8px; }
+  .stat b { display: block; font-family: var(--display); font-weight: 900; font-size: 2.1rem; font-variant-numeric: tabular-nums; line-height: 1; }
+  .stat span { display: block; margin-top: 4px; font-size: .76rem; font-weight: 600; color: var(--muted); }
   .chart-wrap { position: relative; }
-  .chart-wrap svg { display: block; width: 100%; height: auto; touch-action: pan-y; }
-  .legend { display: flex; gap: 14px; font-size: .82rem; color: var(--muted); margin-bottom: 8px; flex-wrap: wrap; }
+  .chart-wrap svg { width: 100%; height: auto; touch-action: pan-y; }
+  .legend { display: flex; gap: 16px; font-size: .8rem; font-weight: 700; color: var(--muted); flex-wrap: wrap; }
   .legend i { display: inline-block; width: 14px; height: 3px; border-radius: 2px; vertical-align: middle; margin-right: 6px; }
-  .tip { position: absolute; pointer-events: none; background: var(--board); color: var(--board-fg); font-size: .78rem; padding: 6px 9px; border-radius: 8px; white-space: nowrap; transform: translate(-50%, -110%); font-variant-numeric: tabular-nums; }
-
-  .cal-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
-  .cal { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; }
-  .cal .dn { font-size: .7rem; color: var(--muted); font-weight: 700; padding-bottom: 2px; }
-  .cal .cell { aspect-ratio: 1; max-width: 100%; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; font-size: .82rem; font-variant-numeric: tabular-nums; background: var(--bg); }
-  .cal .cell.today { outline: 2px solid var(--fg); outline-offset: -2px; }
-  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; flex: none; }
+  .tip { position: absolute; pointer-events: none; background: var(--ink-1); color: var(--board-fg); font-size: .76rem; font-weight: 700; padding: 7px 10px; border-radius: 10px; white-space: nowrap; transform: translate(-50%, -115%); font-variant-numeric: tabular-nums; box-shadow: 0 8px 20px -8px rgba(0,0,0,.5); }
+  .cal { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; text-align: center; }
+  .cal .dn { font-size: .66rem; color: var(--muted); font-weight: 800; letter-spacing: .06em; padding-bottom: 2px; }
+  .cal .cell { aspect-ratio: 1; max-width: 100%; border-radius: 11px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; font-size: .8rem; font-weight: 700; font-variant-numeric: tabular-nums; background: var(--surface-2); color: var(--muted); }
+  .cal .cell.today { outline: 2px solid var(--fg); outline-offset: -2px; color: var(--fg); }
+  .dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; flex: none; }
   .dot.old { background: var(--old); } .dot.future { background: var(--future); } .dot.draw { background: var(--muted); }
-  .cal .cell.has-old { background: var(--old-soft); } .cal .cell.has-future { background: var(--future-soft); }
-  .cal-legend { display: flex; gap: 12px; flex-wrap: wrap; font-size: .78rem; color: var(--muted); margin-top: 8px; }
-  .cal-legend span { display: inline-flex; align-items: center; gap: 5px; }
-
-  .tstat { padding: 9px 0; border-bottom: 1px solid var(--line); }
-  .tstat:last-child { border-bottom: 0; }
-  .tstat-top { display: flex; justify-content: space-between; gap: 8px; font-size: .92rem; margin-bottom: 5px; }
-  .tstat-top span:last-child { color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
-  .tbar { height: 6px; background: var(--line); border-radius: 99px; overflow: hidden; }
+  .cal .cell.has-old { background: var(--old-soft); color: var(--old); } .cal .cell.has-future { background: var(--future-soft); color: var(--future); }
+  .cal-legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: .76rem; font-weight: 600; color: var(--muted); margin-top: 12px; }
+  .cal-legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .tstat { padding: 11px 0; border-top: 1px solid var(--line); }
+  .tstat:first-child { border-top: 0; padding-top: 2px; }
+  .tstat-top { display: flex; justify-content: space-between; gap: 8px; font-size: .92rem; font-weight: 700; margin-bottom: 7px; }
+  .tstat-top span:last-child { color: var(--muted); font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .tbar { height: 7px; background: var(--surface-2); border-radius: 99px; overflow: hidden; }
   .tbar span { display: block; height: 100%; background: var(--future); border-radius: 99px; }
-
-  .hist li { padding: 10px 0; border-bottom: 1px solid var(--line); font-size: .9rem; }
-  .hist li:last-child { border-bottom: 0; }
-  .hist .top { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-variant-numeric: tabular-nums; }
-  .hist .noteline { color: var(--muted); font-size: .84rem; margin-top: 4px; overflow-wrap: anywhere; }
-  .pill { font-size: .75rem; font-weight: 700; padding: 3px 9px; border-radius: 99px; white-space: nowrap; }
+  .hist li { padding: 12px 0; border-top: 1px solid var(--line); font-size: .9rem; }
+  .hist li:first-child { border-top: 0; padding-top: 2px; }
+  .hist .top { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .hist .meta { color: var(--muted); font-size: .8rem; font-weight: 600; margin-top: 2px; }
+  .hist .noteline { color: var(--muted); font-size: .84rem; margin-top: 6px; padding-left: 10px; border-left: 2px solid var(--line); overflow-wrap: anywhere; font-style: italic; }
+  .pill { font-size: .72rem; font-weight: 800; padding: 4px 10px; border-radius: 99px; white-space: nowrap; }
   .pill.old { background: var(--old-soft); color: var(--old); }
   .pill.future { background: var(--future-soft); color: var(--future); }
-  .pill.draw { background: var(--bg); color: var(--muted); border: 1px solid var(--line); }
+  .pill.draw { background: var(--surface-2); color: var(--muted); border: 1px solid var(--line); }
+  .coach { background:
+      radial-gradient(100% 120% at 100% 0%, var(--gold-soft), transparent 60%), var(--surface); }
+  .coach .ico { color: var(--gold); }
+  .coach-text { white-space: pre-wrap; line-height: 1.6; margin: 12px 0 0; font-size: .96rem; font-weight: 500; }
+  .note { text-align: center; font-size: .76rem; color: var(--muted); margin: 0; }
 
-  .coach-text { white-space: pre-wrap; line-height: 1.55; margin: 10px 0 0; font-size: .95rem; }
-  .tools { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
-  .note { text-align: center; font-size: .8rem; color: var(--muted); margin: 0; }
-  .toast { position: fixed; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 160%);
-    background: var(--board); color: var(--board-fg); padding: 12px 18px; border-radius: 12px; font-weight: 600; transition: transform .25s; max-width: calc(100% - 32px); text-align: center; z-index: 30; }
+  /* menubalk onderin */
+  .nav { position: fixed; left: 0; right: 0; bottom: 0; z-index: 15; display: flex; justify-content: center;
+    padding: 8px max(16px, env(safe-area-inset-right, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+    pointer-events: none; }
+  .nav-inner { pointer-events: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 6px; width: 100%; max-width: 360px; padding: 6px;
+    background: var(--nav-bg); backdrop-filter: blur(16px) saturate(1.4); -webkit-backdrop-filter: blur(16px) saturate(1.4);
+    border: 1px solid var(--line); border-radius: 22px; box-shadow: 0 16px 36px -16px rgba(9,12,18,.45); }
+  .nav button { border: 0; background: none; border-radius: 16px; padding: 9px 8px; display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; color: var(--muted); font-size: .72rem; font-weight: 800; letter-spacing: .02em; }
+  .nav button svg { width: 22px; height: 22px; }
+  .nav button[aria-selected="true"] { background: var(--fg); color: var(--surface); }
+
+  .toast { position: fixed; left: 50%; top: calc(14px + env(safe-area-inset-top, 0px)); transform: translate(-50%, -180%);
+    background: var(--ink-1); color: var(--board-fg); padding: 12px 18px; border-radius: 16px; font-weight: 700; transition: transform .35s cubic-bezier(.2,1.2,.4,1); max-width: calc(100% - 32px); text-align: center; z-index: 30; box-shadow: 0 16px 36px -14px rgba(0,0,0,.6); }
   .toast.show { transform: translate(-50%, 0); }
   #confetti { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 20; }
-  @media (prefers-reduced-motion: reduce) { .toast, .bar span { transition: none; } }
+  .view { display: flex; flex-direction: column; gap: 14px; }
+  .view.enter { animation: rise .35s ease; }
+  @keyframes rise { from { opacity: .4; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
 </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-flame" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2c.6 3.2-1 5-2.4 6.6C8.2 10.2 7 11.6 7 14a5 5 0 0 0 10 0c0-1.7-.7-3-1.5-4 .1 1.3-.4 2.3-1.3 2.8.4-3.5-1-7.4-2.2-10.8Z"/></symbol>
+    <symbol id="i-cal" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></g></symbol>
+    <symbol id="i-coin" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><ellipse cx="12" cy="7" rx="7" ry="3"/><path d="M5 7v5c0 1.7 3.1 3 7 3s7-1.3 7-3V7M5 12v5c0 1.7 3.1 3 7 3s7-1.3 7-3v-5"/></g></symbol>
+    <symbol id="i-list" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m4 7 2 2 3.5-3.5M4 16l2 2 3.5-3.5M13 8h7M13 17h7"/></g></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19h16M5 15l4-5 4 3 6-7"/></g></symbol>
+    <symbol id="i-trophy" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v5a4 4 0 0 1-8 0V4ZM8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M9 20h6"/></g></symbol>
+    <symbol id="i-pen" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16v4Z"/></g></symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2.5l1.9 5.6 5.6 1.9-5.6 1.9L12 17.5l-1.9-5.6L4.5 10l5.6-1.9L12 2.5Zm6.5 12 .9 2.6 2.6.9-2.6.9-.9 2.6-.9-2.6-2.6-.9 2.6-.9.9-2.6Z"/></symbol>
+    <symbol id="i-up" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="m6 15 6-6 6 6"/></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-gear" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></g></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></g></symbol>
+    <symbol id="i-home" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m4 10 8-6 8 6v9a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1v-9Z"/></g></symbol>
+    <symbol id="i-flag" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></g></symbol>
+    <symbol id="i-percent" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 5 5 19"/><circle cx="7" cy="7" r="2.5"/><circle cx="17" cy="17" r="2.5"/></g></symbol>
+  </defs>
+</svg>
+
 <canvas id="confetti" hidden></canvas>
 <main>
-  <section class="board" aria-label="Scorebord">
-    <div class="teams">
-      <div class="old"><div class="team-name">Oude mij</div><div class="score" id="scoreOld">0</div></div>
-      <div class="sep">–</div>
-      <div class="future"><div class="team-name">Toekomstige mij</div><div class="score" id="scoreFuture">0</div></div>
+  <header class="top">
+    <div>
+      <div class="eyebrow" id="dateLine">Vandaag</div>
+      <p class="greet" id="greet">Hoi!</p>
     </div>
+    <div class="flame" title="Winstreeks"><svg><use href="#i-flame"/></svg><span id="flameN">0</span></div>
+  </header>
+
+  <section class="arena" aria-label="Scorebord">
+    <div class="teams">
+      <div class="old"><div class="team-name"><i></i>Oude mij</div><div class="score" id="scoreOld">0</div></div>
+      <div class="vs">VS</div>
+      <div class="future"><div class="team-name"><i></i>Toekomstige mij</div><div class="score" id="scoreFuture">0</div></div>
+    </div>
+    <div class="momentum" aria-hidden="true"><div class="mbar"><span class="m-old" id="mOld" style="width:50%"></span><span class="m-future" id="mFuture" style="width:50%"></span></div></div>
     <div class="status" id="lead">Gelijkspel</div>
     <div class="chips">
-      <div class="chip"><b id="streak">0</b><span>Reeks 🔥</span></div>
-      <div class="chip"><b id="week">0–0</b><span>Deze week</span></div>
-      <div class="chip"><b id="saved">€0</b><span>Gespaard</span></div>
+      <div class="chip"><svg><use href="#i-flame"/></svg><b id="streak">0</b><span>Reeks</span></div>
+      <div class="chip"><svg><use href="#i-cal"/></svg><b id="week">0–0</b><span>Deze week</span></div>
+      <div class="chip"><svg><use href="#i-coin"/></svg><b id="saved">€0</b><span>Gespaard</span></div>
     </div>
   </section>
 
-  <div class="tabs" role="tablist">
-    <button class="tab" role="tab" id="tab-vandaag" aria-selected="true" type="button">Vandaag</button>
-    <button class="tab" role="tab" id="tab-overzicht" aria-selected="false" type="button">Overzicht</button>
-  </div>
-
   <!-- VANDAAG -->
-  <div id="view-vandaag" style="display:flex;flex-direction:column;gap:14px">
-    <section class="panel" id="listPanel">
-      <div class="panel-head">
-        <h2 id="todayTitle">Checklist van vandaag</h2>
+  <div class="view" id="view-vandaag">
+    <section class="card" id="listPanel">
+      <div class="today-head">
+        <div class="ring" aria-hidden="true">
+          <svg viewBox="0 0 80 80"><circle class="track" cx="40" cy="40" r="34" fill="none" stroke-width="8"/><circle class="prog" id="ringProg" cx="40" cy="40" r="34" fill="none" stroke-width="8" stroke-linecap="round" stroke-dasharray="213.6" stroke-dashoffset="213.6"/></svg>
+          <div class="pct" id="ringPct">0%</div>
+        </div>
+        <div class="today-text">
+          <h2 id="todayTitle">Checklist van vandaag</h2>
+          <div class="sub" id="todaySub">0 van 0 gedaan</div>
+        </div>
         <button class="btn btn-quiet" id="editBtn" type="button">Bewerken</button>
       </div>
-      <div class="meta"><span id="doneCount">0 gedaan</span><span id="todoCount">0 niet gedaan</span></div>
-      <div class="bar"><span id="bar"></span></div>
       <ul id="list"><li class="empty">Checklist laden…</li></ul>
       <p class="notToday" id="notToday" hidden></p>
       <form class="add" id="addForm">
-        <input id="newItem" placeholder="Nieuwe taak…" autocomplete="off" aria-label="Nieuwe taak">
+        <input class="input" id="newItem" placeholder="Nieuwe taak…" autocomplete="off" aria-label="Nieuwe taak">
         <button class="btn btn-quiet" type="submit">Toevoegen</button>
       </form>
     </section>
 
-    <section class="panel">
-      <div class="panel-head"><h2><label for="dayNote">Notitie van vandaag</label></h2></div>
+    <section class="card">
+      <div class="card-head"><div class="title"><div class="ico"><svg><use href="#i-pen"/></svg></div><div><h2><label for="dayNote">Notitie van vandaag</label></h2><div class="sub">Komt in je geschiedenis bij het afronden</div></div></div></div>
       <textarea id="dayNote" placeholder="Hoe ging je dag?"></textarea>
     </section>
 
-    <section class="panel">
+    <section class="card">
       <div id="finishArea"></div>
-      <p class="rules">Alles gedaan: punt voor Toekomstige mij. Meer niet gedaan dan wel: punt voor Oude mij. Daartussenin: gelijkspel. Taken met ×2 tellen dubbel. Een hele week (ma t/m zo) gewonnen: bonuspunt.</p>
+      <ul class="rules">
+        <li><i style="background:var(--future)"></i>Alles gedaan: punt voor Toekomstige mij.</li>
+        <li><i style="background:var(--old)"></i>Meer niet gedaan dan wel: punt voor Oude mij. Daartussenin is het gelijkspel.</li>
+        <li><i style="background:var(--gold)"></i>Taken met ×2 tellen dubbel. Een hele week (ma t/m zo) gewonnen geeft een bonuspunt.</li>
+      </ul>
     </section>
 
     <div class="tools" id="tools">
@@ -218,52 +342,59 @@
   </div>
 
   <!-- OVERZICHT -->
-  <div id="view-overzicht" style="display:none;flex-direction:column;gap:14px">
-    <section class="panel">
-      <div class="panel-head"><h2>Records</h2></div>
+  <div class="view" id="view-overzicht" hidden>
+    <section class="card">
+      <div class="card-head"><div class="title"><div class="ico"><svg><use href="#i-trophy"/></svg></div><h2>Records</h2></div></div>
       <div class="stats">
-        <div class="stat"><b id="recStreak">0</b><span>Langste reeks</span></div>
-        <div class="stat"><b id="recWeek">0</b><span id="recWeekLbl">Beste week (punten)</span></div>
-        <div class="stat"><b id="recDays">0</b><span>Dagen gespeeld</span></div>
-        <div class="stat"><b id="recPct">0%</b><span>Dagen gewonnen</span></div>
+        <div class="stat"><svg><use href="#i-flame"/></svg><b id="recStreak">0</b><span>Langste reeks</span></div>
+        <div class="stat"><svg><use href="#i-trophy"/></svg><b id="recWeek">0</b><span id="recWeekLbl">Beste week (punten)</span></div>
+        <div class="stat"><svg><use href="#i-flag"/></svg><b id="recDays">0</b><span>Dagen gespeeld</span></div>
+        <div class="stat"><svg><use href="#i-percent"/></svg><b id="recPct">0%</b><span>Dagen gewonnen</span></div>
       </div>
     </section>
 
-    <section class="panel">
-      <div class="panel-head"><h2>Verloop van de stand</h2></div>
-      <div class="legend"><span><i style="background:var(--chart-future)"></i>Toekomstige mij</span><span><i style="background:var(--chart-old)"></i>Oude mij</span></div>
+    <section class="card coach" id="coachPanel" hidden>
+      <div class="card-head"><div class="title"><div class="ico"><svg><use href="#i-spark"/></svg></div><div><h2>Coach</h2><div class="sub" id="coachHint">Claude bekijkt je resultaten en geeft je een tip</div></div></div>
+        <button class="btn btn-quiet" id="coachBtn" type="button">Vraag een tip</button></div>
+      <p class="coach-text" id="coachText" hidden></p>
+    </section>
+
+    <section class="card">
+      <div class="card-head"><div class="title"><div class="ico"><svg><use href="#i-chart"/></svg></div><h2>Verloop van de stand</h2></div></div>
+      <div class="legend" style="margin-bottom:10px"><span><i style="background:var(--chart-future)"></i>Toekomstige mij</span><span><i style="background:var(--chart-old)"></i>Oude mij</span></div>
       <div class="chart-wrap" id="chartWrap"></div>
     </section>
 
-    <section class="panel">
-      <div class="cal-head">
-        <button class="btn btn-quiet" id="calPrev" type="button" aria-label="Vorige maand">‹</button>
+    <section class="card">
+      <div class="card-head">
+        <button class="btn btn-quiet" id="calPrev" type="button" aria-label="Vorige maand"><svg width="16" height="16" style="transform:rotate(90deg)"><use href="#i-down"/></svg></button>
         <h2 id="calTitle">Maand</h2>
-        <button class="btn btn-quiet" id="calNext" type="button" aria-label="Volgende maand">›</button>
+        <button class="btn btn-quiet" id="calNext" type="button" aria-label="Volgende maand"><svg width="16" height="16" style="transform:rotate(-90deg)"><use href="#i-down"/></svg></button>
       </div>
       <div class="cal" id="cal"></div>
       <div class="cal-legend"><span><i class="dot future"></i>Toekomstige mij</span><span><i class="dot old"></i>Oude mij</span><span><i class="dot draw"></i>Gelijkspel</span></div>
     </section>
 
-    <section class="panel">
-      <div class="panel-head"><h2>Per taak</h2></div>
+    <section class="card">
+      <div class="card-head"><div class="title"><div class="ico"><svg><use href="#i-list"/></svg></div><div><h2>Per taak</h2><div class="sub">Moeilijkste taken bovenaan</div></div></div></div>
       <ul id="taskStats"></ul>
     </section>
 
-    <section class="panel" id="coachPanel" hidden>
-      <div class="panel-head"><h2>Coach</h2><button class="btn btn-quiet" id="coachBtn" type="button">Vraag een tip</button></div>
-      <p class="muted" id="coachHint" style="margin:0;font-size:.88rem">Claude bekijkt je resultaten en geeft je een tip.</p>
-      <p class="coach-text" id="coachText" hidden></p>
-    </section>
-
-    <section class="panel">
-      <div class="panel-head"><h2>Gespeelde dagen</h2></div>
+    <section class="card">
+      <div class="card-head"><div class="title"><div class="ico"><svg><use href="#i-cal"/></svg></div><h2>Gespeelde dagen</h2></div></div>
       <ul class="hist" id="history"></ul>
     </section>
   </div>
 
   <p class="note" id="syncNote"></p>
 </main>
+
+<nav class="nav" aria-label="Menu">
+  <div class="nav-inner" role="tablist">
+    <button role="tab" id="tab-vandaag" aria-selected="true" type="button"><svg><use href="#i-home"/></svg>Vandaag</button>
+    <button role="tab" id="tab-overzicht" aria-selected="false" type="button"><svg><use href="#i-chart"/></svg>Overzicht</button>
+  </div>
+</nav>
 <div class="toast" id="toast" role="status"></div>
 
 <script>
@@ -274,7 +405,7 @@ const DAY_ORDER = [1,2,3,4,5,6,0];
 const LABEL = { old: "Punt voor Oude mij", future: "Punt voor Toekomstige mij", draw: "Gelijkspel" };
 let state = { old: 0, future: 0, saved: 0, note: "", items: [], history: [] };
 let db = null, ref = null, sample = null, canWrite = true, loaded = false;
-let pending = null, openSettings = null, calMonth = null;
+let pending = null, openSettings = null, calMonth = null, lastScores = null;
 
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
 const euro = n => "€" + (Math.round(n * 100) / 100).toLocaleString("nl-NL", { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 });
@@ -283,6 +414,8 @@ const isoOf = d => d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.g
 const dateOf = iso => new Date(iso + "T12:00:00");
 function weekKey(iso) { const d = dateOf(iso); d.setDate(d.getDate() - (d.getDay() + 6) % 7); return isoOf(d); }
 const newId = () => "t" + Math.random().toString(36).slice(2, 9);
+const icon = (id, cls) => `<svg${cls ? ` class="${cls}"` : ""}><use href="#${id}"/></svg>`;
+const buzz = () => { try { navigator.vibrate && navigator.vibrate(12); } catch (e) {} };
 
 function normalize(d) {
   d = d || {};
@@ -358,13 +491,26 @@ function maybeBonus(entry) {
 
 // ---------- weergave ----------
 function render() {
+  const now = new Date(), hr = now.getHours();
+  $("dateLine").textContent = now.toLocaleDateString("nl-NL", { weekday: "long", day: "numeric", month: "long" });
+  $("greet").textContent = hr < 6 ? "Goedenacht" : hr < 12 ? "Goedemorgen" : hr < 18 ? "Goedemiddag" : "Goedenavond";
+
   $("scoreOld").textContent = state.old;
   $("scoreFuture").textContent = state.future;
-  $("lead").textContent = state.future > state.old ? "Toekomstige mij staat voor"
-    : state.old > state.future ? "Oude mij staat voor" : "Gelijkspel";
+  if (lastScores && loaded) {
+    if (state.old !== lastScores.old) bump("scoreOld");
+    if (state.future !== lastScores.future) bump("scoreFuture");
+  }
+  if (loaded) lastScores = { old: state.old, future: state.future };
+  const sum = state.old + state.future;
+  const pOld = sum ? state.old / sum * 100 : 50;
+  $("mOld").style.width = pOld + "%"; $("mFuture").style.width = (100 - pOld) + "%";
+  const diff = state.future - state.old;
+  $("lead").textContent = diff > 0 ? `Toekomstige mij staat ${diff} voor` : diff < 0 ? `Oude mij staat ${-diff} voor` : "Gelijkspel";
+
   const st = streaks();
-  $("streak").textContent = st.cur;
-  const wk = weekScores()[weekKey(isoOf(new Date()))] || { old: 0, future: 0 };
+  $("streak").textContent = st.cur; $("flameN").textContent = st.cur;
+  const wk = weekScores()[weekKey(isoOf(now))] || { old: 0, future: 0 };
   $("week").textContent = wk.old + "–" + wk.future;
   $("saved").textContent = euro(state.saved);
 
@@ -379,55 +525,64 @@ function render() {
   $("syncNote").textContent = !canWrite ? "Je bekijkt deze stand alleen; wijzigen kan alleen de eigenaar."
     : ref ? "Je stand wordt opgeslagen in je account." : "Je stand wordt alleen op dit apparaat bewaard.";
 }
+function bump(id) { const el = $(id); el.classList.remove("bump"); void el.offsetWidth; el.classList.add("bump"); }
 
 function renderList() {
   const editing = $("listPanel").classList.contains("editing");
   const list = $("list");
   list.replaceChildren();
-  $("todayTitle").textContent = "Checklist van " + new Date().toLocaleDateString("nl-NL", { weekday: "long" });
+  $("todayTitle").textContent = editing ? "Taken bewerken" : "Checklist van " + new Date().toLocaleDateString("nl-NL", { weekday: "long" });
+  const t = tally(activeItems());
+  const pct = t.totalW ? Math.round(t.doneW / t.totalW * 100) : 0;
+  $("ringProg").style.strokeDashoffset = 213.6 * (1 - pct / 100);
+  $("ringPct").textContent = pct + "%";
+  $("todaySub").textContent = editing ? "Tik op de schuifjes voor dagen, ×2 en sparen"
+    : t.total ? `${t.done} van ${t.total} gedaan` + (t.done === t.total ? " · alles af!" : "") : "Nog niets voor vandaag";
   if (!loaded) { list.innerHTML = '<li class="empty">Checklist laden…</li>'; return; }
   const today = todayDow();
   const shown = editing ? state.items : activeItems();
   if (!state.items.length) list.innerHTML = '<li class="empty">Nog geen taken. Tik op “Bewerken” en voeg je eerste taak toe.</li>';
-  else if (!shown.length) list.innerHTML = '<li class="empty">Vandaag staan er geen taken op je lijst.</li>';
+  else if (!shown.length) list.innerHTML = '<li class="empty">Vandaag staan er geen taken op je lijst. Vrije dag!</li>';
 
   shown.forEach(it => {
     const idx = state.items.indexOf(it);
     const li = document.createElement("li");
-    li.className = "task" + (it.done ? " done" : "");
+    li.className = "task" + (it.done && !editing ? " done" : "");
     const row = document.createElement("div"); row.className = "task-row";
     const label = document.createElement("label");
     const cb = document.createElement("input");
     cb.type = "checkbox"; cb.id = "task-" + it.id; cb.checked = it.done; cb.disabled = !canWrite || editing;
-    cb.addEventListener("change", () => { it.done = cb.checked; pending = null; commit(); });
+    cb.addEventListener("change", () => { it.done = cb.checked; pending = null; if (cb.checked) buzz(); commit(); });
+    const ck = document.createElement("span"); ck.className = "check"; ck.innerHTML = '<svg viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7" stroke-linecap="round" stroke-linejoin="round"/></svg>';
     const span = document.createElement("span"); span.className = "txt"; span.textContent = it.text;
-    label.append(cb, span);
+    label.append(cb, ck, span);
     if (it.weight === 2) { const b = document.createElement("span"); b.className = "badge x2"; b.textContent = "×2"; span.appendChild(b); }
     if (it.amount) { const b = document.createElement("span"); b.className = "badge money"; b.textContent = "+" + euro(it.amount); span.appendChild(b); }
     if (editing && it.days) { const b = document.createElement("span"); b.className = "badge"; b.textContent = DAY_ORDER.filter(d => it.days.includes(d)).map(d => DAYS[d]).join(" "); span.appendChild(b); }
     row.appendChild(label);
-    const mk = (txt, aria, fn, dis) => { const b = document.createElement("button"); b.type = "button"; b.className = "icon-btn"; b.textContent = txt; b.setAttribute("aria-label", aria); b.disabled = !!dis; b.onclick = fn; return b; };
+    const mk = (ic, aria, fn, dis) => { const b = document.createElement("button"); b.type = "button"; b.className = "icon-btn"; b.innerHTML = icon(ic); b.setAttribute("aria-label", aria); b.disabled = !!dis; b.onclick = fn; return b; };
     row.append(
-      mk("▲", "Omhoog: " + it.text, () => { state.items.splice(idx, 1); state.items.splice(idx - 1, 0, it); commit(); }, idx === 0),
-      mk("▼", "Omlaag: " + it.text, () => { state.items.splice(idx, 1); state.items.splice(idx + 1, 0, it); commit(); }, idx === state.items.length - 1),
-      mk("⚙", "Instellingen: " + it.text, () => { openSettings = openSettings === it.id ? null : it.id; render(); })
+      mk("i-up", "Omhoog: " + it.text, () => { state.items.splice(idx, 1); state.items.splice(idx - 1, 0, it); commit(); }, idx === 0),
+      mk("i-down", "Omlaag: " + it.text, () => { state.items.splice(idx, 1); state.items.splice(idx + 1, 0, it); commit(); }, idx === state.items.length - 1),
+      mk("i-gear", "Instellingen: " + it.text, () => { openSettings = openSettings === it.id ? null : it.id; render(); })
     );
     li.appendChild(row);
 
     if (editing && openSettings === it.id) {
       const s = document.createElement("div"); s.className = "settings";
       s.innerHTML = `
-        <label class="field"><input type="checkbox" id="w-${it.id}" ${it.weight === 2 ? "checked" : ""}> Telt dubbel (×2)</label>
-        <div><div class="lbl">Op welke dagen? (niets gekozen = elke dag)</div><div class="days"></div></div>
-        <div class="field"><label class="lbl" for="a-${it.id}">Bedrag sparen bij afvinken (€)</label><input type="text" class="amount" id="a-${it.id}" inputmode="decimal" value="${it.amount ? String(it.amount).replace(".", ",") : ""}" placeholder="0,00"></div>
-        <button type="button" class="btn-del">Taak verwijderen</button>`;
+        <label class="toggle">Telt dubbel (×2)<span class="switch"><input type="checkbox" id="w-${it.id}" ${it.weight === 2 ? "checked" : ""}><span></span></span></label>
+        <div><div class="lbl">Op welke dagen? Niets gekozen = elke dag</div><div class="days"></div></div>
+        <div><label class="lbl" for="a-${it.id}" style="display:block">Bedrag sparen bij afvinken</label>
+          <div class="money-field"><span class="pre">€</span><input type="text" class="input amount" id="a-${it.id}" inputmode="decimal" value="${it.amount ? String(it.amount).replace(".", ",") : ""}" placeholder="0,00"></div></div>
+        <button type="button" class="btn-del">${icon("i-trash")}Taak verwijderen</button>`;
       s.querySelector("#w-" + it.id).onchange = e => { it.weight = e.target.checked ? 2 : 1; commit(); };
       const days = s.querySelector(".days");
       DAY_ORDER.forEach(d => {
         const b = document.createElement("button"); b.type = "button"; b.className = "day"; b.textContent = DAYS[d];
         b.setAttribute("aria-pressed", it.days && it.days.includes(d) ? "true" : "false");
         b.onclick = () => {
-          let set = new Set(it.days || []);
+          const set = new Set(it.days || []);
           set.has(d) ? set.delete(d) : set.add(d);
           it.days = set.size && set.size < 7 ? [...set].sort() : null;
           commit();
@@ -444,11 +599,6 @@ function renderList() {
   const off = state.items.filter(i => i.days && !i.days.includes(today));
   $("notToday").hidden = editing || !off.length;
   $("notToday").textContent = "Niet vandaag: " + off.map(i => i.text).join(", ");
-
-  const t = tally(activeItems());
-  $("doneCount").textContent = t.done + " gedaan";
-  $("todoCount").textContent = (t.total - t.done) + " niet gedaan";
-  $("bar").style.width = t.totalW ? (t.doneW / t.totalW * 100) + "%" : "0";
 }
 
 function renderFinish() {
@@ -460,22 +610,23 @@ function renderFinish() {
   if (pending === "finish") {
     const w = outcomeFor(t.doneW, t.totalW);
     const money = items.filter(i => i.done && i.amount).reduce((a, i) => a + i.amount, 0);
-    area.innerHTML = `<div class="verdict"><p>${t.done} van de ${t.total} taken gedaan${t.totalW !== t.total ? ` (${t.doneW} van ${t.totalW} punten met ×2)` : ""}.${money ? " Je spaart vandaag " + euro(money) + "." : ""}${already ? " <b>Let op: vandaag is al een keer afgerond.</b>" : ""}</p>
+    area.innerHTML = `<div class="verdict"><div class="eyebrow">Uitslag van vandaag</div>
       <div class="outcome ${w}">${LABEL[w]}</div>
+      <p>${t.done} van de ${t.total} taken gedaan${t.totalW !== t.total ? ` (${t.doneW} van ${t.totalW} punten met ×2)` : ""}.${money ? " Je spaart vandaag " + euro(money) + "." : ""}${already ? " <b>Let op: vandaag is al een keer afgerond.</b>" : ""}</p>
       <div class="row"><button class="btn btn-quiet" id="cancelBtn" type="button">Annuleren</button>
       <button class="btn btn-yes" id="confirmBtn" type="button">Bevestigen</button></div></div>`;
     $("cancelBtn").onclick = () => { pending = null; render(); };
     $("confirmBtn").onclick = finishDay;
   } else if (pending === "reset") {
-    area.innerHTML = `<div class="verdict"><p>Score, spaarpot en gespeelde dagen op 0 zetten? Je checklist blijft staan.</p>
+    area.innerHTML = `<div class="verdict"><div class="eyebrow">Opnieuw beginnen</div><p>Score, spaarpot en gespeelde dagen op 0 zetten? Je checklist blijft staan.</p>
       <div class="row"><button class="btn btn-quiet" id="cancelBtn" type="button">Annuleren</button>
-      <button class="btn btn-yes" id="confirmBtn" type="button">Op 0 zetten</button></div></div>`;
+      <button class="btn btn-yes" id="confirmBtn" type="button" style="background:var(--old)">Op 0 zetten</button></div></div>`;
     $("cancelBtn").onclick = () => { pending = null; render(); };
     $("confirmBtn").onclick = () => { state.old = 0; state.future = 0; state.saved = 0; state.history = []; pending = null; commit(); toast("Alles staat weer op 0"); };
   } else {
     const b = document.createElement("button");
     b.className = "btn btn-main"; b.id = "finishBtn"; b.type = "button";
-    b.textContent = already ? "Dag afronden (vandaag al gedaan)" : "Dag afronden";
+    b.innerHTML = icon("i-flag") + (already ? "Dag afronden (vandaag al gedaan)" : "Dag afronden");
     b.disabled = !canWrite || !t.total || !loaded;
     b.onclick = () => { pending = "finish"; render(); };
     area.appendChild(b);
@@ -504,7 +655,8 @@ function finishDay() {
   state.note = ""; $("dayNote").value = "";
   pending = null;
   commit();
-  if (w === "future") confetti();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  if (w === "future") { confetti(); buzz(); }
   toast(entry.bonus ? "🏆 Hele week gewonnen! Bonuspunt voor Toekomstige mij" : LABEL[w] + (money ? " · " + euro(money) + " gespaard" : ""));
 }
 
@@ -524,30 +676,37 @@ function renderOverview() {
 function renderChart() {
   const wrap = $("chartWrap");
   const h = state.history;
-  if (h.length < 1) { wrap.innerHTML = '<p class="empty">Rond je eerste dag af om het verloop te zien.</p>'; return; }
+  if (h.length < 1) { wrap.innerHTML = '<p class="muted" style="margin:0">Rond je eerste dag af om het verloop te zien.</p>'; return; }
   const pts = [{ old: 0, future: 0, label: "Start" }];
   let o = 0, f = 0;
   h.forEach(e => { if (e.winner === "old") o++; if (e.winner === "future") f++; f += e.bonus || 0; pts.push({ old: o, future: f, label: e.date }); });
-  const W = 320, H = 170, L = 26, R = 12, T = 12, B = 24;
+  const W = 320, H = 180, L = 26, R = 14, T = 14, B = 26;
   const max = Math.max(2, ...pts.map(p => Math.max(p.old, p.future)));
   const step = max <= 5 ? 1 : max <= 12 ? 2 : Math.ceil(max / 5);
   const top = Math.ceil(max / step) * step;
   const x = i => L + (pts.length === 1 ? 0 : i * (W - L - R) / (pts.length - 1));
   const y = v => T + (H - T - B) * (1 - v / top);
   let grid = "";
-  for (let v = 0; v <= top; v += step) grid += `<line x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}" stroke="var(--grid)" stroke-width="1"/><text x="${L - 6}" y="${y(v) + 4}" text-anchor="end" font-size="10" fill="var(--muted)">${v}</text>`;
-  const path = k => pts.map((p, i) => (i ? "L" : "M") + x(i).toFixed(1) + " " + y(p[k]).toFixed(1)).join(" ");
+  for (let v = 0; v <= top; v += step) grid += `<line x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}" stroke="var(--grid)" stroke-width="1"/><text x="${L - 8}" y="${y(v) + 4}" text-anchor="end" font-size="10" font-weight="600" fill="var(--muted)">${v}</text>`;
+  const line = k => pts.map((p, i) => (i ? "L" : "M") + x(i).toFixed(1) + " " + y(p[k]).toFixed(1)).join(" ");
+  const area = k => line(k) + ` L${x(pts.length - 1).toFixed(1)} ${y(0)} L${x(0)} ${y(0)} Z`;
   const last = pts.length - 1;
   wrap.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Stand na elke dag: Toekomstige mij ${pts[last].future}, Oude mij ${pts[last].old}">
+    <defs>
+      <linearGradient id="gF" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--chart-future)" stop-opacity=".22"/><stop offset="1" stop-color="var(--chart-future)" stop-opacity="0"/></linearGradient>
+      <linearGradient id="gO" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--chart-old)" stop-opacity=".14"/><stop offset="1" stop-color="var(--chart-old)" stop-opacity="0"/></linearGradient>
+    </defs>
     ${grid}
-    <text x="${L}" y="${H - 6}" font-size="10" fill="var(--muted)">Start</text>
-    <text x="${W - R}" y="${H - 6}" font-size="10" fill="var(--muted)" text-anchor="end">${esc(pts[last].label)}</text>
-    <path d="${path("old")}" fill="none" stroke="var(--chart-old)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
-    <path d="${path("future")}" fill="none" stroke="var(--chart-future)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
-    <circle cx="${x(last)}" cy="${y(pts[last].old)}" r="4" fill="var(--chart-old)" stroke="var(--surface)" stroke-width="2"/>
-    <circle cx="${x(last)}" cy="${y(pts[last].future)}" r="4" fill="var(--chart-future)" stroke="var(--surface)" stroke-width="2"/>
+    <text x="${L}" y="${H - 6}" font-size="10" font-weight="600" fill="var(--muted)">Start</text>
+    <text x="${W - R}" y="${H - 6}" font-size="10" font-weight="600" fill="var(--muted)" text-anchor="end">${esc(pts[last].label)}</text>
+    <path d="${area("old")}" fill="url(#gO)"/>
+    <path d="${area("future")}" fill="url(#gF)"/>
+    <path d="${line("old")}" fill="none" stroke="var(--chart-old)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+    <path d="${line("future")}" fill="none" stroke="var(--chart-future)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+    <circle cx="${x(last)}" cy="${y(pts[last].old)}" r="4.5" fill="var(--chart-old)" stroke="var(--surface)" stroke-width="2"/>
+    <circle cx="${x(last)}" cy="${y(pts[last].future)}" r="4.5" fill="var(--chart-future)" stroke="var(--surface)" stroke-width="2"/>
     <line id="cross" x1="0" x2="0" y1="${T}" y2="${H - B}" stroke="var(--muted)" stroke-width="1" stroke-dasharray="3 3" visibility="hidden"/>
-    <rect id="hit" x="${L}" y="0" width="${W - L - R}" height="${H}" fill="transparent"/>
+    <rect x="${L}" y="0" width="${W - L - R}" height="${H}" fill="transparent"/>
   </svg><div class="tip" id="tip" hidden></div>`;
   const svg = wrap.querySelector("svg"), tip = $("tip"), cross = svg.querySelector("#cross");
   const show = ev => {
@@ -558,8 +717,7 @@ function renderChart() {
     cross.setAttribute("x1", x(i)); cross.setAttribute("x2", x(i)); cross.setAttribute("visibility", "visible");
     tip.hidden = false;
     tip.textContent = `${p.label}: Oude mij ${p.old} – ${p.future} Toekomstige mij`;
-    const px = x(i) / W * r.width;
-    tip.style.left = Math.max(90, Math.min(r.width - 90, px)) + "px";
+    tip.style.left = Math.max(100, Math.min(r.width - 100, x(i) / W * r.width)) + "px";
     tip.style.top = (Math.min(y(p.old), y(p.future)) / H * r.height) + "px";
   };
   const hide = () => { tip.hidden = true; cross.setAttribute("visibility", "hidden"); };
@@ -574,7 +732,6 @@ function renderCal() {
   $("calTitle").textContent = calMonth.toLocaleDateString("nl-NL", { month: "long", year: "numeric" });
   const byDate = {};
   state.history.forEach(h => { if (h.iso) byDate[h.iso] = h; });
-  const cal = $("cal");
   let html = DAY_ORDER.map(d => `<div class="dn">${DAYS[d]}</div>`).join("");
   const offset = (calMonth.getDay() + 6) % 7;
   for (let i = 0; i < offset; i++) html += "<div></div>";
@@ -586,7 +743,7 @@ function renderCal() {
     const cls = "cell" + (iso === todayIso ? " today" : "") + (e && e.winner !== "draw" ? " has-" + e.winner : "");
     html += `<div class="${cls}" title="${e ? esc(LABEL[e.winner]) : ""}">${d}${e ? `<i class="dot ${e.winner}"></i>` : ""}</div>`;
   }
-  cal.innerHTML = html;
+  $("cal").innerHTML = html;
 }
 
 function renderTaskStats() {
@@ -597,16 +754,18 @@ function renderTaskStats() {
   }));
   const rows = Object.entries(map).sort((a, b) => a[1].done / a[1].total - b[1].done / b[1].total);
   const ul = $("taskStats");
-  if (!rows.length) { ul.innerHTML = '<li class="empty">Na je eerste afgeronde dag zie je hier per taak hoe vaak je hem deed. Moeilijkste taken staan bovenaan.</li>'; return; }
+  if (!rows.length) { ul.innerHTML = '<li class="muted">Na je eerste afgeronde dag zie je hier per taak hoe vaak je hem deed.</li>'; return; }
   ul.innerHTML = rows.map(([txt, v]) => `<li class="tstat"><div class="tstat-top"><span>${esc(txt)}</span><span>${v.done} van ${v.total} dagen</span></div><div class="tbar"><span style="width:${v.done / v.total * 100}%"></span></div></li>`).join("");
 }
 
 function renderHistory() {
   const ul = $("history");
-  if (!state.history.length) { ul.innerHTML = '<li class="empty">Nog geen dagen afgerond.</li>'; return; }
+  if (!state.history.length) { ul.innerHTML = '<li class="muted">Nog geen dagen afgerond.</li>'; return; }
   ul.innerHTML = state.history.slice().reverse().slice(0, 60).map(r => {
     const pill = r.winner === "old" ? "Oude mij +1" : r.winner === "future" ? "Toekomstige mij +" + (1 + (r.bonus || 0)) : "Gelijkspel";
-    return `<li><div class="top"><span>${esc(r.date)} · ${r.done}/${r.total} gedaan${r.saved ? " · " + euro(r.saved) : ""}</span><span class="pill ${r.winner}">${pill}</span></div>${r.note ? `<div class="noteline">${esc(r.note)}</div>` : ""}</li>`;
+    return `<li><div class="top"><span>${esc(r.date)}</span><span class="pill ${r.winner}">${pill}</span></div>
+      <div class="meta">${r.done}/${r.total} gedaan${r.saved ? " · " + euro(r.saved) + " gespaard" : ""}${r.bonus ? " · weekbonus" : ""}</div>
+      ${r.note ? `<div class="noteline">${esc(r.note)}</div>` : ""}</li>`;
   }).join("");
 }
 
@@ -641,12 +800,12 @@ function confetti() {
   const c = $("confetti"), ctx = c.getContext("2d");
   c.hidden = false;
   const dpr = devicePixelRatio || 1;
-  c.width = innerWidth * dpr; c.height = innerHeight * dpr; ctx.scale(dpr, dpr);
+  c.width = innerWidth * dpr; c.height = innerHeight * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   const css = getComputedStyle(document.documentElement);
-  const cols = ["--future", "--accent", "--old", "--fg"].map(v => css.getPropertyValue(v).trim());
-  const ps = Array.from({ length: 140 }, () => ({
-    x: innerWidth / 2 + (Math.random() - .5) * 80, y: innerHeight * .35,
-    vx: (Math.random() - .5) * 12, vy: -Math.random() * 12 - 4, r: Math.random() * 6 + 4,
+  const cols = ["--board-future", "--board-gold", "--future", "--board-fg"].map(v => css.getPropertyValue(v).trim());
+  const ps = Array.from({ length: 160 }, () => ({
+    x: innerWidth / 2 + (Math.random() - .5) * 100, y: innerHeight * .28,
+    vx: (Math.random() - .5) * 13, vy: -Math.random() * 13 - 4, r: Math.random() * 6 + 4,
     a: Math.random() * 6, va: (Math.random() - .5) * .3, c: cols[Math.floor(Math.random() * cols.length)]
   }));
   const t0 = performance.now();
@@ -654,20 +813,22 @@ function confetti() {
     ctx.clearRect(0, 0, innerWidth, innerHeight);
     ps.forEach(p => { p.vy += .35; p.vx *= .99; p.x += p.vx; p.y += p.vy; p.a += p.va;
       ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.a); ctx.fillStyle = p.c; ctx.fillRect(-p.r / 2, -p.r / 4, p.r, p.r / 2); ctx.restore(); });
-    if (t - t0 < 2200) requestAnimationFrame(frame); else { ctx.clearRect(0, 0, innerWidth, innerHeight); c.hidden = true; }
+    if (t - t0 < 2400) requestAnimationFrame(frame); else { ctx.clearRect(0, 0, innerWidth, innerHeight); c.hidden = true; }
   })(t0);
 }
 
 // ---------- knoppen ----------
-function showTab(name) {
+function showTab(name, animate) {
   ["vandaag", "overzicht"].forEach(n => {
     $("tab-" + n).setAttribute("aria-selected", n === name ? "true" : "false");
-    $("view-" + n).style.display = n === name ? "flex" : "none";
+    const v = $("view-" + n);
+    v.hidden = n !== name;
+    if (n === name && animate) { v.classList.remove("enter"); void v.offsetWidth; v.classList.add("enter"); }
   });
   try { localStorage.setItem(LOCAL_KEY + "-tab", name); } catch (e) {}
 }
-$("tab-vandaag").onclick = () => showTab("vandaag");
-$("tab-overzicht").onclick = () => showTab("overzicht");
+$("tab-vandaag").onclick = () => { showTab("vandaag", true); window.scrollTo({ top: 0 }); };
+$("tab-overzicht").onclick = () => { showTab("overzicht", true); window.scrollTo({ top: 0 }); };
 $("calPrev").onclick = () => { calMonth = new Date(calMonth.getFullYear(), calMonth.getMonth() - 1, 1); renderCal(); };
 $("calNext").onclick = () => { calMonth = new Date(calMonth.getFullYear(), calMonth.getMonth() + 1, 1); renderCal(); };
 $("coachBtn").onclick = askCoach;
@@ -681,7 +842,7 @@ $("undoBtn").onclick = () => {
   if (r.saved) state.saved = Math.max(0, Math.round((state.saved - r.saved) * 100) / 100);
   commit(); toast("Laatste dag teruggedraaid");
 };
-$("resetBtn").onclick = () => { pending = "reset"; render(); $("finishArea").scrollIntoView({ block: "center" }); };
+$("resetBtn").onclick = () => { pending = "reset"; render(); $("finishArea").scrollIntoView({ block: "center", behavior: "smooth" }); };
 $("editBtn").onclick = () => {
   const on = $("listPanel").classList.toggle("editing");
   $("editBtn").textContent = on ? "Klaar" : "Bewerken";
