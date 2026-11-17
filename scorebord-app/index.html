@@ -3,246 +3,745 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#111827">
+<meta name="theme-color" content="#161a22">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Scorebord">
-<title>Oude mij vs Toekomstige mij</title>
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="icon.svg">
 <link rel="apple-touch-icon" href="icon.svg">
+<title>Oude mij vs Toekomstige mij</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Inter:wght@400;500;600;700&display=swap">
 <style>
+  :root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+  body { margin: 0; }
+  [hidden] { display: none !important; }
+
+  /* Layout: één smalle kolom zoals een stadion-scorebord; twee tabbladen: Vandaag en Overzicht. */
   :root {
-    --bg: #111827; --card: #1f2937; --line: #374151; --text: #f9fafb; --muted: #9ca3af;
-    --old: #f87171; --future: #34d399; --accent: #60a5fa;
+    --bg: #eef0f3; --surface: #ffffff; --line: #d7dbe2; --fg: #161a22; --muted: #5d6573;
+    --old: #c2372b; --old-soft: #f6dedb; --future: #0f8a6a; --future-soft: #d6f0e8; --accent: #1f3a8a;
+    --chart-old: #c2372b; --chart-future: #0f8a6a; --grid: #e4e7ec;
+    --board: #161a22; --board-fg: #f3f4f6; --board-muted: #9aa3b2; --chip: #262b35;
+    --display: "Big Shoulders Display", "Arial Narrow", Impact, sans-serif;
+    --body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
   }
-  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-  body {
-    margin: 0; background: var(--bg); color: var(--text);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    padding: calc(16px + env(safe-area-inset-top)) 16px calc(24px + env(safe-area-inset-bottom));
-    max-width: 520px; margin-inline: auto;
-  }
-  h1 { font-size: 1.1rem; text-align: center; color: var(--muted); font-weight: 600; margin: 0 0 12px; letter-spacing: .05em; text-transform: uppercase; }
-  h2 { font-size: 1rem; margin: 0 0 12px; }
-  .card { background: var(--card); border-radius: 16px; padding: 16px; margin-bottom: 16px; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+    --bg: #0e1116; --surface: #171b22; --line: #2a303b; --fg: #eef0f3; --muted: #9aa3b2;
+    --old: #ff6b5e; --old-soft: #3a1f1d; --future: #3fd3a6; --future-soft: #173229; --accent: #8fa8ff;
+    --chart-old: #f2584a; --chart-future: #22a982; --grid: #232833;
+    --board: #05070a; --board-fg: #f3f4f6; --board-muted: #8a93a3; --chip: #161a22; color-scheme: dark; } }
+  :root[data-theme="dark"] {
+    --bg: #0e1116; --surface: #171b22; --line: #2a303b; --fg: #eef0f3; --muted: #9aa3b2;
+    --old: #ff6b5e; --old-soft: #3a1f1d; --future: #3fd3a6; --future-soft: #173229; --accent: #8fa8ff;
+    --chart-old: #f2584a; --chart-future: #22a982; --grid: #232833;
+    --board: #05070a; --board-fg: #f3f4f6; --board-muted: #8a93a3; --chip: #161a22; color-scheme: dark; }
 
-  .board { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; text-align: center; }
-  .side .label { font-size: .9rem; color: var(--muted); margin-bottom: 4px; }
-  .side .score { font-size: 4rem; font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums; }
-  .old .score { color: var(--old); }
-  .future .score { color: var(--future); }
-  .dash { font-size: 3rem; color: var(--muted); padding: 0 8px; }
-  .lead { text-align: center; margin-top: 10px; color: var(--muted); font-size: .9rem; }
+  * { box-sizing: border-box; }
+  body { background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 15px; }
+  main { max-width: 540px; margin: 0 auto; padding-block: 16px 40px;
+    padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+    display: flex; flex-direction: column; gap: 14px; }
+  button { font: inherit; }
+  h2 { font-size: 1rem; margin: 0; text-wrap: balance; }
+  .muted { color: var(--muted); }
 
-  .progress { height: 8px; background: var(--line); border-radius: 99px; overflow: hidden; margin-bottom: 12px; }
-  .progress div { height: 100%; background: var(--future); width: 0; transition: width .2s; }
-  .counts { display: flex; justify-content: space-between; font-size: .85rem; color: var(--muted); margin-bottom: 8px; }
+  /* scorebord */
+  .board { background: var(--board); color: var(--board-fg); border-radius: 18px; padding: 16px 14px 14px; }
+  .teams { display: grid; grid-template-columns: 1fr auto 1fr; align-items: end; text-align: center; }
+  .team-name { font-size: .76rem; text-transform: uppercase; letter-spacing: .08em; color: var(--board-muted); margin-bottom: 4px; }
+  .score { font-family: var(--display); font-weight: 900; font-size: clamp(4.2rem, 22vw, 6.2rem); line-height: .9; font-variant-numeric: tabular-nums; }
+  .old .score { color: var(--old); } .future .score { color: var(--future); }
+  .sep { font-family: var(--display); font-size: 3.2rem; color: var(--board-muted); padding: 0 6px 8px; }
+  .status { margin-top: 10px; text-align: center; font-size: .9rem; color: var(--board-muted); }
+  .chips { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 12px; }
+  .chip { background: var(--chip); border-radius: 10px; padding: 8px 6px; text-align: center; min-width: 0; }
+  .chip b { display: block; font-family: var(--display); font-size: 1.45rem; font-weight: 900; font-variant-numeric: tabular-nums; line-height: 1.1; }
+  .chip span { font-size: .7rem; color: var(--board-muted); text-transform: uppercase; letter-spacing: .06em; }
 
-  ul { list-style: none; padding: 0; margin: 0; }
-  li { display: flex; align-items: center; gap: 12px; padding: 12px 4px; border-bottom: 1px solid var(--line); }
-  li:last-child { border-bottom: 0; }
-  li label { flex: 1; display: flex; align-items: center; gap: 12px; cursor: pointer; font-size: 1.05rem; }
-  li input[type=checkbox] { width: 26px; height: 26px; accent-color: var(--future); flex: none; }
-  li.done span { color: var(--muted); text-decoration: line-through; }
-  .del { background: none; border: 0; color: var(--old); font-size: 1.3rem; padding: 4px 8px; display: none; }
-  body.editing .del { display: block; }
-  .empty { color: var(--muted); text-align: center; padding: 12px 0; }
+  /* tabs */
+  .tabs { display: grid; grid-template-columns: 1fr 1fr; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 4px; gap: 4px; }
+  .tab { border: 0; background: none; color: var(--muted); padding: 10px; border-radius: 9px; font-weight: 700; cursor: pointer; }
+  .tab[aria-selected="true"] { background: var(--fg); color: var(--bg); }
+
+  .panel { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 16px; }
+  .panel-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 10px; }
+  .meta { display: flex; justify-content: space-between; font-size: .82rem; color: var(--muted); margin-bottom: 6px; font-variant-numeric: tabular-nums; }
+  .bar { height: 8px; background: var(--line); border-radius: 99px; overflow: hidden; margin-bottom: 6px; }
+  .bar span { display: block; height: 100%; width: 0; background: var(--future); transition: width .2s; }
+
+  ul { list-style: none; margin: 0; padding: 0; }
+  .task { border-bottom: 1px solid var(--line); }
+  .task:last-child { border-bottom: 0; }
+  .task-row { display: flex; align-items: center; gap: 6px; }
+  .task label { flex: 1; min-width: 0; display: flex; align-items: center; gap: 12px; padding: 12px 2px; cursor: pointer; font-size: 1.02rem; overflow-wrap: anywhere; }
+  .task input[type=checkbox] { width: 24px; height: 24px; accent-color: var(--future); flex: none; margin: 0; }
+  .task.done .txt { color: var(--muted); text-decoration: line-through; }
+  .badge { font-size: .7rem; font-weight: 700; padding: 2px 7px; border-radius: 99px; background: var(--bg); color: var(--muted); border: 1px solid var(--line); white-space: nowrap; margin-left: 6px; }
+  .badge.x2 { background: var(--old-soft); color: var(--old); border-color: transparent; }
+  .badge.money { background: var(--future-soft); color: var(--future); border-color: transparent; }
+  .icon-btn { display: none; background: var(--bg); border: 1px solid var(--line); color: var(--fg); border-radius: 8px; width: 34px; height: 34px; cursor: pointer; flex: none; }
+  .icon-btn:disabled { opacity: .35; }
+  .editing .icon-btn { display: inline-grid; place-items: center; }
+  .editing .task label { cursor: default; }
+  .settings { display: flex; flex-direction: column; gap: 10px; padding: 4px 2px 14px; }
+  .settings .lbl { font-size: .8rem; color: var(--muted); }
+  .days { display: flex; gap: 4px; flex-wrap: wrap; }
+  .day { border: 1px solid var(--line); background: var(--bg); color: var(--muted); border-radius: 8px; padding: 6px 0; width: 40px; font-size: .8rem; font-weight: 700; cursor: pointer; }
+  .day[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+  .field { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .field input.amount, .add input, textarea { padding: 10px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg); color: var(--fg); font: inherit; }
+  .field input.amount { width: 110px; }
+  .field input[type=checkbox] { width: 20px; height: 20px; accent-color: var(--old); }
+  .btn-del { align-self: flex-start; background: none; border: 1px solid var(--old); color: var(--old); border-radius: 10px; padding: 8px 12px; font-weight: 700; cursor: pointer; }
+  .empty { color: var(--muted); padding: 12px 2px; font-size: .92rem; }
+  .notToday { font-size: .82rem; color: var(--muted); margin: 10px 0 0; }
 
   .add { display: none; gap: 8px; margin-top: 12px; }
-  body.editing .add { display: flex; }
-  .add input { flex: 1; min-width: 0; padding: 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg); color: var(--text); font-size: 1rem; }
+  .editing .add { display: flex; }
+  .add input { flex: 1; min-width: 0; }
+  textarea { width: 100%; min-height: 80px; resize: vertical; }
 
-  button.btn { border: 0; border-radius: 12px; padding: 14px 16px; font-size: 1rem; font-weight: 700; cursor: pointer; }
-  .btn.primary { background: var(--accent); color: #0b1220; width: 100%; }
-  .btn.small { padding: 10px 14px; font-size: .9rem; background: var(--line); color: var(--text); }
-  .row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .btn { border: 0; border-radius: 12px; padding: 12px 16px; font-weight: 700; cursor: pointer; }
+  .btn:focus-visible, .tab:focus-visible, .icon-btn:focus-visible, .day:focus-visible, input:focus-visible, textarea:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+  .btn-quiet { background: var(--bg); color: var(--fg); border: 1px solid var(--line); padding: 9px 14px; font-size: .88rem; }
+  .btn-main { width: 100%; background: var(--fg); color: var(--bg); padding: 16px; font-size: 1.05rem; }
+  .btn-main:disabled { opacity: .45; cursor: default; }
+  .btn-yes { background: var(--accent); color: var(--surface); }
+  .verdict { display: flex; flex-direction: column; gap: 12px; }
+  .verdict p { margin: 0; font-size: .95rem; }
+  .outcome { font-family: var(--display); font-weight: 900; font-size: 1.7rem; }
+  .outcome.old { color: var(--old); } .outcome.future { color: var(--future); } .outcome.draw { color: var(--muted); }
+  .row { display: flex; gap: 8px; } .row .btn { flex: 1; }
+  .rules { font-size: .82rem; color: var(--muted); margin: 10px 0 0; line-height: 1.5; }
 
-  .history li { font-size: .9rem; justify-content: space-between; }
-  .tag { font-weight: 700; padding: 2px 8px; border-radius: 99px; font-size: .8rem; }
-  .tag.old { background: rgba(248,113,113,.15); color: var(--old); }
-  .tag.future { background: rgba(52,211,153,.15); color: var(--future); }
-  .tag.draw { background: var(--line); color: var(--muted); }
-  .footer { display: flex; gap: 8px; justify-content: center; }
+  /* overzicht */
+  .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .stat { background: var(--bg); border-radius: 12px; padding: 12px; min-width: 0; }
+  .stat b { display: block; font-family: var(--display); font-weight: 900; font-size: 1.8rem; font-variant-numeric: tabular-nums; line-height: 1.1; }
+  .stat span { font-size: .78rem; color: var(--muted); }
+  .chart-wrap { position: relative; }
+  .chart-wrap svg { display: block; width: 100%; height: auto; touch-action: pan-y; }
+  .legend { display: flex; gap: 14px; font-size: .82rem; color: var(--muted); margin-bottom: 8px; flex-wrap: wrap; }
+  .legend i { display: inline-block; width: 14px; height: 3px; border-radius: 2px; vertical-align: middle; margin-right: 6px; }
+  .tip { position: absolute; pointer-events: none; background: var(--board); color: var(--board-fg); font-size: .78rem; padding: 6px 9px; border-radius: 8px; white-space: nowrap; transform: translate(-50%, -110%); font-variant-numeric: tabular-nums; }
 
-  .toast { position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom)); transform: translateX(-50%) translateY(150%);
-    background: var(--card); border: 1px solid var(--line); padding: 14px 18px; border-radius: 14px; font-weight: 700; transition: transform .25s; max-width: calc(100% - 32px); text-align: center; }
-  .toast.show { transform: translateX(-50%) translateY(0); }
+  .cal-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+  .cal { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; }
+  .cal .dn { font-size: .7rem; color: var(--muted); font-weight: 700; padding-bottom: 2px; }
+  .cal .cell { aspect-ratio: 1; max-width: 100%; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; font-size: .82rem; font-variant-numeric: tabular-nums; background: var(--bg); }
+  .cal .cell.today { outline: 2px solid var(--fg); outline-offset: -2px; }
+  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; flex: none; }
+  .dot.old { background: var(--old); } .dot.future { background: var(--future); } .dot.draw { background: var(--muted); }
+  .cal .cell.has-old { background: var(--old-soft); } .cal .cell.has-future { background: var(--future-soft); }
+  .cal-legend { display: flex; gap: 12px; flex-wrap: wrap; font-size: .78rem; color: var(--muted); margin-top: 8px; }
+  .cal-legend span { display: inline-flex; align-items: center; gap: 5px; }
+
+  .tstat { padding: 9px 0; border-bottom: 1px solid var(--line); }
+  .tstat:last-child { border-bottom: 0; }
+  .tstat-top { display: flex; justify-content: space-between; gap: 8px; font-size: .92rem; margin-bottom: 5px; }
+  .tstat-top span:last-child { color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .tbar { height: 6px; background: var(--line); border-radius: 99px; overflow: hidden; }
+  .tbar span { display: block; height: 100%; background: var(--future); border-radius: 99px; }
+
+  .hist li { padding: 10px 0; border-bottom: 1px solid var(--line); font-size: .9rem; }
+  .hist li:last-child { border-bottom: 0; }
+  .hist .top { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-variant-numeric: tabular-nums; }
+  .hist .noteline { color: var(--muted); font-size: .84rem; margin-top: 4px; overflow-wrap: anywhere; }
+  .pill { font-size: .75rem; font-weight: 700; padding: 3px 9px; border-radius: 99px; white-space: nowrap; }
+  .pill.old { background: var(--old-soft); color: var(--old); }
+  .pill.future { background: var(--future-soft); color: var(--future); }
+  .pill.draw { background: var(--bg); color: var(--muted); border: 1px solid var(--line); }
+
+  .coach-text { white-space: pre-wrap; line-height: 1.55; margin: 10px 0 0; font-size: .95rem; }
+  .tools { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+  .note { text-align: center; font-size: .8rem; color: var(--muted); margin: 0; }
+  .toast { position: fixed; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 160%);
+    background: var(--board); color: var(--board-fg); padding: 12px 18px; border-radius: 12px; font-weight: 600; transition: transform .25s; max-width: calc(100% - 32px); text-align: center; z-index: 30; }
+  .toast.show { transform: translate(-50%, 0); }
+  #confetti { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 20; }
+  @media (prefers-reduced-motion: reduce) { .toast, .bar span { transition: none; } }
 </style>
 </head>
 <body>
-  <h1>Oude mij vs Toekomstige mij</h1>
-
-  <section class="card">
-    <div class="board">
-      <div class="side old"><div class="label">Oude mij</div><div class="score" id="scoreOld">0</div></div>
-      <div class="dash">–</div>
-      <div class="side future"><div class="label">Toekomstige mij</div><div class="score" id="scoreFuture">0</div></div>
+<canvas id="confetti" hidden></canvas>
+<main>
+  <section class="board" aria-label="Scorebord">
+    <div class="teams">
+      <div class="old"><div class="team-name">Oude mij</div><div class="score" id="scoreOld">0</div></div>
+      <div class="sep">–</div>
+      <div class="future"><div class="team-name">Toekomstige mij</div><div class="score" id="scoreFuture">0</div></div>
     </div>
-    <div class="lead" id="lead"></div>
-  </section>
-
-  <section class="card">
-    <div class="row">
-      <h2>Checklist van vandaag</h2>
-      <button class="btn small" id="editBtn">Bewerken</button>
+    <div class="status" id="lead">Gelijkspel</div>
+    <div class="chips">
+      <div class="chip"><b id="streak">0</b><span>Reeks 🔥</span></div>
+      <div class="chip"><b id="week">0–0</b><span>Deze week</span></div>
+      <div class="chip"><b id="saved">€0</b><span>Gespaard</span></div>
     </div>
-    <div class="counts"><span id="doneCount">0 gedaan</span><span id="todoCount">0 niet gedaan</span></div>
-    <div class="progress"><div id="bar"></div></div>
-    <ul id="list"></ul>
-    <form class="add" id="addForm">
-      <input id="newItem" placeholder="Nieuwe taak…" autocomplete="off">
-      <button class="btn small" type="submit">Toevoegen</button>
-    </form>
   </section>
 
-  <section class="card">
-    <button class="btn primary" id="finishBtn">Dag afronden</button>
-  </section>
-
-  <section class="card">
-    <h2>Geschiedenis</h2>
-    <ul class="history" id="history"></ul>
-  </section>
-
-  <div class="footer">
-    <button class="btn small" id="undoBtn">Laatste ongedaan maken</button>
-    <button class="btn small" id="resetBtn">Score resetten</button>
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" id="tab-vandaag" aria-selected="true" type="button">Vandaag</button>
+    <button class="tab" role="tab" id="tab-overzicht" aria-selected="false" type="button">Overzicht</button>
   </div>
 
-  <div class="toast" id="toast"></div>
+  <!-- VANDAAG -->
+  <div id="view-vandaag" style="display:flex;flex-direction:column;gap:14px">
+    <section class="panel" id="listPanel">
+      <div class="panel-head">
+        <h2 id="todayTitle">Checklist van vandaag</h2>
+        <button class="btn btn-quiet" id="editBtn" type="button">Bewerken</button>
+      </div>
+      <div class="meta"><span id="doneCount">0 gedaan</span><span id="todoCount">0 niet gedaan</span></div>
+      <div class="bar"><span id="bar"></span></div>
+      <ul id="list"><li class="empty">Checklist laden…</li></ul>
+      <p class="notToday" id="notToday" hidden></p>
+      <form class="add" id="addForm">
+        <input id="newItem" placeholder="Nieuwe taak…" autocomplete="off" aria-label="Nieuwe taak">
+        <button class="btn btn-quiet" type="submit">Toevoegen</button>
+      </form>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head"><h2><label for="dayNote">Notitie van vandaag</label></h2></div>
+      <textarea id="dayNote" placeholder="Hoe ging je dag?"></textarea>
+    </section>
+
+    <section class="panel">
+      <div id="finishArea"></div>
+      <p class="rules">Alles gedaan: punt voor Toekomstige mij. Meer niet gedaan dan wel: punt voor Oude mij. Daartussenin: gelijkspel. Taken met ×2 tellen dubbel. Een hele week (ma t/m zo) gewonnen: bonuspunt.</p>
+    </section>
+
+    <div class="tools" id="tools">
+      <button class="btn btn-quiet" id="undoBtn" type="button">Laatste dag terugdraaien</button>
+      <button class="btn btn-quiet" id="resetBtn" type="button">Score op 0 zetten</button>
+    </div>
+  </div>
+
+  <!-- OVERZICHT -->
+  <div id="view-overzicht" style="display:none;flex-direction:column;gap:14px">
+    <section class="panel">
+      <div class="panel-head"><h2>Records</h2></div>
+      <div class="stats">
+        <div class="stat"><b id="recStreak">0</b><span>Langste reeks</span></div>
+        <div class="stat"><b id="recWeek">0</b><span id="recWeekLbl">Beste week (punten)</span></div>
+        <div class="stat"><b id="recDays">0</b><span>Dagen gespeeld</span></div>
+        <div class="stat"><b id="recPct">0%</b><span>Dagen gewonnen</span></div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head"><h2>Verloop van de stand</h2></div>
+      <div class="legend"><span><i style="background:var(--chart-future)"></i>Toekomstige mij</span><span><i style="background:var(--chart-old)"></i>Oude mij</span></div>
+      <div class="chart-wrap" id="chartWrap"></div>
+    </section>
+
+    <section class="panel">
+      <div class="cal-head">
+        <button class="btn btn-quiet" id="calPrev" type="button" aria-label="Vorige maand">‹</button>
+        <h2 id="calTitle">Maand</h2>
+        <button class="btn btn-quiet" id="calNext" type="button" aria-label="Volgende maand">›</button>
+      </div>
+      <div class="cal" id="cal"></div>
+      <div class="cal-legend"><span><i class="dot future"></i>Toekomstige mij</span><span><i class="dot old"></i>Oude mij</span><span><i class="dot draw"></i>Gelijkspel</span></div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head"><h2>Per taak</h2></div>
+      <ul id="taskStats"></ul>
+    </section>
+
+    <section class="panel" id="coachPanel" hidden>
+      <div class="panel-head"><h2>Coach</h2><button class="btn btn-quiet" id="coachBtn" type="button">Vraag een tip</button></div>
+      <p class="muted" id="coachHint" style="margin:0;font-size:.88rem">Claude bekijkt je resultaten en geeft je een tip.</p>
+      <p class="coach-text" id="coachText" hidden></p>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head"><h2>Gespeelde dagen</h2></div>
+      <ul class="hist" id="history"></ul>
+    </section>
+  </div>
+
+  <p class="note" id="syncNote"></p>
+</main>
+<div class="toast" id="toast" role="status"></div>
 
 <script>
-// ====== HIER KUN JE LATER JE EIGEN CHECKLIST ZETTEN ======
-// (Je kunt taken ook gewoon in de app toevoegen/verwijderen via "Bewerken".)
-const STANDAARD_TAKEN = [
-  "Gym",
-  "Niet roken",
-  "Hhw",
-  "Goonen",
-  "Opstaan zonder snooze",
-  "Voor 23:00 in bed",
-  "Geen onnodige aankopen",
-  "€2,50 sparen",
-  "Aan mijn ESP32-project werken"
-];
-// ==========================================================
-
-const KEY = "scorebord-oud-vs-toekomst";
 const $ = id => document.getElementById(id);
+const LOCAL_KEY = "scorebord-oud-vs-toekomst";
+const DAYS = ["Zo","Ma","Di","Wo","Do","Vr","Za"];
+const DAY_ORDER = [1,2,3,4,5,6,0];
+const LABEL = { old: "Punt voor Oude mij", future: "Punt voor Toekomstige mij", draw: "Gelijkspel" };
+let state = { old: 0, future: 0, saved: 0, note: "", items: [], history: [] };
+let db = null, ref = null, sample = null, canWrite = true, loaded = false;
+let pending = null, openSettings = null, calMonth = null;
 
-function load() {
-  try {
-    const s = JSON.parse(localStorage.getItem(KEY));
-    if (s && Array.isArray(s.items)) return s;
-  } catch (e) {}
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+const euro = n => "€" + (Math.round(n * 100) / 100).toLocaleString("nl-NL", { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 });
+const pad = n => String(n).padStart(2, "0");
+const isoOf = d => d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate());
+const dateOf = iso => new Date(iso + "T12:00:00");
+function weekKey(iso) { const d = dateOf(iso); d.setDate(d.getDate() - (d.getDay() + 6) % 7); return isoOf(d); }
+const newId = () => "t" + Math.random().toString(36).slice(2, 9);
+
+function normalize(d) {
+  d = d || {};
   return {
-    old: 0, future: 0,
-    items: STANDAARD_TAKEN.map(t => ({ text: t, done: false })),
-    history: []
+    old: Number(d.old) || 0, future: Number(d.future) || 0, saved: Number(d.saved) || 0,
+    note: typeof d.note === "string" ? d.note : "",
+    items: Array.isArray(d.items) ? d.items.map(i => ({
+      id: i.id || newId(), text: String(i.text || ""), done: !!i.done,
+      weight: i.weight === 2 ? 2 : 1,
+      days: Array.isArray(i.days) && i.days.length && i.days.length < 7 ? i.days.filter(x => x >= 0 && x <= 6) : null,
+      amount: Number(i.amount) > 0 ? Number(i.amount) : 0
+    })) : [],
+    history: Array.isArray(d.history) ? d.history.slice(-400) : []
   };
 }
-let state = load();
-function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+const clone = s => JSON.parse(JSON.stringify(s));
 
+// ---------- opslaan ----------
+let writing = false, queued = false;
+async function save() {
+  try { localStorage.setItem(LOCAL_KEY, JSON.stringify(state)); } catch (e) {}
+  if (!ref || !canWrite) return;
+  if (writing) { queued = true; return; }
+  writing = true;
+  try { await ref.set(clone(state)); }
+  catch (e) {
+    if (e && e.code === "invalid_argument") { canWrite = false; render(); }
+    else toast("Opslaan lukte niet, probeer het zo opnieuw");
+  }
+  writing = false;
+  if (queued) { queued = false; save(); }
+}
+function commit() { render(); save(); }
+
+// ---------- berekeningen ----------
+const todayDow = () => new Date().getDay();
+const activeItems = () => state.items.filter(i => !i.days || i.days.includes(todayDow()));
+function tally(items) {
+  let doneW = 0, totalW = 0;
+  items.forEach(i => { totalW += i.weight; if (i.done) doneW += i.weight; });
+  return { doneW, totalW, done: items.filter(i => i.done).length, total: items.length };
+}
+function outcomeFor(doneW, totalW) {
+  if (totalW && doneW === totalW) return "future";
+  if (totalW - doneW > doneW) return "old";
+  return "draw";
+}
+function streaks() {
+  let cur = 0, best = 0, run = 0;
+  state.history.forEach(h => { run = h.winner === "future" ? run + 1 : 0; best = Math.max(best, run); });
+  for (let i = state.history.length - 1; i >= 0 && state.history[i].winner === "future"; i--) cur++;
+  return { cur, best };
+}
+function weekScores() {
+  const weeks = {};
+  state.history.forEach(h => {
+    if (!h.iso) return;
+    const k = weekKey(h.iso);
+    weeks[k] = weeks[k] || { old: 0, future: 0 };
+    if (h.winner === "future") weeks[k].future++;
+    if (h.winner === "old") weeks[k].old++;
+    if (h.bonus) weeks[k].future += h.bonus;
+  });
+  return weeks;
+}
+function maybeBonus(entry) {
+  const wk = weekKey(entry.iso);
+  const inWeek = state.history.filter(h => h.iso && weekKey(h.iso) === wk);
+  if (inWeek.some(h => h.bonus)) return 0;
+  const dates = new Set(inWeek.map(h => h.iso));
+  return dates.size === 7 && inWeek.every(h => h.winner === "future") ? 1 : 0;
+}
+
+// ---------- weergave ----------
 function render() {
   $("scoreOld").textContent = state.old;
   $("scoreFuture").textContent = state.future;
-  $("lead").textContent =
-    state.future > state.old ? "Toekomstige mij staat voor 💪" :
-    state.old > state.future ? "Oude mij staat voor – tijd om terug te slaan!" :
-    "Gelijkspel";
+  $("lead").textContent = state.future > state.old ? "Toekomstige mij staat voor"
+    : state.old > state.future ? "Oude mij staat voor" : "Gelijkspel";
+  const st = streaks();
+  $("streak").textContent = st.cur;
+  const wk = weekScores()[weekKey(isoOf(new Date()))] || { old: 0, future: 0 };
+  $("week").textContent = wk.old + "–" + wk.future;
+  $("saved").textContent = euro(state.saved);
 
+  $("editBtn").hidden = !canWrite;
+  $("tools").hidden = !canWrite;
+  $("dayNote").disabled = !canWrite;
+  if (document.activeElement !== $("dayNote")) $("dayNote").value = state.note;
+
+  renderList();
+  renderFinish();
+  renderOverview();
+  $("syncNote").textContent = !canWrite ? "Je bekijkt deze stand alleen; wijzigen kan alleen de eigenaar."
+    : ref ? "Je stand wordt opgeslagen in je account." : "Je stand wordt alleen op dit apparaat bewaard.";
+}
+
+function renderList() {
+  const editing = $("listPanel").classList.contains("editing");
   const list = $("list");
-  list.innerHTML = "";
-  if (!state.items.length) list.innerHTML = '<li class="empty">Nog geen taken. Tik op “Bewerken” om ze toe te voegen.</li>';
-  state.items.forEach((it, i) => {
+  list.replaceChildren();
+  $("todayTitle").textContent = "Checklist van " + new Date().toLocaleDateString("nl-NL", { weekday: "long" });
+  if (!loaded) { list.innerHTML = '<li class="empty">Checklist laden…</li>'; return; }
+  const today = todayDow();
+  const shown = editing ? state.items : activeItems();
+  if (!state.items.length) list.innerHTML = '<li class="empty">Nog geen taken. Tik op “Bewerken” en voeg je eerste taak toe.</li>';
+  else if (!shown.length) list.innerHTML = '<li class="empty">Vandaag staan er geen taken op je lijst.</li>';
+
+  shown.forEach(it => {
+    const idx = state.items.indexOf(it);
     const li = document.createElement("li");
-    if (it.done) li.className = "done";
-    li.innerHTML = `<label><input type="checkbox" ${it.done ? "checked" : ""}><span></span></label><button class="del" aria-label="Verwijder">✕</button>`;
-    li.querySelector("span").textContent = it.text;
-    li.querySelector("input").onchange = e => { it.done = e.target.checked; save(); render(); };
-    li.querySelector(".del").onclick = () => { state.items.splice(i, 1); save(); render(); };
+    li.className = "task" + (it.done ? " done" : "");
+    const row = document.createElement("div"); row.className = "task-row";
+    const label = document.createElement("label");
+    const cb = document.createElement("input");
+    cb.type = "checkbox"; cb.id = "task-" + it.id; cb.checked = it.done; cb.disabled = !canWrite || editing;
+    cb.addEventListener("change", () => { it.done = cb.checked; pending = null; commit(); });
+    const span = document.createElement("span"); span.className = "txt"; span.textContent = it.text;
+    label.append(cb, span);
+    if (it.weight === 2) { const b = document.createElement("span"); b.className = "badge x2"; b.textContent = "×2"; span.appendChild(b); }
+    if (it.amount) { const b = document.createElement("span"); b.className = "badge money"; b.textContent = "+" + euro(it.amount); span.appendChild(b); }
+    if (editing && it.days) { const b = document.createElement("span"); b.className = "badge"; b.textContent = DAY_ORDER.filter(d => it.days.includes(d)).map(d => DAYS[d]).join(" "); span.appendChild(b); }
+    row.appendChild(label);
+    const mk = (txt, aria, fn, dis) => { const b = document.createElement("button"); b.type = "button"; b.className = "icon-btn"; b.textContent = txt; b.setAttribute("aria-label", aria); b.disabled = !!dis; b.onclick = fn; return b; };
+    row.append(
+      mk("▲", "Omhoog: " + it.text, () => { state.items.splice(idx, 1); state.items.splice(idx - 1, 0, it); commit(); }, idx === 0),
+      mk("▼", "Omlaag: " + it.text, () => { state.items.splice(idx, 1); state.items.splice(idx + 1, 0, it); commit(); }, idx === state.items.length - 1),
+      mk("⚙", "Instellingen: " + it.text, () => { openSettings = openSettings === it.id ? null : it.id; render(); })
+    );
+    li.appendChild(row);
+
+    if (editing && openSettings === it.id) {
+      const s = document.createElement("div"); s.className = "settings";
+      s.innerHTML = `
+        <label class="field"><input type="checkbox" id="w-${it.id}" ${it.weight === 2 ? "checked" : ""}> Telt dubbel (×2)</label>
+        <div><div class="lbl">Op welke dagen? (niets gekozen = elke dag)</div><div class="days"></div></div>
+        <div class="field"><label class="lbl" for="a-${it.id}">Bedrag sparen bij afvinken (€)</label><input type="text" class="amount" id="a-${it.id}" inputmode="decimal" value="${it.amount ? String(it.amount).replace(".", ",") : ""}" placeholder="0,00"></div>
+        <button type="button" class="btn-del">Taak verwijderen</button>`;
+      s.querySelector("#w-" + it.id).onchange = e => { it.weight = e.target.checked ? 2 : 1; commit(); };
+      const days = s.querySelector(".days");
+      DAY_ORDER.forEach(d => {
+        const b = document.createElement("button"); b.type = "button"; b.className = "day"; b.textContent = DAYS[d];
+        b.setAttribute("aria-pressed", it.days && it.days.includes(d) ? "true" : "false");
+        b.onclick = () => {
+          let set = new Set(it.days || []);
+          set.has(d) ? set.delete(d) : set.add(d);
+          it.days = set.size && set.size < 7 ? [...set].sort() : null;
+          commit();
+        };
+        days.appendChild(b);
+      });
+      s.querySelector("#a-" + it.id).onchange = e => { const v = parseFloat(String(e.target.value).replace(",", ".")); it.amount = v > 0 ? Math.round(v * 100) / 100 : 0; commit(); };
+      s.querySelector(".btn-del").onclick = () => { state.items.splice(idx, 1); openSettings = null; commit(); };
+      li.appendChild(s);
+    }
     list.appendChild(li);
   });
 
-  const done = state.items.filter(i => i.done).length;
-  const total = state.items.length;
-  $("doneCount").textContent = `${done} gedaan`;
-  $("todoCount").textContent = `${total - done} niet gedaan`;
-  $("bar").style.width = total ? (done / total * 100) + "%" : "0";
+  const off = state.items.filter(i => i.days && !i.days.includes(today));
+  $("notToday").hidden = editing || !off.length;
+  $("notToday").textContent = "Niet vandaag: " + off.map(i => i.text).join(", ");
 
-  const h = $("history");
-  h.innerHTML = "";
-  if (!state.history.length) h.innerHTML = '<li class="empty">Nog geen dagen afgerond.</li>';
-  state.history.slice().reverse().slice(0, 30).forEach(r => {
-    const li = document.createElement("li");
-    const label = r.winner === "old" ? "Oude mij +1" : r.winner === "future" ? "Toekomstige mij +1" : "Gelijkspel";
-    li.innerHTML = `<span>${r.date} · ${r.done}/${r.total}</span><span class="tag ${r.winner}">${label}</span>`;
-    h.appendChild(li);
-  });
+  const t = tally(activeItems());
+  $("doneCount").textContent = t.done + " gedaan";
+  $("todoCount").textContent = (t.total - t.done) + " niet gedaan";
+  $("bar").style.width = t.totalW ? (t.doneW / t.totalW * 100) + "%" : "0";
 }
+
+function renderFinish() {
+  const area = $("finishArea");
+  area.replaceChildren();
+  const items = activeItems(), t = tally(items);
+  const todayIso = isoOf(new Date());
+  const already = state.history.some(h => h.iso === todayIso);
+  if (pending === "finish") {
+    const w = outcomeFor(t.doneW, t.totalW);
+    const money = items.filter(i => i.done && i.amount).reduce((a, i) => a + i.amount, 0);
+    area.innerHTML = `<div class="verdict"><p>${t.done} van de ${t.total} taken gedaan${t.totalW !== t.total ? ` (${t.doneW} van ${t.totalW} punten met ×2)` : ""}.${money ? " Je spaart vandaag " + euro(money) + "." : ""}${already ? " <b>Let op: vandaag is al een keer afgerond.</b>" : ""}</p>
+      <div class="outcome ${w}">${LABEL[w]}</div>
+      <div class="row"><button class="btn btn-quiet" id="cancelBtn" type="button">Annuleren</button>
+      <button class="btn btn-yes" id="confirmBtn" type="button">Bevestigen</button></div></div>`;
+    $("cancelBtn").onclick = () => { pending = null; render(); };
+    $("confirmBtn").onclick = finishDay;
+  } else if (pending === "reset") {
+    area.innerHTML = `<div class="verdict"><p>Score, spaarpot en gespeelde dagen op 0 zetten? Je checklist blijft staan.</p>
+      <div class="row"><button class="btn btn-quiet" id="cancelBtn" type="button">Annuleren</button>
+      <button class="btn btn-yes" id="confirmBtn" type="button">Op 0 zetten</button></div></div>`;
+    $("cancelBtn").onclick = () => { pending = null; render(); };
+    $("confirmBtn").onclick = () => { state.old = 0; state.future = 0; state.saved = 0; state.history = []; pending = null; commit(); toast("Alles staat weer op 0"); };
+  } else {
+    const b = document.createElement("button");
+    b.className = "btn btn-main"; b.id = "finishBtn"; b.type = "button";
+    b.textContent = already ? "Dag afronden (vandaag al gedaan)" : "Dag afronden";
+    b.disabled = !canWrite || !t.total || !loaded;
+    b.onclick = () => { pending = "finish"; render(); };
+    area.appendChild(b);
+  }
+}
+
+function finishDay() {
+  const items = activeItems(), t = tally(items);
+  const w = outcomeFor(t.doneW, t.totalW);
+  const money = items.filter(i => i.done && i.amount).reduce((a, i) => a + i.amount, 0);
+  const now = new Date();
+  const entry = {
+    iso: isoOf(now),
+    date: now.toLocaleDateString("nl-NL", { weekday: "short", day: "numeric", month: "short" }),
+    done: t.done, total: t.total, doneW: t.doneW, totalW: t.totalW, winner: w, bonus: 0,
+    saved: Math.round(money * 100) / 100, note: state.note.trim(),
+    tasks: items.map(i => ({ text: i.text, done: i.done }))
+  };
+  if (w === "future") state.future++;
+  if (w === "old") state.old++;
+  state.saved = Math.round((state.saved + money) * 100) / 100;
+  state.history.push(entry);
+  entry.bonus = maybeBonus(entry);
+  if (entry.bonus) state.future += entry.bonus;
+  state.items.forEach(i => i.done = false);
+  state.note = ""; $("dayNote").value = "";
+  pending = null;
+  commit();
+  if (w === "future") confetti();
+  toast(entry.bonus ? "🏆 Hele week gewonnen! Bonuspunt voor Toekomstige mij" : LABEL[w] + (money ? " · " + euro(money) + " gespaard" : ""));
+}
+
+// ---------- overzicht ----------
+function renderOverview() {
+  const st = streaks(), weeks = weekScores(), h = state.history;
+  $("recStreak").textContent = st.best;
+  let bestK = null, bestV = 0;
+  Object.entries(weeks).forEach(([k, v]) => { if (v.future > bestV) { bestV = v.future; bestK = k; } });
+  $("recWeek").textContent = bestV;
+  $("recWeekLbl").textContent = bestK ? "Beste week (vanaf " + dateOf(bestK).toLocaleDateString("nl-NL", { day: "numeric", month: "short" }) + ")" : "Beste week (punten)";
+  $("recDays").textContent = h.length;
+  $("recPct").textContent = h.length ? Math.round(h.filter(x => x.winner === "future").length / h.length * 100) + "%" : "0%";
+  renderChart(); renderCal(); renderTaskStats(); renderHistory();
+}
+
+function renderChart() {
+  const wrap = $("chartWrap");
+  const h = state.history;
+  if (h.length < 1) { wrap.innerHTML = '<p class="empty">Rond je eerste dag af om het verloop te zien.</p>'; return; }
+  const pts = [{ old: 0, future: 0, label: "Start" }];
+  let o = 0, f = 0;
+  h.forEach(e => { if (e.winner === "old") o++; if (e.winner === "future") f++; f += e.bonus || 0; pts.push({ old: o, future: f, label: e.date }); });
+  const W = 320, H = 170, L = 26, R = 12, T = 12, B = 24;
+  const max = Math.max(2, ...pts.map(p => Math.max(p.old, p.future)));
+  const step = max <= 5 ? 1 : max <= 12 ? 2 : Math.ceil(max / 5);
+  const top = Math.ceil(max / step) * step;
+  const x = i => L + (pts.length === 1 ? 0 : i * (W - L - R) / (pts.length - 1));
+  const y = v => T + (H - T - B) * (1 - v / top);
+  let grid = "";
+  for (let v = 0; v <= top; v += step) grid += `<line x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}" stroke="var(--grid)" stroke-width="1"/><text x="${L - 6}" y="${y(v) + 4}" text-anchor="end" font-size="10" fill="var(--muted)">${v}</text>`;
+  const path = k => pts.map((p, i) => (i ? "L" : "M") + x(i).toFixed(1) + " " + y(p[k]).toFixed(1)).join(" ");
+  const last = pts.length - 1;
+  wrap.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Stand na elke dag: Toekomstige mij ${pts[last].future}, Oude mij ${pts[last].old}">
+    ${grid}
+    <text x="${L}" y="${H - 6}" font-size="10" fill="var(--muted)">Start</text>
+    <text x="${W - R}" y="${H - 6}" font-size="10" fill="var(--muted)" text-anchor="end">${esc(pts[last].label)}</text>
+    <path d="${path("old")}" fill="none" stroke="var(--chart-old)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+    <path d="${path("future")}" fill="none" stroke="var(--chart-future)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+    <circle cx="${x(last)}" cy="${y(pts[last].old)}" r="4" fill="var(--chart-old)" stroke="var(--surface)" stroke-width="2"/>
+    <circle cx="${x(last)}" cy="${y(pts[last].future)}" r="4" fill="var(--chart-future)" stroke="var(--surface)" stroke-width="2"/>
+    <line id="cross" x1="0" x2="0" y1="${T}" y2="${H - B}" stroke="var(--muted)" stroke-width="1" stroke-dasharray="3 3" visibility="hidden"/>
+    <rect id="hit" x="${L}" y="0" width="${W - L - R}" height="${H}" fill="transparent"/>
+  </svg><div class="tip" id="tip" hidden></div>`;
+  const svg = wrap.querySelector("svg"), tip = $("tip"), cross = svg.querySelector("#cross");
+  const show = ev => {
+    const r = svg.getBoundingClientRect();
+    const sx = (ev.clientX - r.left) / r.width * W;
+    const i = Math.max(0, Math.min(last, Math.round((sx - L) / ((W - L - R) / Math.max(1, last)))));
+    const p = pts[i];
+    cross.setAttribute("x1", x(i)); cross.setAttribute("x2", x(i)); cross.setAttribute("visibility", "visible");
+    tip.hidden = false;
+    tip.textContent = `${p.label}: Oude mij ${p.old} – ${p.future} Toekomstige mij`;
+    const px = x(i) / W * r.width;
+    tip.style.left = Math.max(90, Math.min(r.width - 90, px)) + "px";
+    tip.style.top = (Math.min(y(p.old), y(p.future)) / H * r.height) + "px";
+  };
+  const hide = () => { tip.hidden = true; cross.setAttribute("visibility", "hidden"); };
+  svg.addEventListener("pointermove", show);
+  svg.addEventListener("pointerdown", show);
+  svg.addEventListener("pointerleave", hide);
+}
+
+function renderCal() {
+  const now = new Date();
+  if (!calMonth) calMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+  $("calTitle").textContent = calMonth.toLocaleDateString("nl-NL", { month: "long", year: "numeric" });
+  const byDate = {};
+  state.history.forEach(h => { if (h.iso) byDate[h.iso] = h; });
+  const cal = $("cal");
+  let html = DAY_ORDER.map(d => `<div class="dn">${DAYS[d]}</div>`).join("");
+  const offset = (calMonth.getDay() + 6) % 7;
+  for (let i = 0; i < offset; i++) html += "<div></div>";
+  const dim = new Date(calMonth.getFullYear(), calMonth.getMonth() + 1, 0).getDate();
+  const todayIso = isoOf(now);
+  for (let d = 1; d <= dim; d++) {
+    const iso = isoOf(new Date(calMonth.getFullYear(), calMonth.getMonth(), d));
+    const e = byDate[iso];
+    const cls = "cell" + (iso === todayIso ? " today" : "") + (e && e.winner !== "draw" ? " has-" + e.winner : "");
+    html += `<div class="${cls}" title="${e ? esc(LABEL[e.winner]) : ""}">${d}${e ? `<i class="dot ${e.winner}"></i>` : ""}</div>`;
+  }
+  cal.innerHTML = html;
+}
+
+function renderTaskStats() {
+  const map = {};
+  state.history.forEach(h => (h.tasks || []).forEach(t => {
+    map[t.text] = map[t.text] || { done: 0, total: 0 };
+    map[t.text].total++; if (t.done) map[t.text].done++;
+  }));
+  const rows = Object.entries(map).sort((a, b) => a[1].done / a[1].total - b[1].done / b[1].total);
+  const ul = $("taskStats");
+  if (!rows.length) { ul.innerHTML = '<li class="empty">Na je eerste afgeronde dag zie je hier per taak hoe vaak je hem deed. Moeilijkste taken staan bovenaan.</li>'; return; }
+  ul.innerHTML = rows.map(([txt, v]) => `<li class="tstat"><div class="tstat-top"><span>${esc(txt)}</span><span>${v.done} van ${v.total} dagen</span></div><div class="tbar"><span style="width:${v.done / v.total * 100}%"></span></div></li>`).join("");
+}
+
+function renderHistory() {
+  const ul = $("history");
+  if (!state.history.length) { ul.innerHTML = '<li class="empty">Nog geen dagen afgerond.</li>'; return; }
+  ul.innerHTML = state.history.slice().reverse().slice(0, 60).map(r => {
+    const pill = r.winner === "old" ? "Oude mij +1" : r.winner === "future" ? "Toekomstige mij +" + (1 + (r.bonus || 0)) : "Gelijkspel";
+    return `<li><div class="top"><span>${esc(r.date)} · ${r.done}/${r.total} gedaan${r.saved ? " · " + euro(r.saved) : ""}</span><span class="pill ${r.winner}">${pill}</span></div>${r.note ? `<div class="noteline">${esc(r.note)}</div>` : ""}</li>`;
+  }).join("");
+}
+
+// ---------- coach ----------
+async function askCoach() {
+  if (!sample) return;
+  const btn = $("coachBtn"), out = $("coachText");
+  btn.disabled = true; btn.textContent = "Even denken…";
+  out.hidden = false; out.textContent = "Even denken…";
+  const recent = state.history.slice(-21).map(h => `${h.date}: ${h.done}/${h.total} gedaan, ${LABEL[h.winner]}${h.tasks ? ". Niet gedaan: " + (h.tasks.filter(t => !t.done).map(t => t.text).join(", ") || "niets") : ""}${h.note ? ". Notitie: " + h.note : ""}`).join("\n");
+  const prompt = `Je bent een vriendelijke, eerlijke coach voor een jongere die een spelletje speelt: "Oude mij" tegen "Toekomstige mij". Elke dag vinkt hij taken af. Alles gedaan = punt voor Toekomstige mij, meer niet gedaan dan wel = punt voor Oude mij.
+
+Stand: Oude mij ${state.old} – ${state.future} Toekomstige mij. Huidige winstreeks: ${streaks().cur}. Gespaard: ${euro(state.saved)}.
+Huidige taken: ${state.items.map(i => i.text).join(", ") || "geen"}.
+Laatste dagen:
+${recent || "nog geen dagen afgerond"}
+
+Schrijf in gewoon, kort Nederlands (max 5 zinnen). Benoem één ding dat goed gaat en geef één concrete, haalbare tip voor de taak die het vaakst mislukt. Niet preken, geen opsommingstekens.`;
+  try {
+    const r = await sample(prompt, { modelTier: "quick", onText: ({ text }) => { out.textContent = text; } });
+    out.textContent = r.text;
+  } catch (e) {
+    if (e && e.code === "not_granted") { $("coachPanel").hidden = true; }
+    else out.textContent = e && e.code === "rate_limited" ? "Even te veel vragen. Probeer het over een minuutje opnieuw." : "De coach is nu niet bereikbaar. Probeer het later opnieuw.";
+  }
+  btn.disabled = false; btn.textContent = "Nieuwe tip";
+}
+
+// ---------- confetti ----------
+function confetti() {
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const c = $("confetti"), ctx = c.getContext("2d");
+  c.hidden = false;
+  const dpr = devicePixelRatio || 1;
+  c.width = innerWidth * dpr; c.height = innerHeight * dpr; ctx.scale(dpr, dpr);
+  const css = getComputedStyle(document.documentElement);
+  const cols = ["--future", "--accent", "--old", "--fg"].map(v => css.getPropertyValue(v).trim());
+  const ps = Array.from({ length: 140 }, () => ({
+    x: innerWidth / 2 + (Math.random() - .5) * 80, y: innerHeight * .35,
+    vx: (Math.random() - .5) * 12, vy: -Math.random() * 12 - 4, r: Math.random() * 6 + 4,
+    a: Math.random() * 6, va: (Math.random() - .5) * .3, c: cols[Math.floor(Math.random() * cols.length)]
+  }));
+  const t0 = performance.now();
+  (function frame(t) {
+    ctx.clearRect(0, 0, innerWidth, innerHeight);
+    ps.forEach(p => { p.vy += .35; p.vx *= .99; p.x += p.vx; p.y += p.vy; p.a += p.va;
+      ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.a); ctx.fillStyle = p.c; ctx.fillRect(-p.r / 2, -p.r / 4, p.r, p.r / 2); ctx.restore(); });
+    if (t - t0 < 2200) requestAnimationFrame(frame); else { ctx.clearRect(0, 0, innerWidth, innerHeight); c.hidden = true; }
+  })(t0);
+}
+
+// ---------- knoppen ----------
+function showTab(name) {
+  ["vandaag", "overzicht"].forEach(n => {
+    $("tab-" + n).setAttribute("aria-selected", n === name ? "true" : "false");
+    $("view-" + n).style.display = n === name ? "flex" : "none";
+  });
+  try { localStorage.setItem(LOCAL_KEY + "-tab", name); } catch (e) {}
+}
+$("tab-vandaag").onclick = () => showTab("vandaag");
+$("tab-overzicht").onclick = () => showTab("overzicht");
+$("calPrev").onclick = () => { calMonth = new Date(calMonth.getFullYear(), calMonth.getMonth() - 1, 1); renderCal(); };
+$("calNext").onclick = () => { calMonth = new Date(calMonth.getFullYear(), calMonth.getMonth() + 1, 1); renderCal(); };
+$("coachBtn").onclick = askCoach;
+
+$("undoBtn").onclick = () => {
+  const r = state.history.pop();
+  if (!r) return toast("Er is nog geen dag om terug te draaien");
+  if (r.winner === "future") state.future = Math.max(0, state.future - 1);
+  if (r.winner === "old") state.old = Math.max(0, state.old - 1);
+  if (r.bonus) state.future = Math.max(0, state.future - r.bonus);
+  if (r.saved) state.saved = Math.max(0, Math.round((state.saved - r.saved) * 100) / 100);
+  commit(); toast("Laatste dag teruggedraaid");
+};
+$("resetBtn").onclick = () => { pending = "reset"; render(); $("finishArea").scrollIntoView({ block: "center" }); };
+$("editBtn").onclick = () => {
+  const on = $("listPanel").classList.toggle("editing");
+  $("editBtn").textContent = on ? "Klaar" : "Bewerken";
+  openSettings = null; render();
+  if (on) $("newItem").focus();
+};
+$("addForm").addEventListener("submit", e => {
+  e.preventDefault();
+  const v = $("newItem").value.trim();
+  if (!v) return;
+  state.items.push({ id: newId(), text: v, done: false, weight: 1, days: null, amount: 0 });
+  $("newItem").value = "";
+  commit();
+});
+let noteTimer = null;
+$("dayNote").addEventListener("input", e => {
+  state.note = e.target.value;
+  clearTimeout(noteTimer); noteTimer = setTimeout(save, 900);
+});
+$("dayNote").addEventListener("blur", () => { clearTimeout(noteTimer); save(); });
 
 function toast(msg) {
   const t = $("toast");
   t.textContent = msg; t.classList.add("show");
-  clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove("show"), 2500);
+  clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove("show"), 2800);
 }
 
-// ---- Spelregels ----
-// Alles gedaan                     -> Toekomstige mij +1
-// Meer NIET gedaan dan wel gedaan  -> Oude mij +1
-// Daartussenin                     -> gelijkspel (niemand een punt)
-$("finishBtn").onclick = () => {
-  const total = state.items.length;
-  if (!total) return toast("Voeg eerst taken toe");
-  const done = state.items.filter(i => i.done).length;
-  const notDone = total - done;
-  let winner = "draw";
-  if (done === total) winner = "future";
-  else if (notDone > done) winner = "old";
-
-  if (!confirm(`Dag afronden met ${done} van de ${total} gedaan?`)) return;
-
-  if (winner === "future") state.future++;
-  if (winner === "old") state.old++;
-  state.history.push({ date: new Date().toLocaleDateString("nl-NL", { weekday: "short", day: "numeric", month: "short" }), done, total, winner });
-  state.items.forEach(i => i.done = false);
-  save(); render();
-  toast(winner === "future" ? "🎉 Punt voor Toekomstige mij!" : winner === "old" ? "Punt voor Oude mij…" : "Gelijkspel – niemand een punt");
-};
-
-$("undoBtn").onclick = () => {
-  const r = state.history.pop();
-  if (!r) return toast("Niets om ongedaan te maken");
-  if (r.winner === "future") state.future--;
-  if (r.winner === "old") state.old--;
-  save(); render(); toast("Laatste dag ongedaan gemaakt");
-};
-
-$("resetBtn").onclick = () => {
-  if (!confirm("Score en geschiedenis op 0 zetten? (Je checklist blijft staan)")) return;
-  state.old = 0; state.future = 0; state.history = [];
-  save(); render();
-};
-
-$("editBtn").onclick = () => {
-  const on = document.body.classList.toggle("editing");
-  $("editBtn").textContent = on ? "Klaar" : "Bewerken";
-  if (on) $("newItem").focus();
-};
-
-$("addForm").onsubmit = e => {
-  e.preventDefault();
-  const v = $("newItem").value.trim();
-  if (!v) return;
-  state.items.push({ text: v, done: false });
-  $("newItem").value = "";
-  save(); render();
-};
-
-if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
+// ---------- opstarten ----------
+function loadLocal() {
+  // Standaard-checklist voor de eerste keer (aan te passen via Bewerken in de app)
+  state = normalize({ items: [{"text": "Gym", "done": false, "amount": 0}, {"text": "Niet roken", "done": false, "amount": 0}, {"text": "Hhw", "done": false, "amount": 0}, {"text": "Goonen", "done": false, "amount": 0}, {"text": "Opstaan zonder snooze", "done": false, "amount": 0}, {"text": "Voor 23:00 in bed", "done": false, "amount": 0}, {"text": "Geen onnodige aankopen", "done": false, "amount": 0}, {"text": "€2,50 sparen", "done": false, "amount": 2.5}, {"text": "Aan mijn ESP32-project werken", "done": false, "amount": 0}] });
+  try { const s = JSON.parse(localStorage.getItem(LOCAL_KEY)); if (s) state = normalize(s); } catch (e) {}
+  loaded = true; render();
+}
+try { const tab = localStorage.getItem(LOCAL_KEY + "-tab"); if (tab === "overzicht") showTab("overzicht"); } catch (e) {}
 render();
+(async () => {
+  const use = n => window.claude && window.claude.use ? window.claude.use(n).catch(() => null) : Promise.resolve(null);
+  use("sample").then(s => { sample = s; $("coachPanel").hidden = !s; });
+  db = await use("db");
+  if (!db) return loadLocal();
+  try {
+    const user = await use("user");
+    if (user) { const c = await user.can("data.write"); if (c === false) canWrite = false; }
+  } catch (e) {}
+  ref = db.doc("scorebord/stand");
+  const timer = setTimeout(() => { if (!loaded) $("syncNote").textContent = "Je opgeslagen stand is nog niet bereikbaar…"; }, 10000);
+  ref.onSnapshot(snap => {
+    if (!snap.metadata.fromCache) clearTimeout(timer);
+    if (snap.metadata.hasPendingWrites) return;
+    if (snap.exists) {
+      const incoming = normalize(snap.data());
+      if (document.activeElement === $("dayNote")) incoming.note = state.note;
+      state = incoming;
+    }
+    loaded = true;
+    render();
+  }, () => { clearTimeout(timer); ref = null; loadLocal(); });
+})();
+  if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
 </script>
 </body>
 </html>
