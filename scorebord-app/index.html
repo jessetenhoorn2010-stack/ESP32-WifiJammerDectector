@@ -230,6 +230,60 @@
   .coach-text { white-space: pre-wrap; line-height: 1.6; margin: 12px 0 0; font-size: .96rem; font-weight: 500; }
   .note { text-align: center; font-size: .76rem; color: var(--muted); margin: 0; }
 
+  /* meldingen */
+  .banner { display: flex; flex-direction: column; gap: 12px; border-radius: var(--r-lg); padding: 16px 18px; border: 1px solid var(--line); box-shadow: var(--shadow); background: var(--surface); }
+  .banner.warn { background: linear-gradient(0deg, var(--old-soft), var(--old-soft)), var(--surface); border-color: transparent; }
+  .banner.gold { background: linear-gradient(0deg, var(--gold-soft), var(--gold-soft)), var(--surface); border-color: transparent; cursor: pointer; text-align: left; width: 100%; }
+  .banner b { font-size: .98rem; }
+  .banner p { margin: 0; font-size: .86rem; color: var(--muted); }
+  .done-state { display: flex; align-items: center; gap: 12px; padding: 4px 2px; }
+  .done-state .big { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: var(--future-soft); color: var(--future); flex: none; }
+  .done-state .big svg { width: 22px; height: 22px; }
+
+  /* spaardoel */
+  .goal-top { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin-bottom: 8px; }
+  .goal-name { font-size: 1.05rem; font-weight: 800; overflow-wrap: anywhere; }
+  .goal-amt { font-family: var(--display); font-size: 1.5rem; font-weight: 800; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .goal-bar { height: 12px; border-radius: 99px; background: var(--surface-2); border: 1px solid var(--line); overflow: hidden; }
+  .goal-bar span { display: block; height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--gold), #f0cd7a); transition: width .5s ease; }
+  .goal-sub { display: flex; justify-content: space-between; gap: 8px; margin-top: 8px; font-size: .8rem; color: var(--muted); font-weight: 600; }
+  .goal-form { display: grid; gap: 10px; }
+  .goal-form .row2 { display: grid; grid-template-columns: 1fr 120px; gap: 8px; }
+  .goal-form .input { width: 100%; min-width: 0; }
+  .goal-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+
+  /* reeks-tellers */
+  .trackers { display: grid; gap: 10px; }
+  .tracker { display: flex; align-items: center; gap: 14px; background: var(--surface-2); border: 1px solid var(--line); border-radius: var(--r-md); padding: 12px 14px; }
+  .tracker .n { font-family: var(--display); font-weight: 900; font-size: 2.3rem; line-height: 1; color: var(--future); font-variant-numeric: tabular-nums; min-width: 2ch; text-align: center; }
+  .tracker .info { flex: 1; min-width: 0; }
+  .tracker .info b { display: block; font-size: .95rem; overflow-wrap: anywhere; }
+  .tracker .info span { font-size: .78rem; color: var(--muted); font-weight: 600; }
+  .tracker .mini { height: 5px; border-radius: 99px; background: var(--line); overflow: hidden; margin-top: 7px; }
+  .tracker .mini i { display: block; height: 100%; background: var(--future); border-radius: 99px; }
+
+  /* medailles */
+  .medals { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .medal { text-align: center; padding: 12px 6px; border-radius: var(--r-md); background: var(--surface-2); border: 1px solid var(--line); min-width: 0; }
+  .medal .disc { width: 46px; height: 46px; margin: 0 auto 8px; border-radius: 50%; display: grid; place-items: center;
+    background: radial-gradient(circle at 35% 30%, #f6dc9a, var(--gold) 70%); color: #3a2a05; box-shadow: 0 6px 14px -6px rgba(169,122,18,.7), inset 0 -2px 0 rgba(0,0,0,.15); }
+  .medal .disc svg { width: 22px; height: 22px; }
+  .medal b { display: block; font-size: .76rem; line-height: 1.25; }
+  .medal span { display: block; font-size: .68rem; color: var(--muted); margin-top: 3px; line-height: 1.3; }
+  .medal.locked .disc { background: var(--line); color: var(--muted); box-shadow: none; }
+  .medal.locked b { color: var(--muted); }
+  .medal-count { font-size: .8rem; font-weight: 700; color: var(--muted); }
+
+  /* weekrapport */
+  .report-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
+  .report-grid div { background: var(--surface-2); border: 1px solid var(--line); border-radius: 12px; padding: 10px 8px; text-align: center; min-width: 0; }
+  .report-grid b { display: block; font-family: var(--display); font-weight: 800; font-size: 1.45rem; line-height: 1; font-variant-numeric: tabular-nums; }
+  .report-grid span { display: block; font-size: .66rem; font-weight: 700; color: var(--muted); margin-top: 4px; text-transform: uppercase; letter-spacing: .08em; }
+  .report-lines { display: grid; gap: 6px; font-size: .88rem; margin: 0; padding: 0; }
+  .report-lines li { display: flex; justify-content: space-between; gap: 10px; }
+  .report-lines li span:first-child { color: var(--muted); font-weight: 600; }
+  .report-lines li span:last-child { font-weight: 700; text-align: right; overflow-wrap: anywhere; }
+
   /* menubalk onderin */
   .nav { position: fixed; left: 0; right: 0; bottom: 0; z-index: 15; display: flex; justify-content: center;
     padding: 8px max(16px, env(safe-area-inset-right, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
@@ -270,6 +324,10 @@
     <symbol id="i-trash" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></g></symbol>
     <symbol id="i-home" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m4 10 8-6 8 6v9a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1v-9Z"/></g></symbol>
     <symbol id="i-flag" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></g></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path fill="currentColor" d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9L12 3Z"/></symbol>
+    <symbol id="i-bolt" viewBox="0 0 24 24"><path fill="currentColor" d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path fill="currentColor" d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5Z"/></symbol>
     <symbol id="i-percent" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 5 5 19"/><circle cx="7" cy="7" r="2.5"/><circle cx="17" cy="17" r="2.5"/></g></symbol>
   </defs>
 </svg>
@@ -301,6 +359,8 @@
 
   <!-- VANDAAG -->
   <div class="view" id="view-vandaag">
+    <div id="missedBanner" hidden></div>
+    <button class="banner gold" id="reportBanner" type="button" hidden></button>
     <section class="card" id="listPanel">
       <div class="today-head">
         <div class="ring" aria-hidden="true">
@@ -319,6 +379,16 @@
         <input class="input" id="newItem" placeholder="Nieuwe taak…" autocomplete="off" aria-label="Nieuwe taak">
         <button class="btn btn-quiet" type="submit">Toevoegen</button>
       </form>
+    </section>
+
+    <section class="card" id="trackCard" hidden>
+      <div class="card-head"><div class="title"><div class="ico"><svg><use href="#i-flame"/></svg></div><div><h2>Volhouden</h2><div class="sub">Dagen op rij gelukt</div></div></div></div>
+      <div class="trackers" id="trackers"></div>
+    </section>
+
+    <section class="card" id="goalCard">
+      <div class="card-head"><div class="title"><div class="ico"><svg><use href="#i-coin"/></svg></div><h2>Spaardoel</h2></div></div>
+      <div id="goalBody"></div>
     </section>
 
     <section class="card">
@@ -343,6 +413,18 @@
 
   <!-- OVERZICHT -->
   <div class="view" id="view-overzicht" hidden>
+    <section class="card" id="reportCard" hidden>
+      <div class="card-head"><div class="title"><div class="ico"><svg><use href="#i-cal"/></svg></div><div><h2>Weekrapport</h2><div class="sub" id="reportSub">Week</div></div></div></div>
+      <div id="reportBody"></div>
+      <div class="goal-actions" id="reportCoachRow" hidden><button class="btn btn-quiet" id="reportCoachBtn" type="button">Laat de coach je week bespreken</button></div>
+      <p class="coach-text" id="reportCoachText" hidden></p>
+    </section>
+
+    <section class="card">
+      <div class="card-head"><div class="title"><div class="ico"><svg><use href="#i-trophy"/></svg></div><h2>Medailles</h2></div><span class="medal-count" id="medalCount">0 van 0</span></div>
+      <div class="medals" id="medals"></div>
+    </section>
+
     <section class="card">
       <div class="card-head"><div class="title"><div class="ico"><svg><use href="#i-trophy"/></svg></div><h2>Records</h2></div></div>
       <div class="stats">
@@ -403,32 +485,41 @@ const LOCAL_KEY = "scorebord-oud-vs-toekomst";
 const DAYS = ["Zo","Ma","Di","Wo","Do","Vr","Za"];
 const DAY_ORDER = [1,2,3,4,5,6,0];
 const LABEL = { old: "Punt voor Oude mij", future: "Punt voor Toekomstige mij", draw: "Gelijkspel" };
-let state = { old: 0, future: 0, saved: 0, note: "", items: [], history: [] };
-let db = null, ref = null, sample = null, canWrite = true, loaded = false;
-let pending = null, openSettings = null, calMonth = null, lastScores = null;
+const DAY_START_HOUR = 4; // tot 04:00 's nachts telt nog als de vorige dag
+const MILESTONES = [3, 7, 14, 30, 60, 100, 200, 365];
+let state = { old: 0, future: 0, saved: 0, note: "", goal: null, items: [], history: [] };
+let db = null, ref = null, sample = null, canWrite = true, loaded = false, serverSeen = false, missedChecked = false;
+let pending = null, openSettings = null, calMonth = null, lastScores = null, goalEditing = false;
 
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
 const euro = n => "€" + (Math.round(n * 100) / 100).toLocaleString("nl-NL", { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 });
 const pad = n => String(n).padStart(2, "0");
 const isoOf = d => d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate());
 const dateOf = iso => new Date(iso + "T12:00:00");
+const addDays = (iso, n) => { const d = dateOf(iso); d.setDate(d.getDate() + n); return isoOf(d); };
+const labelOf = iso => dateOf(iso).toLocaleDateString("nl-NL", { weekday: "short", day: "numeric", month: "short" });
+const gameNow = () => new Date(Date.now() - DAY_START_HOUR * 3600e3);
+const gameIso = () => isoOf(gameNow());
 function weekKey(iso) { const d = dateOf(iso); d.setDate(d.getDate() - (d.getDay() + 6) % 7); return isoOf(d); }
 const newId = () => "t" + Math.random().toString(36).slice(2, 9);
 const icon = (id, cls) => `<svg${cls ? ` class="${cls}"` : ""}><use href="#${id}"/></svg>`;
 const buzz = () => { try { navigator.vibrate && navigator.vibrate(12); } catch (e) {} };
+const money = n => Math.round(n * 100) / 100;
 
 function normalize(d) {
   d = d || {};
+  const g = d.goal && Number(d.goal.amount) > 0 ? { name: String(d.goal.name || "Spaardoel"), amount: Number(d.goal.amount) } : null;
   return {
     old: Number(d.old) || 0, future: Number(d.future) || 0, saved: Number(d.saved) || 0,
-    note: typeof d.note === "string" ? d.note : "",
+    note: typeof d.note === "string" ? d.note : "", goal: g,
     items: Array.isArray(d.items) ? d.items.map(i => ({
       id: i.id || newId(), text: String(i.text || ""), done: !!i.done,
       weight: i.weight === 2 ? 2 : 1,
       days: Array.isArray(i.days) && i.days.length && i.days.length < 7 ? i.days.filter(x => x >= 0 && x <= 6) : null,
-      amount: Number(i.amount) > 0 ? Number(i.amount) : 0
+      amount: Number(i.amount) > 0 ? Number(i.amount) : 0,
+      lag: !!i.lag, track: !!i.track
     })) : [],
-    history: Array.isArray(d.history) ? d.history.slice(-400) : []
+    history: Array.isArray(d.history) ? d.history.slice(-500) : []
   };
 }
 const clone = s => JSON.parse(JSON.stringify(s));
@@ -451,8 +542,7 @@ async function save() {
 function commit() { render(); save(); }
 
 // ---------- berekeningen ----------
-const todayDow = () => new Date().getDay();
-const activeItems = () => state.items.filter(i => !i.days || i.days.includes(todayDow()));
+const activeItems = () => { const dow = gameNow().getDay(); return state.items.filter(i => !i.days || i.days.includes(dow)); };
 function tally(items) {
   let doneW = 0, totalW = 0;
   items.forEach(i => { totalW += i.weight; if (i.done) doneW += i.weight; });
@@ -463,6 +553,7 @@ function outcomeFor(doneW, totalW) {
   if (totalW - doneW > doneW) return "old";
   return "draw";
 }
+const played = () => state.history.filter(h => !h.missed);
 function streaks() {
   let cur = 0, best = 0, run = 0;
   state.history.forEach(h => { run = h.winner === "future" ? run + 1 : 0; best = Math.max(best, run); });
@@ -488,11 +579,86 @@ function maybeBonus(entry) {
   const dates = new Set(inWeek.map(h => h.iso));
   return dates.size === 7 && inWeek.every(h => h.winner === "future") ? 1 : 0;
 }
+// reeks voor één taak: dagen op rij gelukt (dagen zonder die taak tellen niet mee, vergeten dagen breken de reeks)
+function taskStreak(text) {
+  let cur = 0, best = 0, run = 0, curDone = false;
+  state.history.forEach(h => {
+    if (h.missed) { run = 0; return; }
+    const t = (h.tasks || []).find(x => x.text === text);
+    if (!t) return;
+    run = t.done ? run + 1 : 0; best = Math.max(best, run);
+  });
+  for (let i = state.history.length - 1; i >= 0; i--) {
+    const h = state.history[i];
+    if (h.missed) break;
+    const t = (h.tasks || []).find(x => x.text === text);
+    if (!t) continue;
+    if (!t.done) break;
+    cur++;
+  }
+  return { cur, best };
+}
+const nextMilestone = n => MILESTONES.find(m => m > n) || (Math.floor(n / 100) + 1) * 100;
+
+// ---------- medailles ----------
+function medalList() {
+  const h = state.history, p = played();
+  const wins = h.filter(x => x.winner === "future").length;
+  const best = streaks().best;
+  const savedEver = h.reduce((a, x) => a + (Number(x.saved) || 0), 0);
+  const bonus = h.some(x => x.bonus);
+  let taskBest = 0;
+  const texts = new Set(); h.forEach(x => (x.tasks || []).forEach(t => texts.add(t.text)));
+  texts.forEach(t => { taskBest = Math.max(taskBest, taskStreak(t).best); });
+  let o = 0, f = 0, behind = false, comeback = false;
+  h.forEach(x => { if (x.winner === "old") o++; if (x.winner === "future") f++; f += x.bonus || 0; if (o > f) behind = true; if (behind && f > o) comeback = true; });
+  const perfectDays = p.filter(x => x.winner === "future" && x.total >= 5).length;
+  return [
+    { id: "win1", ic: "i-star", name: "Eerste zege", desc: "Eerste punt voor Toekomstige mij", got: wins >= 1 },
+    { id: "s3", ic: "i-flame", name: "Op dreef", desc: "3 dagen op rij gewonnen", got: best >= 3 },
+    { id: "s7", ic: "i-flame", name: "Week vol vuur", desc: "7 dagen op rij gewonnen", got: best >= 7 },
+    { id: "s14", ic: "i-flame", name: "Onstopbaar", desc: "14 dagen op rij gewonnen", got: best >= 14 },
+    { id: "s30", ic: "i-trophy", name: "Maand-meester", desc: "30 dagen op rij gewonnen", got: best >= 30 },
+    { id: "week", ic: "i-trophy", name: "Perfecte week", desc: "Ma t/m zo gewonnen", got: bonus },
+    { id: "come", ic: "i-bolt", name: "Comeback", desc: "Van achter naar voor", got: comeback },
+    { id: "d10", ic: "i-flag", name: "Doorzetter", desc: "10 dagen gespeeld", got: p.length >= 10 },
+    { id: "d50", ic: "i-flag", name: "Veteraan", desc: "50 dagen gespeeld", got: p.length >= 50 },
+    { id: "e10", ic: "i-coin", name: "Spaarvarken", desc: "€10 gespaard", got: savedEver >= 10 },
+    { id: "e50", ic: "i-coin", name: "Bankier", desc: "€50 gespaard", got: savedEver >= 50 },
+    { id: "e100", ic: "i-coin", name: "Rijkaard", desc: "€100 gespaard", got: savedEver >= 100 },
+    { id: "t7", ic: "i-check", name: "Volhouder", desc: "Een taak 7 dagen op rij", got: taskBest >= 7 },
+    { id: "t30", ic: "i-check", name: "IJzeren wil", desc: "Een taak 30 dagen op rij", got: taskBest >= 30 },
+    { id: "big", ic: "i-star", name: "Alles af", desc: "Alles gedaan met 5+ taken", got: perfectDays >= 1 }
+  ];
+}
+
+// ---------- gemiste dagen ----------
+function lastIso() { const l = state.history.filter(h => h.iso).map(h => h.iso).sort(); return l.length ? l[l.length - 1] : null; }
+function yesterdayOpen() {
+  const last = lastIso(); if (!last) return null;
+  const y = addDays(gameIso(), -1);
+  return last < y && !state.history.some(h => h.iso === y) ? y : null;
+}
+function missedEntry(iso) { return { iso, date: labelOf(iso), done: 0, total: 0, winner: "old", bonus: 0, saved: 0, missed: true }; }
+function sortHistory() { state.history.sort((a, b) => (a.iso || "") < (b.iso || "") ? -1 : (a.iso || "") > (b.iso || "") ? 1 : 0); }
+// dagen van vóór gisteren die niet zijn afgerond worden automatisch een punt voor Oude mij
+function checkMissed() {
+  if (missedChecked || !canWrite) return;
+  missedChecked = true;
+  const last = lastIso(); if (!last) return;
+  const y = addDays(gameIso(), -1);
+  let d = addDays(last, 1), added = 0;
+  while (d < y && added < 60) {
+    if (!state.history.some(h => h.iso === d)) { state.history.push(missedEntry(d)); state.old++; added++; }
+    d = addDays(d, 1);
+  }
+  if (added) { sortHistory(); commit(); toast(added === 1 ? "1 vergeten dag: punt voor Oude mij" : added + " vergeten dagen: punten voor Oude mij"); }
+}
 
 // ---------- weergave ----------
 function render() {
   const now = new Date(), hr = now.getHours();
-  $("dateLine").textContent = now.toLocaleDateString("nl-NL", { weekday: "long", day: "numeric", month: "long" });
+  $("dateLine").textContent = gameNow().toLocaleDateString("nl-NL", { weekday: "long", day: "numeric", month: "long" }) + (hr < DAY_START_HOUR ? " · nacht" : "");
   $("greet").textContent = hr < 6 ? "Goedenacht" : hr < 12 ? "Goedemorgen" : hr < 18 ? "Goedemiddag" : "Goedenavond";
 
   $("scoreOld").textContent = state.old;
@@ -510,7 +676,7 @@ function render() {
 
   const st = streaks();
   $("streak").textContent = st.cur; $("flameN").textContent = st.cur;
-  const wk = weekScores()[weekKey(isoOf(now))] || { old: 0, future: 0 };
+  const wk = weekScores()[weekKey(gameIso())] || { old: 0, future: 0 };
   $("week").textContent = wk.old + "–" + wk.future;
   $("saved").textContent = euro(state.saved);
 
@@ -519,7 +685,10 @@ function render() {
   $("dayNote").disabled = !canWrite;
   if (document.activeElement !== $("dayNote")) $("dayNote").value = state.note;
 
+  renderBanners();
   renderList();
+  renderTrackers();
+  renderGoal();
   renderFinish();
   renderOverview();
   $("syncNote").textContent = !canWrite ? "Je bekijkt deze stand alleen; wijzigen kan alleen de eigenaar."
@@ -527,19 +696,40 @@ function render() {
 }
 function bump(id) { const el = $(id); el.classList.remove("bump"); void el.offsetWidth; el.classList.add("bump"); }
 
+function renderBanners() {
+  const mb = $("missedBanner");
+  const y = loaded && canWrite ? yesterdayOpen() : null;
+  mb.hidden = !y;
+  if (y) {
+    mb.className = "banner warn";
+    mb.innerHTML = `<div><b>Gisteren (${esc(labelOf(y))}) is nog niet afgerond</b><p>Rond hem nu af met de vinkjes die je nu hebt staan, of geef Oude mij het punt.</p></div>
+      <div class="row"><button class="btn btn-quiet" id="missOld" type="button">Punt voor Oude mij</button><button class="btn btn-yes" id="missFinish" type="button">Gisteren afronden</button></div>`;
+    $("missOld").onclick = () => { state.history.push(missedEntry(y)); state.old++; sortHistory(); commit(); toast("Punt voor Oude mij"); };
+    $("missFinish").onclick = () => { pending = { kind: "finish", iso: y }; render(); $("finishArea").scrollIntoView({ block: "center", behavior: "smooth" }); };
+  }
+  const rep = weekReport();
+  const dow = gameNow().getDay();
+  const rb = $("reportBanner");
+  rb.hidden = !(rep && (dow === 0 || dow === 1));
+  if (!rb.hidden) {
+    rb.innerHTML = `<div><b>📊 Je weekrapport staat klaar</b><p>${esc(rep.title)}: ${rep.old}–${rep.future}. Tik om te bekijken.</p></div>`;
+    rb.onclick = () => { showTab("overzicht", true); window.scrollTo({ top: 0 }); };
+  }
+}
+
 function renderList() {
   const editing = $("listPanel").classList.contains("editing");
   const list = $("list");
   list.replaceChildren();
-  $("todayTitle").textContent = editing ? "Taken bewerken" : "Checklist van " + new Date().toLocaleDateString("nl-NL", { weekday: "long" });
+  $("todayTitle").textContent = editing ? "Taken bewerken" : "Checklist van " + gameNow().toLocaleDateString("nl-NL", { weekday: "long" });
   const t = tally(activeItems());
   const pct = t.totalW ? Math.round(t.doneW / t.totalW * 100) : 0;
   $("ringProg").style.strokeDashoffset = 213.6 * (1 - pct / 100);
   $("ringPct").textContent = pct + "%";
-  $("todaySub").textContent = editing ? "Tik op de schuifjes voor dagen, ×2 en sparen"
+  $("todaySub").textContent = editing ? "Tik op ⚙ voor dagen, ×2, sparen en meer"
     : t.total ? `${t.done} van ${t.total} gedaan` + (t.done === t.total ? " · alles af!" : "") : "Nog niets voor vandaag";
   if (!loaded) { list.innerHTML = '<li class="empty">Checklist laden…</li>'; return; }
-  const today = todayDow();
+  const dow = gameNow().getDay();
   const shown = editing ? state.items : activeItems();
   if (!state.items.length) list.innerHTML = '<li class="empty">Nog geen taken. Tik op “Bewerken” en voeg je eerste taak toe.</li>';
   else if (!shown.length) list.innerHTML = '<li class="empty">Vandaag staan er geen taken op je lijst. Vrije dag!</li>';
@@ -552,13 +742,15 @@ function renderList() {
     const label = document.createElement("label");
     const cb = document.createElement("input");
     cb.type = "checkbox"; cb.id = "task-" + it.id; cb.checked = it.done; cb.disabled = !canWrite || editing;
-    cb.addEventListener("change", () => { it.done = cb.checked; pending = null; if (cb.checked) buzz(); commit(); });
+    cb.addEventListener("change", () => { it.done = cb.checked; if (pending && pending.kind === "finish") pending = null; if (cb.checked) buzz(); commit(); });
     const ck = document.createElement("span"); ck.className = "check"; ck.innerHTML = '<svg viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7" stroke-linecap="round" stroke-linejoin="round"/></svg>';
     const span = document.createElement("span"); span.className = "txt"; span.textContent = it.text;
     label.append(cb, ck, span);
-    if (it.weight === 2) { const b = document.createElement("span"); b.className = "badge x2"; b.textContent = "×2"; span.appendChild(b); }
-    if (it.amount) { const b = document.createElement("span"); b.className = "badge money"; b.textContent = "+" + euro(it.amount); span.appendChild(b); }
-    if (editing && it.days) { const b = document.createElement("span"); b.className = "badge"; b.textContent = DAY_ORDER.filter(d => it.days.includes(d)).map(d => DAYS[d]).join(" "); span.appendChild(b); }
+    const badge = (cls, txt) => { const b = document.createElement("span"); b.className = "badge " + cls; b.textContent = txt; span.appendChild(b); };
+    if (it.lag) badge("", "gisteravond");
+    if (it.weight === 2) badge("x2", "×2");
+    if (it.amount) badge("money", "+" + euro(it.amount));
+    if (editing && it.days) badge("", DAY_ORDER.filter(d => it.days.includes(d)).map(d => DAYS[d]).join(" "));
     row.appendChild(label);
     const mk = (ic, aria, fn, dis) => { const b = document.createElement("button"); b.type = "button"; b.className = "icon-btn"; b.innerHTML = icon(ic); b.setAttribute("aria-label", aria); b.disabled = !!dis; b.onclick = fn; return b; };
     row.append(
@@ -572,11 +764,15 @@ function renderList() {
       const s = document.createElement("div"); s.className = "settings";
       s.innerHTML = `
         <label class="toggle">Telt dubbel (×2)<span class="switch"><input type="checkbox" id="w-${it.id}" ${it.weight === 2 ? "checked" : ""}><span></span></span></label>
+        <label class="toggle"><span>Gaat over gisteravond<br><span class="muted" style="font-size:.76rem;font-weight:600">Je vinkt hem 's ochtends af, bijv. op tijd naar bed</span></span><span class="switch"><input type="checkbox" id="l-${it.id}" ${it.lag ? "checked" : ""}><span></span></span></label>
+        <label class="toggle"><span>Reeks-teller tonen<br><span class="muted" style="font-size:.76rem;font-weight:600">Laat zien hoeveel dagen op rij het lukt</span></span><span class="switch"><input type="checkbox" id="r-${it.id}" ${it.track ? "checked" : ""}><span></span></span></label>
         <div><div class="lbl">Op welke dagen? Niets gekozen = elke dag</div><div class="days"></div></div>
         <div><label class="lbl" for="a-${it.id}" style="display:block">Bedrag sparen bij afvinken</label>
           <div class="money-field"><span class="pre">€</span><input type="text" class="input amount" id="a-${it.id}" inputmode="decimal" value="${it.amount ? String(it.amount).replace(".", ",") : ""}" placeholder="0,00"></div></div>
         <button type="button" class="btn-del">${icon("i-trash")}Taak verwijderen</button>`;
       s.querySelector("#w-" + it.id).onchange = e => { it.weight = e.target.checked ? 2 : 1; commit(); };
+      s.querySelector("#l-" + it.id).onchange = e => { it.lag = e.target.checked; commit(); };
+      s.querySelector("#r-" + it.id).onchange = e => { it.track = e.target.checked; commit(); };
       const days = s.querySelector(".days");
       DAY_ORDER.forEach(d => {
         const b = document.createElement("button"); b.type = "button"; b.className = "day"; b.textContent = DAYS[d];
@@ -589,66 +785,126 @@ function renderList() {
         };
         days.appendChild(b);
       });
-      s.querySelector("#a-" + it.id).onchange = e => { const v = parseFloat(String(e.target.value).replace(",", ".")); it.amount = v > 0 ? Math.round(v * 100) / 100 : 0; commit(); };
+      s.querySelector("#a-" + it.id).onchange = e => { const v = parseFloat(String(e.target.value).replace(",", ".")); it.amount = v > 0 ? money(v) : 0; commit(); };
       s.querySelector(".btn-del").onclick = () => { state.items.splice(idx, 1); openSettings = null; commit(); };
       li.appendChild(s);
     }
     list.appendChild(li);
   });
 
-  const off = state.items.filter(i => i.days && !i.days.includes(today));
+  const off = state.items.filter(i => i.days && !i.days.includes(dow));
   $("notToday").hidden = editing || !off.length;
   $("notToday").textContent = "Niet vandaag: " + off.map(i => i.text).join(", ");
+}
+
+function renderTrackers() {
+  const tracked = state.items.filter(i => i.track);
+  $("trackCard").hidden = !tracked.length;
+  $("trackers").innerHTML = tracked.map(i => {
+    const s = taskStreak(i.text), next = nextMilestone(s.cur);
+    const prev = [0, ...MILESTONES].filter(m => m <= s.cur).pop() || 0;
+    const pct = (s.cur - prev) / (next - prev) * 100;
+    return `<div class="tracker"><div class="n">${s.cur}</div><div class="info"><b>${esc(i.text)}</b>
+      <span>${s.cur === 1 ? "dag" : "dagen"} op rij · nog ${next - s.cur} tot ${next}${s.best > s.cur ? ` · record ${s.best}` : ""}</span>
+      <div class="mini"><i style="width:${pct}%"></i></div></div></div>`;
+  }).join("");
+}
+
+function renderGoal() {
+  const body = $("goalBody"), g = state.goal;
+  $("goalCard").hidden = !canWrite && !g;
+  if (goalEditing || !g) {
+    if (!goalEditing) {
+      body.innerHTML = `<p class="muted" style="margin:0 0 12px;font-size:.9rem">Waar spaar je voor? Je spaarpot staat nu op <b>${euro(state.saved)}</b>.</p>
+        <button class="btn btn-quiet" id="goalSet" type="button">Spaardoel instellen</button>`;
+      $("goalSet").onclick = () => { goalEditing = true; render(); $("goalName").focus(); };
+      return;
+    }
+    body.innerHTML = `<form class="goal-form" id="goalForm">
+        <div class="row2"><input class="input" id="goalName" placeholder="Bijv. nieuwe schoenen" value="${g ? esc(g.name) : ""}" aria-label="Waar spaar je voor?">
+        <input class="input" id="goalAmt" inputmode="decimal" placeholder="€ 50" value="${g ? String(g.amount).replace(".", ",") : ""}" aria-label="Bedrag"></div>
+        <div class="row"><button class="btn btn-quiet" id="goalCancel" type="button">Annuleren</button><button class="btn btn-yes" type="submit">Opslaan</button></div>
+        ${g ? '<button class="btn-del" id="goalDel" type="button">' + icon("i-trash") + 'Doel weghalen</button>' : ""}
+      </form>`;
+    $("goalCancel").onclick = () => { goalEditing = false; render(); };
+    if (g) $("goalDel").onclick = () => { state.goal = null; goalEditing = false; commit(); };
+    $("goalForm").addEventListener("submit", e => {
+      e.preventDefault();
+      const amt = parseFloat(String($("goalAmt").value).replace("€", "").replace(",", ".").trim());
+      if (!(amt > 0)) { toast("Vul een bedrag in, bijvoorbeeld 50"); return; }
+      state.goal = { name: $("goalName").value.trim() || "Spaardoel", amount: money(amt) };
+      goalEditing = false; commit(); toast("Spaardoel opgeslagen");
+    });
+    return;
+  }
+  const pct = Math.min(100, state.saved / g.amount * 100);
+  const reached = state.saved >= g.amount;
+  const perDay = state.items.filter(i => i.amount).reduce((a, i) => a + i.amount, 0);
+  const left = Math.max(0, g.amount - state.saved);
+  const daysLeft = perDay ? Math.ceil(left / perDay) : null;
+  body.innerHTML = `<div class="goal-top"><span class="goal-name">${esc(g.name)}</span><span class="goal-amt">${euro(state.saved)} <span class="muted" style="font-size:1rem">/ ${euro(g.amount)}</span></span></div>
+    <div class="goal-bar"><span style="width:${pct}%"></span></div>
+    <div class="goal-sub"><span>${Math.floor(pct)}%</span><span>${reached ? "Doel gehaald! 🎉" : `Nog ${euro(left)}${daysLeft ? ` · ±${daysLeft} ${daysLeft === 1 ? "dag" : "dagen"}` : ""}`}</span></div>
+    ${canWrite ? `<div class="goal-actions">${reached ? `<button class="btn btn-yes" id="goalBuy" type="button">Gekocht! Haal ${euro(g.amount)} van mijn spaarpot</button>` : ""}<button class="btn btn-quiet" id="goalEdit" type="button">Wijzigen</button></div>` : ""}`;
+  if (canWrite) {
+    $("goalEdit").onclick = () => { goalEditing = true; render(); };
+    if (reached) $("goalBuy").onclick = () => { state.saved = money(state.saved - g.amount); state.goal = null; commit(); confetti(); toast("Gefeliciteerd met je " + g.name + "!"); };
+  }
 }
 
 function renderFinish() {
   const area = $("finishArea");
   area.replaceChildren();
   const items = activeItems(), t = tally(items);
-  const todayIso = isoOf(new Date());
-  const already = state.history.some(h => h.iso === todayIso);
-  if (pending === "finish") {
+  const today = gameIso();
+  const doneToday = state.history.some(h => h.iso === today);
+  if (pending && pending.kind === "finish") {
+    const iso = pending.iso;
     const w = outcomeFor(t.doneW, t.totalW);
-    const money = items.filter(i => i.done && i.amount).reduce((a, i) => a + i.amount, 0);
-    area.innerHTML = `<div class="verdict"><div class="eyebrow">Uitslag van vandaag</div>
+    const m = items.filter(i => i.done && i.amount).reduce((a, i) => a + i.amount, 0);
+    area.innerHTML = `<div class="verdict"><div class="eyebrow">Uitslag van ${iso === today ? "vandaag" : esc(labelOf(iso))}</div>
       <div class="outcome ${w}">${LABEL[w]}</div>
-      <p>${t.done} van de ${t.total} taken gedaan${t.totalW !== t.total ? ` (${t.doneW} van ${t.totalW} punten met ×2)` : ""}.${money ? " Je spaart vandaag " + euro(money) + "." : ""}${already ? " <b>Let op: vandaag is al een keer afgerond.</b>" : ""}</p>
+      <p>${t.done} van de ${t.total} taken gedaan${t.totalW !== t.total ? ` (${t.doneW} van ${t.totalW} punten met ×2)` : ""}.${m ? " Je spaart " + euro(m) + "." : ""}</p>
       <div class="row"><button class="btn btn-quiet" id="cancelBtn" type="button">Annuleren</button>
       <button class="btn btn-yes" id="confirmBtn" type="button">Bevestigen</button></div></div>`;
     $("cancelBtn").onclick = () => { pending = null; render(); };
-    $("confirmBtn").onclick = finishDay;
-  } else if (pending === "reset") {
+    $("confirmBtn").onclick = () => finishDay(iso);
+  } else if (pending && pending.kind === "reset") {
     area.innerHTML = `<div class="verdict"><div class="eyebrow">Opnieuw beginnen</div><p>Score, spaarpot en gespeelde dagen op 0 zetten? Je checklist blijft staan.</p>
       <div class="row"><button class="btn btn-quiet" id="cancelBtn" type="button">Annuleren</button>
       <button class="btn btn-yes" id="confirmBtn" type="button" style="background:var(--old)">Op 0 zetten</button></div></div>`;
     $("cancelBtn").onclick = () => { pending = null; render(); };
     $("confirmBtn").onclick = () => { state.old = 0; state.future = 0; state.saved = 0; state.history = []; pending = null; commit(); toast("Alles staat weer op 0"); };
+  } else if (doneToday && loaded) {
+    const e = state.history.filter(h => h.iso === today).pop();
+    area.innerHTML = `<div class="done-state"><div class="big">${icon("i-check")}</div><div><b>Vandaag is afgerond</b><div class="sub">${esc(LABEL[e.winner])}. Morgen vanaf 04:00 kun je weer.</div></div></div>`;
   } else {
     const b = document.createElement("button");
     b.className = "btn btn-main"; b.id = "finishBtn"; b.type = "button";
-    b.innerHTML = icon("i-flag") + (already ? "Dag afronden (vandaag al gedaan)" : "Dag afronden");
+    b.innerHTML = icon("i-flag") + "Dag afronden";
     b.disabled = !canWrite || !t.total || !loaded;
-    b.onclick = () => { pending = "finish"; render(); };
+    b.onclick = () => { pending = { kind: "finish", iso: today }; render(); };
     area.appendChild(b);
   }
 }
 
-function finishDay() {
+function finishDay(iso) {
+  if (state.history.some(h => h.iso === iso)) { pending = null; render(); return toast("Die dag is al afgerond"); }
+  const before = new Set(medalList().filter(m => m.got).map(m => m.id));
   const items = activeItems(), t = tally(items);
   const w = outcomeFor(t.doneW, t.totalW);
-  const money = items.filter(i => i.done && i.amount).reduce((a, i) => a + i.amount, 0);
-  const now = new Date();
+  const m = items.filter(i => i.done && i.amount).reduce((a, i) => a + i.amount, 0);
   const entry = {
-    iso: isoOf(now),
-    date: now.toLocaleDateString("nl-NL", { weekday: "short", day: "numeric", month: "short" }),
+    iso, date: labelOf(iso),
     done: t.done, total: t.total, doneW: t.doneW, totalW: t.totalW, winner: w, bonus: 0,
-    saved: Math.round(money * 100) / 100, note: state.note.trim(),
+    saved: money(m), note: state.note.trim(),
     tasks: items.map(i => ({ text: i.text, done: i.done }))
   };
   if (w === "future") state.future++;
   if (w === "old") state.old++;
-  state.saved = Math.round((state.saved + money) * 100) / 100;
+  state.saved = money(state.saved + m);
   state.history.push(entry);
+  sortHistory();
   entry.bonus = maybeBonus(entry);
   if (entry.bonus) state.future += entry.bonus;
   state.items.forEach(i => i.done = false);
@@ -656,21 +912,70 @@ function finishDay() {
   pending = null;
   commit();
   window.scrollTo({ top: 0, behavior: "smooth" });
-  if (w === "future") { confetti(); buzz(); }
-  toast(entry.bonus ? "🏆 Hele week gewonnen! Bonuspunt voor Toekomstige mij" : LABEL[w] + (money ? " · " + euro(money) + " gespaard" : ""));
+  const fresh = medalList().filter(x => x.got && !before.has(x.id));
+  if (w === "future" || fresh.length) { confetti(); buzz(); }
+  const msg = entry.bonus ? "🏆 Hele week gewonnen! Bonuspunt voor Toekomstige mij" : LABEL[w] + (m ? " · " + euro(m) + " gespaard" : "");
+  toast(msg);
+  if (fresh.length) setTimeout(() => toast("🏅 Nieuwe medaille: " + fresh.map(x => x.name).join(", ")), 3000);
+}
+
+// ---------- weekrapport ----------
+function weekReport() {
+  const today = gameIso();
+  const dow = gameNow().getDay();
+  const start = dow === 0 ? weekKey(today) : addDays(weekKey(today), -7);
+  const end = addDays(start, 6);
+  const es = state.history.filter(h => h.iso && h.iso >= start && h.iso <= end);
+  if (!es.length) return null;
+  const r = { start, end, old: 0, future: 0, won: 0, played: 0, missed: 0, saved: 0, notes: [], tasks: {} };
+  es.forEach(h => {
+    if (h.winner === "old") r.old++;
+    if (h.winner === "future") { r.future++; r.won++; }
+    r.future += h.bonus || 0;
+    if (h.missed) r.missed++; else r.played++;
+    r.saved += Number(h.saved) || 0;
+    if (h.note) r.notes.push(h.note);
+    (h.tasks || []).forEach(t => { r.tasks[t.text] = r.tasks[t.text] || { done: 0, total: 0 }; r.tasks[t.text].total++; if (t.done) r.tasks[t.text].done++; });
+  });
+  const ranked = Object.entries(r.tasks).sort((a, b) => b[1].done / b[1].total - a[1].done / a[1].total);
+  r.best = ranked[0]; r.worst = ranked.length > 1 ? ranked[ranked.length - 1] : null;
+  const f = d => dateOf(d).toLocaleDateString("nl-NL", { day: "numeric", month: "short" });
+  r.title = `Week ${f(start)} – ${f(end)}`;
+  return r;
+}
+function renderReport() {
+  const r = weekReport();
+  $("reportCard").hidden = !r;
+  if (!r) return;
+  $("reportSub").textContent = r.title + (r.end >= gameIso() ? " (deze week)" : "");
+  const pct = t => Math.round(t[1].done / t[1].total * 100) + "%";
+  $("reportBody").innerHTML = `<div class="report-grid">
+      <div><b>${r.old}–${r.future}</b><span>Stand</span></div>
+      <div><b>${r.won}/7</b><span>Gewonnen</span></div>
+      <div><b>${euro(r.saved)}</b><span>Gespaard</span></div></div>
+    <ul class="report-lines">
+      ${r.best ? `<li><span>Ging het best</span><span>${esc(r.best[0])} (${pct(r.best)})</span></li>` : ""}
+      ${r.worst && r.worst[0] !== r.best[0] ? `<li><span>Lastigst</span><span>${esc(r.worst[0])} (${pct(r.worst)})</span></li>` : ""}
+      ${r.missed ? `<li><span>Vergeten af te ronden</span><span>${r.missed} ${r.missed === 1 ? "dag" : "dagen"}</span></li>` : ""}
+    </ul>`;
+  $("reportCoachRow").hidden = !sample;
 }
 
 // ---------- overzicht ----------
 function renderOverview() {
-  const st = streaks(), weeks = weekScores(), h = state.history;
+  const st = streaks(), weeks = weekScores(), p = played();
   $("recStreak").textContent = st.best;
   let bestK = null, bestV = 0;
   Object.entries(weeks).forEach(([k, v]) => { if (v.future > bestV) { bestV = v.future; bestK = k; } });
   $("recWeek").textContent = bestV;
   $("recWeekLbl").textContent = bestK ? "Beste week (vanaf " + dateOf(bestK).toLocaleDateString("nl-NL", { day: "numeric", month: "short" }) + ")" : "Beste week (punten)";
-  $("recDays").textContent = h.length;
-  $("recPct").textContent = h.length ? Math.round(h.filter(x => x.winner === "future").length / h.length * 100) + "%" : "0%";
-  renderChart(); renderCal(); renderTaskStats(); renderHistory();
+  $("recDays").textContent = p.length;
+  const all = state.history.length;
+  $("recPct").textContent = all ? Math.round(state.history.filter(x => x.winner === "future").length / all * 100) + "%" : "0%";
+  const ms = medalList();
+  $("medalCount").textContent = ms.filter(m => m.got).length + " van " + ms.length;
+  $("medals").innerHTML = ms.map(m => `<div class="medal${m.got ? "" : " locked"}" title="${esc(m.desc)}"><div class="disc">${icon(m.ic)}</div><b>${esc(m.name)}</b><span>${esc(m.desc)}</span></div>`).join("");
+  renderReport(); renderChart(); renderCal(); renderTaskStats(); renderHistory();
 }
 
 function renderChart() {
@@ -727,8 +1032,7 @@ function renderChart() {
 }
 
 function renderCal() {
-  const now = new Date();
-  if (!calMonth) calMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+  if (!calMonth) { const g = gameNow(); calMonth = new Date(g.getFullYear(), g.getMonth(), 1); }
   $("calTitle").textContent = calMonth.toLocaleDateString("nl-NL", { month: "long", year: "numeric" });
   const byDate = {};
   state.history.forEach(h => { if (h.iso) byDate[h.iso] = h; });
@@ -736,12 +1040,12 @@ function renderCal() {
   const offset = (calMonth.getDay() + 6) % 7;
   for (let i = 0; i < offset; i++) html += "<div></div>";
   const dim = new Date(calMonth.getFullYear(), calMonth.getMonth() + 1, 0).getDate();
-  const todayIso = isoOf(now);
+  const todayIso = gameIso();
   for (let d = 1; d <= dim; d++) {
     const iso = isoOf(new Date(calMonth.getFullYear(), calMonth.getMonth(), d));
     const e = byDate[iso];
     const cls = "cell" + (iso === todayIso ? " today" : "") + (e && e.winner !== "draw" ? " has-" + e.winner : "");
-    html += `<div class="${cls}" title="${e ? esc(LABEL[e.winner]) : ""}">${d}${e ? `<i class="dot ${e.winner}"></i>` : ""}</div>`;
+    html += `<div class="${cls}" title="${e ? esc(e.missed ? "Vergeten af te ronden" : LABEL[e.winner]) : ""}">${d}${e ? `<i class="dot ${e.winner}"></i>` : ""}</div>`;
   }
   $("cal").innerHTML = html;
 }
@@ -763,35 +1067,52 @@ function renderHistory() {
   if (!state.history.length) { ul.innerHTML = '<li class="muted">Nog geen dagen afgerond.</li>'; return; }
   ul.innerHTML = state.history.slice().reverse().slice(0, 60).map(r => {
     const pill = r.winner === "old" ? "Oude mij +1" : r.winner === "future" ? "Toekomstige mij +" + (1 + (r.bonus || 0)) : "Gelijkspel";
+    const meta = r.missed ? "Vergeten af te ronden" : `${r.done}/${r.total} gedaan${r.saved ? " · " + euro(r.saved) + " gespaard" : ""}${r.bonus ? " · weekbonus" : ""}`;
     return `<li><div class="top"><span>${esc(r.date)}</span><span class="pill ${r.winner}">${pill}</span></div>
-      <div class="meta">${r.done}/${r.total} gedaan${r.saved ? " · " + euro(r.saved) + " gespaard" : ""}${r.bonus ? " · weekbonus" : ""}</div>
+      <div class="meta">${meta}</div>
       ${r.note ? `<div class="noteline">${esc(r.note)}</div>` : ""}</li>`;
   }).join("");
 }
 
 // ---------- coach ----------
-async function askCoach() {
+const COACH_INTRO = `Je bent een vriendelijke, eerlijke coach voor een jongere die een spelletje speelt: "Oude mij" tegen "Toekomstige mij". Elke dag vinkt hij taken af. Alles gedaan = punt voor Toekomstige mij, meer niet gedaan dan wel = punt voor Oude mij.`;
+async function runCoach(btn, out, prompt, doneLabel) {
   if (!sample) return;
-  const btn = $("coachBtn"), out = $("coachText");
+  const orig = btn.textContent;
   btn.disabled = true; btn.textContent = "Even denken…";
   out.hidden = false; out.textContent = "Even denken…";
-  const recent = state.history.slice(-21).map(h => `${h.date}: ${h.done}/${h.total} gedaan, ${LABEL[h.winner]}${h.tasks ? ". Niet gedaan: " + (h.tasks.filter(t => !t.done).map(t => t.text).join(", ") || "niets") : ""}${h.note ? ". Notitie: " + h.note : ""}`).join("\n");
-  const prompt = `Je bent een vriendelijke, eerlijke coach voor een jongere die een spelletje speelt: "Oude mij" tegen "Toekomstige mij". Elke dag vinkt hij taken af. Alles gedaan = punt voor Toekomstige mij, meer niet gedaan dan wel = punt voor Oude mij.
+  try {
+    const r = await sample(prompt, { modelTier: "quick", onText: ({ text }) => { out.textContent = text; } });
+    out.textContent = r.text;
+  } catch (e) {
+    if (e && e.code === "not_granted") { $("coachPanel").hidden = true; $("reportCoachRow").hidden = true; out.hidden = true; }
+    else out.textContent = e && e.code === "rate_limited" ? "Even te veel vragen. Probeer het over een minuutje opnieuw." : "De coach is nu niet bereikbaar. Probeer het later opnieuw.";
+  }
+  btn.disabled = false; btn.textContent = doneLabel || orig;
+}
+function askCoach() {
+  const recent = state.history.slice(-21).map(h => h.missed ? `${h.date}: vergeten af te ronden` : `${h.date}: ${h.done}/${h.total} gedaan, ${LABEL[h.winner]}${h.tasks ? ". Niet gedaan: " + (h.tasks.filter(t => !t.done).map(t => t.text).join(", ") || "niets") : ""}${h.note ? ". Notitie: " + h.note : ""}`).join("\n");
+  const prompt = `${COACH_INTRO}
 
-Stand: Oude mij ${state.old} – ${state.future} Toekomstige mij. Huidige winstreeks: ${streaks().cur}. Gespaard: ${euro(state.saved)}.
+Stand: Oude mij ${state.old} – ${state.future} Toekomstige mij. Huidige winstreeks: ${streaks().cur}. Gespaard: ${euro(state.saved)}${state.goal ? ` (doel: ${state.goal.name}, ${euro(state.goal.amount)})` : ""}.
 Huidige taken: ${state.items.map(i => i.text).join(", ") || "geen"}.
 Laatste dagen:
 ${recent || "nog geen dagen afgerond"}
 
 Schrijf in gewoon, kort Nederlands (max 5 zinnen). Benoem één ding dat goed gaat en geef één concrete, haalbare tip voor de taak die het vaakst mislukt. Niet preken, geen opsommingstekens.`;
-  try {
-    const r = await sample(prompt, { modelTier: "quick", onText: ({ text }) => { out.textContent = text; } });
-    out.textContent = r.text;
-  } catch (e) {
-    if (e && e.code === "not_granted") { $("coachPanel").hidden = true; }
-    else out.textContent = e && e.code === "rate_limited" ? "Even te veel vragen. Probeer het over een minuutje opnieuw." : "De coach is nu niet bereikbaar. Probeer het later opnieuw.";
-  }
-  btn.disabled = false; btn.textContent = "Nieuwe tip";
+  runCoach($("coachBtn"), $("coachText"), prompt, "Nieuwe tip");
+}
+function askWeekCoach() {
+  const r = weekReport(); if (!r) return;
+  const tasks = Object.entries(r.tasks).map(([t, v]) => `${t}: ${v.done} van ${v.total}`).join(", ");
+  const prompt = `${COACH_INTRO}
+
+Weekrapport ${r.title}: stand deze week Oude mij ${r.old} – ${r.future} Toekomstige mij, ${r.won} van 7 dagen gewonnen, ${r.missed} dagen vergeten af te ronden, ${euro(r.saved)} gespaard.
+Per taak: ${tasks || "geen gegevens"}.
+${r.notes.length ? "Notities: " + r.notes.join(" | ") : ""}
+
+Schrijf een kort weekrapport in gewoon Nederlands (max 6 zinnen): wat ging goed, wat was lastig, en één concreet doel voor volgende week. Positief maar eerlijk, niet preken, geen opsommingstekens.`;
+  runCoach($("reportCoachBtn"), $("reportCoachText"), prompt);
 }
 
 // ---------- confetti ----------
@@ -832,6 +1153,7 @@ $("tab-overzicht").onclick = () => { showTab("overzicht", true); window.scrollTo
 $("calPrev").onclick = () => { calMonth = new Date(calMonth.getFullYear(), calMonth.getMonth() - 1, 1); renderCal(); };
 $("calNext").onclick = () => { calMonth = new Date(calMonth.getFullYear(), calMonth.getMonth() + 1, 1); renderCal(); };
 $("coachBtn").onclick = askCoach;
+$("reportCoachBtn").onclick = askWeekCoach;
 
 $("undoBtn").onclick = () => {
   const r = state.history.pop();
@@ -839,10 +1161,10 @@ $("undoBtn").onclick = () => {
   if (r.winner === "future") state.future = Math.max(0, state.future - 1);
   if (r.winner === "old") state.old = Math.max(0, state.old - 1);
   if (r.bonus) state.future = Math.max(0, state.future - r.bonus);
-  if (r.saved) state.saved = Math.max(0, Math.round((state.saved - r.saved) * 100) / 100);
-  commit(); toast("Laatste dag teruggedraaid");
+  if (r.saved) state.saved = Math.max(0, money(state.saved - r.saved));
+  commit(); toast("Laatste dag teruggedraaid (" + r.date + ")");
 };
-$("resetBtn").onclick = () => { pending = "reset"; render(); $("finishArea").scrollIntoView({ block: "center", behavior: "smooth" }); };
+$("resetBtn").onclick = () => { pending = { kind: "reset" }; render(); $("finishArea").scrollIntoView({ block: "center", behavior: "smooth" }); };
 $("editBtn").onclick = () => {
   const on = $("listPanel").classList.toggle("editing");
   $("editBtn").textContent = on ? "Klaar" : "Bewerken";
@@ -853,7 +1175,7 @@ $("addForm").addEventListener("submit", e => {
   e.preventDefault();
   const v = $("newItem").value.trim();
   if (!v) return;
-  state.items.push({ id: newId(), text: v, done: false, weight: 1, days: null, amount: 0 });
+  state.items.push({ id: newId(), text: v, done: false, weight: 1, days: null, amount: 0, lag: false, track: false });
   $("newItem").value = "";
   commit();
 });
@@ -869,19 +1191,22 @@ function toast(msg) {
   t.textContent = msg; t.classList.add("show");
   clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove("show"), 2800);
 }
+// nieuwe dag om 04:00 terwijl de app openstaat: opnieuw tekenen
+let shownDay = gameIso();
+setInterval(() => { if (gameIso() !== shownDay) { shownDay = gameIso(); missedChecked = false; checkMissed(); render(); } }, 60000);
 
 // ---------- opstarten ----------
 function loadLocal() {
   // Standaard-checklist voor de eerste keer (aan te passen via Bewerken in de app)
-  state = normalize({ items: [{"text": "Gym", "done": false, "amount": 0}, {"text": "Niet roken", "done": false, "amount": 0}, {"text": "Hhw", "done": false, "amount": 0}, {"text": "Goonen", "done": false, "amount": 0}, {"text": "Opstaan zonder snooze", "done": false, "amount": 0}, {"text": "Voor 23:00 in bed", "done": false, "amount": 0}, {"text": "Geen onnodige aankopen", "done": false, "amount": 0}, {"text": "€2,50 sparen", "done": false, "amount": 2.5}, {"text": "Aan mijn ESP32-project werken", "done": false, "amount": 0}] });
+  state = normalize({ items: [{"text": "Gym", "days": [1, 3, 4, 6]}, {"text": "Niet roken", "weight": 2, "track": true}, {"text": "Hhw"}, {"text": "Opstaan zonder snooze"}, {"text": "Voor 23:00 in bed", "lag": true}, {"text": "Geen onnodige aankopen"}, {"text": "€2,50 sparen", "amount": 2.5}, {"text": "Aan mijn ESP32-project werken"}] });
   try { const s = JSON.parse(localStorage.getItem(LOCAL_KEY)); if (s) state = normalize(s); } catch (e) {}
-  loaded = true; render();
+  loaded = true; render(); checkMissed();
 }
 try { const tab = localStorage.getItem(LOCAL_KEY + "-tab"); if (tab === "overzicht") showTab("overzicht"); } catch (e) {}
 render();
 (async () => {
   const use = n => window.claude && window.claude.use ? window.claude.use(n).catch(() => null) : Promise.resolve(null);
-  use("sample").then(s => { sample = s; $("coachPanel").hidden = !s; });
+  use("sample").then(s => { sample = s; $("coachPanel").hidden = !s; $("reportCoachRow").hidden = !s || !weekReport(); });
   db = await use("db");
   if (!db) return loadLocal();
   try {
@@ -891,7 +1216,7 @@ render();
   ref = db.doc("scorebord/stand");
   const timer = setTimeout(() => { if (!loaded) $("syncNote").textContent = "Je opgeslagen stand is nog niet bereikbaar…"; }, 10000);
   ref.onSnapshot(snap => {
-    if (!snap.metadata.fromCache) clearTimeout(timer);
+    if (!snap.metadata.fromCache) { clearTimeout(timer); serverSeen = true; }
     if (snap.metadata.hasPendingWrites) return;
     if (snap.exists) {
       const incoming = normalize(snap.data());
@@ -900,6 +1225,7 @@ render();
     }
     loaded = true;
     render();
+    if (serverSeen) checkMissed();
   }, () => { clearTimeout(timer); ref = null; loadLocal(); });
 })();
   if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
