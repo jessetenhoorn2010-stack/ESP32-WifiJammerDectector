@@ -399,8 +399,9 @@
     <section class="card">
       <div id="finishArea"></div>
       <ul class="rules">
-        <li><i style="background:var(--future)"></i>Alles gedaan: punt voor Toekomstige mij.</li>
-        <li><i style="background:var(--old)"></i>Meer niet gedaan dan wel: punt voor Oude mij. Daartussenin is het gelijkspel.</li>
+        <li><i style="background:var(--future)"></i>Meer gedaan dan niet gedaan: punt voor Toekomstige mij.</li>
+        <li><i style="background:var(--old)"></i>Meer niet gedaan dan wel: punt voor Oude mij.</li>
+        <li><i style="background:var(--muted)"></i>Precies evenveel gedaan als niet gedaan: gelijkspel.</li>
         <li><i style="background:var(--gold)"></i>Taken met ×2 tellen dubbel. Een hele week (ma t/m zo) gewonnen geeft een bonuspunt.</li>
       </ul>
     </section>
@@ -548,9 +549,11 @@ function tally(items) {
   items.forEach(i => { totalW += i.weight; if (i.done) doneW += i.weight; });
   return { doneW, totalW, done: items.filter(i => i.done).length, total: items.length };
 }
+// meer gedaan dan niet gedaan = Toekomstige mij, meer niet gedaan = Oude mij, precies evenveel = gelijkspel
 function outcomeFor(doneW, totalW) {
-  if (totalW && doneW === totalW) return "future";
-  if (totalW - doneW > doneW) return "old";
+  const notDone = totalW - doneW;
+  if (doneW > notDone) return "future";
+  if (notDone > doneW) return "old";
   return "draw";
 }
 const played = () => state.history.filter(h => !h.missed);
@@ -1075,7 +1078,7 @@ function renderHistory() {
 }
 
 // ---------- coach ----------
-const COACH_INTRO = `Je bent een vriendelijke, eerlijke coach voor een jongere die een spelletje speelt: "Oude mij" tegen "Toekomstige mij". Elke dag vinkt hij taken af. Alles gedaan = punt voor Toekomstige mij, meer niet gedaan dan wel = punt voor Oude mij.`;
+const COACH_INTRO = `Je bent een vriendelijke, eerlijke coach voor een jongere die een spelletje speelt: "Oude mij" tegen "Toekomstige mij". Elke dag vinkt hij taken af. Meer gedaan dan niet gedaan = punt voor Toekomstige mij, meer niet gedaan dan wel = punt voor Oude mij, precies evenveel = gelijkspel.`;
 async function runCoach(btn, out, prompt, doneLabel) {
   if (!sample) return;
   const orig = btn.textContent;
