@@ -297,10 +297,58 @@
   .set-list .btns { display: flex; gap: 8px; flex-wrap: wrap; }
   .note { text-align: center; font-size: .76rem; color: var(--muted); margin: 0; }
 
+  /* munten, winkel */
+  .pills { display: flex; gap: 6px; }
+  .coin-pill svg { color: var(--gold); }
+  .wallet { display: flex; align-items: center; gap: 16px; }
+  .coin-big { width: 64px; height: 64px; flex: none; border-radius: 50%; display: grid; place-items: center; color: var(--on-gold);
+    background: radial-gradient(circle at 35% 30%, #fbe9b8, #d8b363 55%, #8f6c25 100%); box-shadow: 0 10px 24px -10px rgba(216,179,99,.8), inset 0 -3px 0 rgba(0,0,0,.2); }
+  .coin-big svg { width: 30px; height: 30px; }
+  .wallet b { display: block; font-family: var(--display); font-weight: 900; font-size: 2.6rem; line-height: 1; font-variant-numeric: tabular-nums; }
+  .wallet span { font-size: .8rem; color: var(--muted); font-weight: 600; }
+  .earn { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 14px; margin: 14px 0 0; padding: 12px 0 0; border-top: 1px solid var(--line); font-size: .8rem; color: var(--muted); }
+  .earn li { display: flex; justify-content: space-between; gap: 6px; }
+  .earn li b { color: var(--gold); font-variant-numeric: tabular-nums; }
+  .reward { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-top: 1px solid var(--line); }
+  .reward:first-child { border-top: 0; padding-top: 0; }
+  .reward .rn { flex: 1; min-width: 0; font-weight: 700; overflow-wrap: anywhere; }
+  .reward .rc { display: inline-flex; align-items: center; gap: 4px; font-size: .8rem; color: var(--gold); font-weight: 800; margin-top: 2px; }
+  .reward .rc svg { width: 13px; height: 13px; }
+  .reward .need { font-size: .74rem; color: var(--muted); font-weight: 600; }
+  .reward .btn { padding: 9px 14px; font-size: .85rem; }
+  .reward .btn:disabled { background: var(--surface-2); color: var(--muted); border: 1px solid var(--line); cursor: default; }
+  .reward .icon-btn { display: grid; place-items: center; }
+  /* focus-timer */
+  .play-btn { display: grid; place-items: center; width: 36px; height: 36px; flex: none; border-radius: 50%; border: 1px solid rgba(216,179,99,.4); background: var(--gold-soft); color: var(--gold); cursor: pointer; }
+  .play-btn svg { width: 15px; height: 15px; }
+  .editing .play-btn { display: none; }
+  .focus { margin-top: 14px; border-radius: 18px; padding: 16px; background: radial-gradient(120% 100% at 50% 0%, rgba(216,179,99,.16), transparent 70%), var(--surface-2); border: 1px solid rgba(216,179,99,.3); text-align: center; }
+  .focus .ft { font-size: .8rem; color: var(--muted); font-weight: 700; }
+  .focus .clock { font-family: var(--display); font-weight: 900; font-size: 4rem; line-height: 1; font-variant-numeric: tabular-nums; margin: 6px 0 10px; }
+  .focus .fbar { height: 6px; border-radius: 99px; background: var(--line); overflow: hidden; margin-bottom: 14px; }
+  .focus .fbar span { display: block; height: 100%; background: var(--gold-grad); border-radius: 99px; transition: width 1s linear; }
+  /* slaap */
+  .sleep-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .sleep-row input[type=time] { padding: 10px 12px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface-2); color: var(--fg); font: inherit; font-weight: 700; font-size: 1.1rem; }
+  .sleep-verdict { font-size: .86rem; font-weight: 700; }
+  .sleep-verdict.ok { color: var(--future); } .sleep-verdict.late { color: var(--old); }
+  /* jaaroverzicht */
+  .year-wrap { overflow-x: auto; padding-bottom: 6px; -webkit-overflow-scrolling: touch; }
+  .year { display: grid; grid-template-rows: 14px repeat(7, 11px); grid-auto-flow: column; grid-auto-columns: 11px; gap: 3px; width: max-content; }
+  .year .m { font-size: .6rem; font-weight: 700; color: var(--muted); white-space: nowrap; }
+  .year .d { width: 11px; height: 11px; border-radius: 3px; background: var(--surface-2); }
+  .year .d.future { background: var(--future); } .year .d.old { background: var(--old); } .year .d.draw { background: #6b6455; }
+  .year .d.joker, .year .d.rest { background: var(--gold-deep); } .year .d.perfect { background: var(--gold); box-shadow: 0 0 6px rgba(216,179,99,.7); }
+  .year .d.today { outline: 1.5px solid var(--fg); outline-offset: 1px; }
+  .year .d.out { visibility: hidden; }
+  .cal .cell.rest { color: var(--gold-deep); }
+  .rest-card { display: flex; align-items: center; gap: 12px; }
+  .rest-card .big { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: var(--gold-soft); color: var(--gold); flex: none; font-size: 1.3rem; }
+
   /* menubalk onderin */
   .nav { position: fixed; left: 0; right: 0; bottom: 0; z-index: 15; display: flex; justify-content: center;
     padding: 8px max(16px, env(safe-area-inset-right, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); pointer-events: none; }
-  .nav-inner { pointer-events: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 6px; width: 100%; max-width: 360px; padding: 6px;
+  .nav-inner { pointer-events: auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; width: 100%; max-width: 400px; padding: 6px;
     background: var(--nav-bg); backdrop-filter: blur(16px) saturate(1.3); -webkit-backdrop-filter: blur(16px) saturate(1.3);
     border: 1px solid rgba(216,179,99,.22); border-radius: 22px; box-shadow: 0 16px 36px -16px rgba(0,0,0,.9); }
   .nav button { border: 0; background: none; border-radius: 16px; padding: 9px 8px; display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; color: var(--muted); font-size: .72rem; font-weight: 800; letter-spacing: .02em; }
@@ -335,6 +383,11 @@
     <symbol id="i-trash" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></g></symbol>
     <symbol id="i-home" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m4 10 8-6 8 6v9a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1v-9Z"/></g></symbol>
     <symbol id="i-flag" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></g></symbol>
+    <symbol id="i-bag" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1 12H6L5 8Z"/><path d="M9 10V7a3 3 0 0 1 6 0v3"/></g></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path fill="currentColor" d="M8 5.5v13a1 1 0 0 0 1.5.9l10.2-6.5a1 1 0 0 0 0-1.8L9.5 4.6A1 1 0 0 0 8 5.5Z"/></symbol>
+    <symbol id="i-pause" viewBox="0 0 24 24"><g fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></g></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24"><g fill="currentColor"><rect x="3" y="3" width="5" height="5" rx="1"/><rect x="10" y="3" width="5" height="5" rx="1"/><rect x="17" y="3" width="4" height="5" rx="1"/><rect x="3" y="10" width="5" height="5" rx="1"/><rect x="10" y="10" width="5" height="5" rx="1"/><rect x="17" y="10" width="4" height="5" rx="1"/><rect x="3" y="17" width="5" height="4" rx="1"/><rect x="10" y="17" width="5" height="4" rx="1"/></g></symbol>
     <symbol id="i-percent" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 5 5 19"/><circle cx="7" cy="7" r="2.5"/><circle cx="17" cy="17" r="2.5"/></g></symbol>
     <symbol id="i-check" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
     <symbol id="i-star" viewBox="0 0 24 24"><path fill="currentColor" d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9L12 3Z"/></symbol>
@@ -356,7 +409,10 @@
       <div class="eyebrow" id="dateLine">Vandaag</div>
       <p class="greet" id="greet">Hoi!</p>
     </div>
-    <div class="flame" title="Winstreeks"><svg><use href="#i-flame"/></svg><span id="flameN">0</span></div>
+    <div class="pills">
+      <div class="flame coin-pill" title="Munten"><svg><use href="#i-coin"/></svg><span id="coinN">0</span></div>
+      <div class="flame" title="Winstreeks"><svg><use href="#i-flame"/></svg><span id="flameN">0</span></div>
+    </div>
   </header>
 
   <div class="level" aria-label="Level">
@@ -406,9 +462,16 @@
         <input class="input" id="newItem" placeholder="Nieuwe taak…" autocomplete="off" aria-label="Nieuwe taak">
         <button class="btn btn-quiet" type="submit">Toevoegen</button>
       </form>
+      <div id="focusPanel" hidden></div>
+    </section>
+
+    <section class="card" id="sleepCard">
+      <div class="card-head"><div class="title"><div class="ico"><svg><use href="#i-moon"/></svg></div><div><h2>Slaap</h2><div class="sub" id="sleepSub">Hoe laat ging je gisteravond slapen?</div></div></div></div>
+      <div class="sleep-row"><input type="time" id="bedInput" aria-label="Bedtijd gisteravond"><span class="sleep-verdict" id="bedVerdict"></span></div>
     </section>
 
     <section class="card">
+      <div id="restNote" hidden></div>
       <div id="finishArea"></div>
       <ul class="rules">
         <li><i style="background:var(--future)"></i>Meer gedaan dan niet gedaan: punt voor Toekomstige mij.</li>
@@ -442,6 +505,30 @@
       <button class="btn btn-quiet" id="undoBtn" type="button">Laatste dag terugdraaien</button>
       <button class="btn btn-quiet" id="resetBtn" type="button">Score op 0 zetten</button>
     </div>
+  </div>
+
+  <!-- WINKEL -->
+  <div class="view" id="view-winkel" hidden>
+    <section class="card">
+      <div class="wallet"><div class="coin-big"><svg><use href="#i-coin"/></svg></div><div><b class="gold-text" id="walletN">0</b><span>munten om uit te geven</span></div></div>
+      <ul class="earn">
+        <li>Dag gewonnen <b>+10</b></li><li>Perfecte dag <b>+5</b></li>
+        <li>Gelijkspel <b>+4</b></li><li>Uitdaging <b>+15</b></li>
+        <li>Verloren <b>+1</b></li><li>Weekbonus <b>+20</b></li>
+      </ul>
+    </section>
+    <section class="card">
+      <div class="card-head"><div class="title"><div class="ico"><svg><use href="#i-bag"/></svg></div><div><h2>Beloningen</h2><div class="sub">Bedenk zelf waar je je munten aan uitgeeft</div></div></div><button class="btn btn-quiet" id="shopEdit" type="button">Bewerken</button></div>
+      <ul id="rewards"></ul>
+      <form class="goal-form" id="rewardForm" style="margin-top:14px">
+        <div class="row2"><input class="input" id="rwName" placeholder="Bijv. 1 uur extra gamen" aria-label="Beloning" autocomplete="off"><input class="input" id="rwCost" inputmode="numeric" placeholder="Prijs" aria-label="Prijs in munten"></div>
+        <button class="btn btn-quiet" type="submit">Beloning toevoegen</button>
+      </form>
+    </section>
+    <section class="card" id="buyCard" hidden>
+      <div class="card-head"><div class="title"><div class="ico"><svg><use href="#i-check"/></svg></div><h2>Gekocht</h2></div></div>
+      <ul class="hist" id="purchases"></ul>
+    </section>
   </div>
 
   <!-- OVERZICHT -->
@@ -496,6 +583,17 @@
     </section>
 
     <section class="card">
+      <div class="card-head"><div class="title"><div class="ico"><svg><use href="#i-grid"/></svg></div><div><h2 id="yearTitle">Jaaroverzicht</h2><div class="sub" id="yearSub">Elke dag van het jaar</div></div></div></div>
+      <div class="year-wrap" id="yearWrap"><div class="year" id="year"></div></div>
+      <div class="cal-legend"><span><i class="dot future"></i>Gewonnen</span><span><i class="dot" style="background:var(--gold)"></i>Perfect</span><span><i class="dot old"></i>Verloren</span><span><i class="dot" style="background:var(--gold-deep)"></i>Joker/rust</span></div>
+    </section>
+
+    <section class="card" id="sleepChartCard" hidden>
+      <div class="card-head"><div class="title"><div class="ico"><svg><use href="#i-moon"/></svg></div><div><h2>Bedtijden</h2><div class="sub" id="sleepAvg">Laatste 14 nachten</div></div></div></div>
+      <div class="chart-wrap" id="sleepChart"></div>
+    </section>
+
+    <section class="card">
       <div class="card-head"><div class="title"><div class="ico"><svg><use href="#i-list"/></svg></div><div><h2>Per taak</h2><div class="sub">Moeilijkste taken bovenaan</div></div></div></div>
       <ul id="taskStats"></ul>
     </section>
@@ -508,6 +606,8 @@
     <section class="card">
       <div class="card-head"><div class="title"><div class="ico"><svg><use href="#i-sliders"/></svg></div><h2>Instellingen</h2></div></div>
       <div class="set-list">
+        <div><span class="lbl">Vaste rustdagen (geen punten nodig)</span><div class="days" id="restDays"></div></div>
+        <div class="sleep-row"><label class="lbl" for="bedGoal" style="margin:0;flex:1">Op tijd naar bed = vóór</label><input type="time" id="bedGoal" value="23:00"></div>
         <label class="toggle"><span>Geluidjes<small>Bij afvinken en punten</small></span><span class="switch"><input type="checkbox" id="soundToggle"><span></span></span></label>
         <div>
           <span class="lbl">Back-up</span>
@@ -528,6 +628,7 @@
 <nav class="nav" aria-label="Menu">
   <div class="nav-inner" role="tablist">
     <button role="tab" id="tab-vandaag" aria-selected="true" type="button"><svg><use href="#i-home"/></svg>Vandaag</button>
+    <button role="tab" id="tab-winkel" aria-selected="false" type="button"><svg><use href="#i-bag"/></svg>Winkel</button>
     <button role="tab" id="tab-overzicht" aria-selected="false" type="button"><svg><use href="#i-chart"/></svg>Overzicht</button>
   </div>
 </nav>
@@ -576,7 +677,8 @@ const QUOTES = [
   "Groei voelt vaak ongemakkelijk. Dat betekent dat het werkt.",
   "Vandaag is weer een kans om een punt te scoren."
 ];
-let state = { old: 0, future: 0, saved: 0, note: "", goal: null, challenge: null, items: [], history: [] };
+let state = { old: 0, future: 0, saved: 0, note: "", bedtime: "", bedGoal: "23:00", restDays: [], goal: null, challenge: null, rewards: [], spent: 0, purchases: [], items: [], history: [] };
+let shopEditing = false, focusTimer = null, wakeLock = null;
 let db = null, ref = null, sample = null, downloads = null, canWrite = true, loaded = false, serverSeen = false, missedChecked = false;
 let pending = null, openSettings = null, calMonth = null, lastScores = null, lastLevel = null, goalEditing = false, importData = null;
 let soundOn = true;
@@ -607,12 +709,18 @@ function normalize(d) {
   return {
     old: Number(d.old) || 0, future: Number(d.future) || 0, saved: Number(d.saved) || 0,
     note: typeof d.note === "string" ? d.note : "", goal: g, challenge: c,
+    bedtime: /^\d\d:\d\d$/.test(d.bedtime || "") ? d.bedtime : "", bedGoal: /^\d\d:\d\d$/.test(d.bedGoal || "") ? d.bedGoal : "23:00",
+    restDays: Array.isArray(d.restDays) ? d.restDays.filter(x => x >= 0 && x <= 6) : [],
+    rewards: Array.isArray(d.rewards) ? d.rewards.filter(r => r && r.name).map(r => ({ id: r.id || newId(), name: String(r.name), cost: Math.max(1, Math.round(Number(r.cost) || 1)) })) : [],
+    spent: Math.max(0, Number(d.spent) || 0),
+    purchases: Array.isArray(d.purchases) ? d.purchases.slice(-200) : [],
     items: Array.isArray(d.items) ? d.items.map(i => ({
       id: i.id || newId(), text: String(i.text || ""), done: !!i.done,
       weight: i.weight === 2 ? 2 : 1,
       days: Array.isArray(i.days) && i.days.length && i.days.length < 7 ? i.days.filter(x => x >= 0 && x <= 6) : null,
       amount: Number(i.amount) > 0 ? Number(i.amount) : 0,
-      lag: !!i.lag, track: !!i.track, part: ["ochtend", "dag", "avond"].includes(i.part) ? i.part : null
+      lag: !!i.lag, track: !!i.track, part: ["ochtend", "dag", "avond"].includes(i.part) ? i.part : null,
+      focus: Number(i.focus) > 0 ? Math.min(180, Math.round(Number(i.focus))) : 0
     })) : [],
     history: Array.isArray(d.history) ? d.history.slice(-500) : []
   };
@@ -694,7 +802,8 @@ function maybeBonus(entry) {
   const inWeek = state.history.filter(h => h.iso && weekKey(h.iso) === wk);
   if (inWeek.some(h => h.bonus)) return 0;
   const dates = new Set(inWeek.map(h => h.iso));
-  return dates.size === 7 && inWeek.every(h => h.winner === "future" || h.joker) && inWeek.some(h => h.winner === "future") ? 1 : 0;
+  for (let i = 0; i < 7; i++) { const d = addDays(wk, i); if (!dates.has(d) && !isRest(d)) return 0; }
+  return inWeek.every(h => h.winner === "future" || h.joker) && inWeek.some(h => h.winner === "future") ? 1 : 0;
 }
 function taskStreak(text) {
   let best = 0, run = 0, cur = 0;
@@ -716,6 +825,17 @@ function taskStreak(text) {
 }
 const nextMilestone = n => MILESTONES.find(m => m > n) || (Math.floor(n / 100) + 1) * 100;
 const jokerUsed = iso => state.history.some(h => h.joker && h.iso && weekKey(h.iso) === weekKey(iso));
+
+// ---------- munten ----------
+function coinsFor(h) {
+  if (h.missed || h.joker) return 0;
+  return (h.winner === "future" ? 10 : h.winner === "draw" ? 4 : 1) + (h.perfect || 0) * 5 + (h.bonus || 0) * 20 + (h.challenge || 0) * 15;
+}
+const coinsEarned = () => state.history.reduce((a, h) => a + coinsFor(h), 0);
+const coinBalance = () => Math.max(0, coinsEarned() - state.spent);
+
+// ---------- rustdagen ----------
+const isRest = iso => state.restDays.includes(dateOf(iso).getDay());
 
 // ---------- level / XP ----------
 function xpTotal() {
@@ -774,7 +894,7 @@ function lastIso() { const l = state.history.filter(h => h.iso).map(h => h.iso).
 function yesterdayOpen() {
   const last = lastIso(); if (!last) return null;
   const y = addDays(gameIso(), -1);
-  return last < y && !state.history.some(h => h.iso === y) ? y : null;
+  return last < y && !isRest(y) && !state.history.some(h => h.iso === y) ? y : null;
 }
 function missedEntry(iso) { return { iso, date: labelOf(iso), done: 0, total: 0, winner: "old", bonus: 0, saved: 0, missed: true }; }
 function jokerEntry(iso) { return { iso, date: labelOf(iso), done: 0, total: 0, winner: "joker", joker: true, bonus: 0, saved: 0 }; }
@@ -786,7 +906,7 @@ function checkMissed() {
   const y = addDays(gameIso(), -1);
   let d = addDays(last, 1), added = 0;
   while (d < y && added < 60) {
-    if (!state.history.some(h => h.iso === d)) { state.history.push(missedEntry(d)); state.old++; added++; }
+    if (!isRest(d) && !state.history.some(h => h.iso === d)) { state.history.push(missedEntry(d)); state.old++; added++; }
     d = addDays(d, 1);
   }
   if (added) { sortHistory(); commit(); toast(added === 1 ? "1 vergeten dag: punt voor Oude mij" : added + " vergeten dagen: punten voor Oude mij"); }
@@ -821,6 +941,7 @@ function render() {
 
   const st = streaks();
   $("streak").textContent = st.cur; $("flameN").textContent = st.cur;
+  $("coinN").textContent = coinBalance();
   const wk = weekScores()[weekKey(gameIso())] || { old: 0, future: 0 };
   $("week").textContent = wk.old + "–" + wk.future;
   $("saved").textContent = euro(state.saved);
@@ -839,6 +960,10 @@ function render() {
 
   renderBanners();
   renderList();
+  renderFocus();
+  renderSleepInput();
+  renderShop();
+  renderSettings();
   renderChallenge();
   renderTrackers();
   renderGoal();
@@ -917,9 +1042,16 @@ function renderList() {
     if (it.lag) badge("", "gisteravond");
     if (it.weight === 2) badge("x2", "×2");
     if (it.amount) badge("money", "+" + euro(it.amount));
+    if (it.focus) badge("", "⏱ " + it.focus + " min");
     if (editing && it.part) badge("", PARTS.find(x => x[0] === it.part)[1]);
     if (editing && it.days) badge("", DAY_ORDER.filter(d => it.days.includes(d)).map(d => DAYS[d]).join(" "));
     row.appendChild(label);
+    if (it.focus && !editing && !it.done && canWrite) {
+      const pb = document.createElement("button"); pb.type = "button"; pb.className = "play-btn"; pb.innerHTML = icon("i-play");
+      pb.setAttribute("aria-label", `Focus-timer ${it.focus} minuten: ${it.text}`);
+      pb.onclick = () => startFocus(it);
+      row.appendChild(pb);
+    }
     const mk = (ic, aria, fn, dis) => { const b = document.createElement("button"); b.type = "button"; b.className = "icon-btn"; b.innerHTML = icon(ic); b.setAttribute("aria-label", aria); b.disabled = !!dis; b.onclick = fn; return b; };
     row.append(
       mk("i-up", "Omhoog: " + it.text, () => { state.items.splice(idx, 1); state.items.splice(idx - 1, 0, it); commit(); }, idx === 0),
@@ -936,10 +1068,18 @@ function renderList() {
         <label class="toggle"><span>Gaat over gisteravond<small>Je vinkt hem 's ochtends af, bijv. op tijd naar bed</small></span><span class="switch"><input type="checkbox" id="l-${it.id}" ${it.lag ? "checked" : ""}><span></span></span></label>
         <label class="toggle"><span>Reeks-teller tonen<small>Laat zien hoeveel dagen op rij het lukt</small></span><span class="switch"><input type="checkbox" id="r-${it.id}" ${it.track ? "checked" : ""}><span></span></span></label>
         <div><span class="lbl">Op welke dagen? Niets gekozen = elke dag</span><div class="days"></div></div>
+        <div><span class="lbl">Focus-timer (tik ▶ in je lijst, vinkt af als de tijd om is)</span><div class="seg" data-k="focus"></div></div>
         <div><label class="lbl" for="a-${it.id}">Bedrag sparen bij afvinken</label>
           <div class="money-field"><span class="pre">€</span><input type="text" class="input amount" id="a-${it.id}" inputmode="decimal" value="${it.amount ? String(it.amount).replace(".", ",") : ""}" placeholder="0,00"></div></div>
         <button type="button" class="btn-del">${icon("i-trash")}Taak verwijderen</button>`;
-      const seg = s.querySelector(".seg");
+      const fseg = s.querySelector('.seg[data-k="focus"]');
+      [[0, "Uit"], [15, "15"], [25, "25"], [45, "45"], [60, "60"]].forEach(([m, name]) => {
+        const b = document.createElement("button"); b.type = "button"; b.textContent = name + (m ? "m" : "");
+        b.setAttribute("aria-pressed", (it.focus || 0) === m ? "true" : "false");
+        b.onclick = () => { it.focus = m; commit(); };
+        fseg.appendChild(b);
+      });
+      const seg = s.querySelector('.seg[data-k="part"]');
       [[null, "Hele dag"], ...PARTS].forEach(([k, name]) => {
         const b = document.createElement("button"); b.type = "button"; b.textContent = name;
         b.setAttribute("aria-pressed", it.part === k ? "true" : "false");
@@ -1062,6 +1202,10 @@ function renderGoal() {
 function renderFinish() {
   const area = $("finishArea");
   area.replaceChildren();
+  const rn = $("restNote");
+  const restToday = isRest(gameIso()) && !state.history.some(h => h.iso === gameIso());
+  rn.hidden = !restToday || !!pending;
+  if (restToday) rn.innerHTML = `<div class="rest-card" style="margin-bottom:14px"><div class="big">😌</div><div><b>Vandaag is je rustdag</b><div class="sub">Geen punten nodig en je reeks blijft staan. Wil je toch spelen? Rond dan gewoon af.</div></div></div>`;
   const items = activeItems(), t = tally(items);
   const today = gameIso();
   const doneToday = state.history.some(h => h.iso === today);
@@ -1091,7 +1235,7 @@ function renderFinish() {
       <div class="row"><button class="btn btn-quiet" id="cancelBtn" type="button">Annuleren</button>
       <button class="btn" id="confirmBtn" type="button" style="background:var(--old);color:#fff">Op 0 zetten</button></div></div>`;
     $("cancelBtn").onclick = () => { pending = null; render(); };
-    $("confirmBtn").onclick = () => { state.old = 0; state.future = 0; state.saved = 0; state.history = []; state.challenge = null; pending = null; lastLevel = null; commit(); toast("Alles staat weer op 0"); };
+    $("confirmBtn").onclick = () => { state.old = 0; state.future = 0; state.saved = 0; state.history = []; state.challenge = null; state.spent = 0; state.purchases = []; pending = null; lastLevel = null; commit(); toast("Alles staat weer op 0"); };
   } else if (doneToday && loaded) {
     const e = state.history.filter(h => h.iso === today).pop();
     area.innerHTML = `<div class="done-state"><div class="big">${icon(e.joker ? "i-joker" : "i-check")}</div><div><b>${e.joker ? "Joker ingezet voor vandaag" : "Vandaag is afgerond"}</b><div class="sub">${e.joker ? "Geen punten, je reeks blijft staan." : esc(LABEL[e.winner]) + (e.perfect ? " · ⭐ perfect" : "") + "."} Morgen vanaf 04:00 kun je weer.</div></div></div>`;
@@ -1129,7 +1273,7 @@ function finishDay(iso, mood) {
   const entry = {
     iso, date: labelOf(iso),
     done: t.done, total: t.total, doneW: t.doneW, totalW: t.totalW, winner: w, bonus: 0, perfect, challenge: 0,
-    saved: money(m), note: state.note.trim(), mood: mood || null,
+    saved: money(m), note: state.note.trim(), mood: mood || null, bed: state.bedtime || null,
     tasks: items.map(i => ({ text: i.text, done: i.done }))
   };
   if (w === "future") state.future++;
@@ -1143,7 +1287,7 @@ function finishDay(iso, mood) {
   const c = state.challenge;
   if (c && !c.awarded && weekKey(iso) === c.week && challengeProgress(c) >= c.target) { c.awarded = true; entry.challenge = 1; state.future++; }
   state.items.forEach(i => i.done = false);
-  state.note = ""; $("dayNote").value = "";
+  state.note = ""; $("dayNote").value = ""; state.bedtime = "";
   pending = null;
   commit();
   window.scrollTo({ top: 0, behavior: "smooth" });
@@ -1190,7 +1334,7 @@ function renderReport() {
   const avgMood = r.moods.length ? MOODS[Math.round(r.moods.reduce((a, b) => a + b, 0) / r.moods.length) - 1] : null;
   $("reportBody").innerHTML = `<div class="report-grid">
       <div><b>${r.old}–${r.future}</b><span>Stand</span></div>
-      <div><b>${r.won}/7</b><span>Gewonnen</span></div>
+      <div><b>${r.won}/${7 - Array.from({ length: 7 }, (_, i) => addDays(r.start, i)).filter(isRest).length}</b><span>Gewonnen</span></div>
       <div><b>${euro(r.saved)}</b><span>Gespaard</span></div></div>
     <ul class="report-lines">
       ${r.best ? `<li><span>Ging het best</span><span>${esc(r.best[0])} (${pct(r.best)})</span></li>` : ""}
@@ -1218,7 +1362,7 @@ function renderOverview() {
   const ms = medalList();
   $("medalCount").textContent = ms.filter(m => m.got).length + " van " + ms.length;
   $("medals").innerHTML = ms.map(m => `<div class="medal${m.got ? "" : " locked"}" title="${esc(m.desc)}"><div class="disc">${icon(m.ic)}</div><b>${esc(m.name)}</b><span>${esc(m.desc)}</span></div>`).join("");
-  renderMood(); renderReport(); renderChart(); renderCal(); renderTaskStats(); renderHistory();
+  renderMood(); renderReport(); renderChart(); renderCal(); renderYear(); renderSleepChart(); renderTaskStats(); renderHistory();
 }
 
 function renderMood() {
@@ -1297,7 +1441,7 @@ function renderCal() {
   for (let d = 1; d <= dim; d++) {
     const iso = isoOf(new Date(calMonth.getFullYear(), calMonth.getMonth(), d));
     const e = byDate[iso];
-    const cls = "cell" + (iso === todayIso ? " today" : "") + (e && e.winner !== "draw" ? " has-" + e.winner : "") + (e && e.perfect ? " perfect" : "");
+    const cls = "cell" + (iso === todayIso ? " today" : "") + (e && e.winner !== "draw" ? " has-" + e.winner : "") + (e && e.perfect ? " perfect" : "") + (!e && isRest(iso) ? " rest" : "");
     html += `<div class="${cls}" title="${e ? esc(e.missed ? "Vergeten af te ronden" : LABEL[e.winner]) : ""}">${d}${e ? `<i class="dot ${e.winner}"></i>` : ""}</div>`;
   }
   $("cal").innerHTML = html;
@@ -1444,7 +1588,7 @@ function confetti() {
 
 // ---------- knoppen ----------
 function showTab(name, animate) {
-  ["vandaag", "overzicht"].forEach(n => {
+  ["vandaag", "winkel", "overzicht"].forEach(n => {
     $("tab-" + n).setAttribute("aria-selected", n === name ? "true" : "false");
     const v = $("view-" + n);
     v.hidden = n !== name;
@@ -1453,7 +1597,8 @@ function showTab(name, animate) {
   try { localStorage.setItem(LOCAL_KEY + "-tab", name); } catch (e) {}
 }
 $("tab-vandaag").onclick = () => { showTab("vandaag", true); window.scrollTo({ top: 0 }); };
-$("tab-overzicht").onclick = () => { showTab("overzicht", true); window.scrollTo({ top: 0 }); };
+$("tab-overzicht").onclick = () => { showTab("overzicht", true); window.scrollTo({ top: 0 }); yearScrolled = false; renderYear(); };
+$("tab-winkel").onclick = () => { showTab("winkel", true); window.scrollTo({ top: 0 }); };
 $("calPrev").onclick = () => { calMonth = new Date(calMonth.getFullYear(), calMonth.getMonth() - 1, 1); renderCal(); };
 $("calNext").onclick = () => { calMonth = new Date(calMonth.getFullYear(), calMonth.getMonth() + 1, 1); renderCal(); };
 $("coachBtn").onclick = askCoach;
@@ -1498,6 +1643,203 @@ function toast(msg) {
 let shownDay = gameIso();
 setInterval(() => { if (gameIso() !== shownDay) { shownDay = gameIso(); missedChecked = false; checkMissed(); render(); } }, 60000);
 
+// ---------- winkel ----------
+function renderShop() {
+  const bal = coinBalance();
+  $("walletN").textContent = bal;
+  $("shopEdit").hidden = !canWrite || !state.rewards.length;
+  $("shopEdit").textContent = shopEditing ? "Klaar" : "Bewerken";
+  $("rewardForm").hidden = !canWrite;
+  const ul = $("rewards");
+  ul.replaceChildren();
+  if (!state.rewards.length) { ul.innerHTML = '<li class="muted" style="font-size:.9rem">Nog geen beloningen. Voeg er hieronder een toe, bijvoorbeeld "Pizza bestellen" voor 200 munten.</li>'; }
+  state.rewards.slice().sort((a, b) => a.cost - b.cost).forEach(r => {
+    const li = document.createElement("li"); li.className = "reward";
+    const enough = bal >= r.cost;
+    li.innerHTML = `<div class="rn"><div></div><div class="rc">${icon("i-coin")}${r.cost}</div>${!enough ? `<div class="need">Nog ${r.cost - bal} munten</div>` : ""}</div>`;
+    li.querySelector(".rn > div").textContent = r.name;
+    if (shopEditing) {
+      const del = document.createElement("button"); del.type = "button"; del.className = "icon-btn"; del.innerHTML = icon("i-trash"); del.setAttribute("aria-label", "Verwijder " + r.name);
+      del.onclick = () => { state.rewards = state.rewards.filter(x => x.id !== r.id); commit(); };
+      li.appendChild(del);
+    } else if (canWrite) {
+      const b = document.createElement("button"); b.type = "button"; b.className = "btn btn-yes"; b.textContent = "Kopen"; b.disabled = !enough;
+      b.onclick = () => {
+        if (b.dataset.sure !== "1") { b.dataset.sure = "1"; b.textContent = "Zeker?"; setTimeout(() => { if (b.isConnected) { b.dataset.sure = ""; b.textContent = "Kopen"; } }, 3000); return; }
+        if (coinBalance() < r.cost) return;
+        state.spent += r.cost; state.purchases.push({ name: r.name, cost: r.cost, iso: gameIso(), date: labelOf(gameIso()) });
+        commit(); sfx.perfect(); confetti(); toast("🎁 Geniet van: " + r.name + "!");
+      };
+      li.appendChild(b);
+    }
+    ul.appendChild(li);
+  });
+  $("buyCard").hidden = !state.purchases.length;
+  $("purchases").innerHTML = state.purchases.slice().reverse().slice(0, 30).map(p => `<li><div class="top"><span>${esc(p.name)}</span><span class="pill joker">−${p.cost}</span></div><div class="meta">${esc(p.date || "")}</div></li>`).join("");
+}
+$("shopEdit").onclick = () => { shopEditing = !shopEditing; renderShop(); };
+$("rewardForm").addEventListener("submit", e => {
+  e.preventDefault();
+  const name = $("rwName").value.trim(), cost = Math.round(Number(String($("rwCost").value).replace(/[^0-9]/g, "")));
+  if (!name) return toast("Vul een beloning in");
+  if (!(cost > 0)) return toast("Vul een prijs in munten in, bijvoorbeeld 50");
+  state.rewards.push({ id: newId(), name, cost });
+  $("rwName").value = ""; $("rwCost").value = "";
+  commit(); toast("Beloning toegevoegd");
+});
+
+// ---------- focus-timer ----------
+const FKEY = LOCAL_KEY + "-focus";
+function loadFocus() { try { return JSON.parse(localStorage.getItem(FKEY)) || null; } catch (e) { return null; } }
+function saveFocus(f) { try { f ? localStorage.setItem(FKEY, JSON.stringify(f)) : localStorage.removeItem(FKEY); } catch (e) {} }
+let focus = loadFocus();
+async function lockScreen(on) {
+  try {
+    if (on && !wakeLock && navigator.wakeLock) wakeLock = await navigator.wakeLock.request("screen");
+    if (!on && wakeLock) { wakeLock.release(); wakeLock = null; }
+  } catch (e) {}
+}
+function startFocus(it) {
+  focus = { id: it.id, text: it.text, total: it.focus * 60000, end: Date.now() + it.focus * 60000, left: null };
+  saveFocus(focus); sfx.tick(); lockScreen(true); renderFocus();
+  $("focusPanel").scrollIntoView({ block: "center", behavior: "smooth" });
+}
+function focusLeft() { return focus ? (focus.left != null ? focus.left : Math.max(0, focus.end - Date.now())) : 0; }
+function renderFocus() {
+  const p = $("focusPanel");
+  if (!focus) { p.hidden = true; clearInterval(focusTimer); focusTimer = null; return; }
+  const left = focusLeft();
+  if (left <= 0 && focus.left == null) return finishFocus();
+  const mm = Math.floor(left / 60000), ss = Math.floor(left % 60000 / 1000);
+  const paused = focus.left != null;
+  p.hidden = false;
+  if (!p.firstChild || p.dataset.id !== focus.id) {
+    p.dataset.id = focus.id;
+    p.innerHTML = `<div class="focus"><div class="ft"></div><div class="clock" id="fClock"></div><div class="fbar"><span id="fBar"></span></div>
+      <div class="row"><button class="btn btn-quiet" id="fStop" type="button">Stoppen</button><button class="btn btn-yes" id="fPause" type="button"></button></div></div>`;
+    p.querySelector(".ft").textContent = "Focus: " + focus.text;
+    $("fStop").onclick = () => { focus = null; saveFocus(null); lockScreen(false); renderFocus(); toast("Timer gestopt"); };
+    $("fPause").onclick = () => {
+      if (focus.left != null) { focus.end = Date.now() + focus.left; focus.left = null; lockScreen(true); }
+      else { focus.left = Math.max(0, focus.end - Date.now()); lockScreen(false); }
+      saveFocus(focus); renderFocus();
+    };
+  }
+  $("fClock").textContent = pad(mm) + ":" + pad(ss);
+  $("fBar").style.width = (100 - left / focus.total * 100) + "%";
+  $("fPause").textContent = paused ? "Verder" : "Pauze";
+  if (!focusTimer) focusTimer = setInterval(renderFocus, 1000);
+}
+function finishFocus() {
+  const it = state.items.find(i => i.id === focus.id);
+  const text = focus.text;
+  focus = null; saveFocus(null); lockScreen(false); clearInterval(focusTimer); focusTimer = null; $("focusPanel").hidden = true;
+  sfx.perfect(); buzz(); try { navigator.vibrate && navigator.vibrate([200, 100, 200]); } catch (e) {}
+  if (it && !it.done && canWrite) { it.done = true; commit(); }
+  toast("⏱ Klaar! " + text + " afgevinkt");
+}
+document.addEventListener("visibilitychange", () => { if (!document.hidden && focus) renderFocus(); });
+
+// ---------- slaap ----------
+const toMin = t => { const [h, m] = t.split(":").map(Number); return (h < 12 ? h + 24 : h) * 60 + m; }; // 23:30 -> 1410, 00:30 -> 1470
+const fmtMin = v => { v = Math.round(v); const h = Math.floor(v / 60) % 24, m = v % 60; return pad(h) + ":" + pad(m); };
+function renderSleepInput() {
+  const inp = $("bedInput");
+  if (document.activeElement !== inp) inp.value = state.bedtime || "";
+  inp.disabled = !canWrite;
+  const v = $("bedVerdict");
+  if (!state.bedtime) { v.textContent = ""; v.className = "sleep-verdict"; }
+  else {
+    const ok = toMin(state.bedtime) <= toMin(state.bedGoal);
+    v.className = "sleep-verdict " + (ok ? "ok" : "late");
+    v.textContent = ok ? "✓ Op tijd (vóór " + state.bedGoal + ")" : "Te laat (doel " + state.bedGoal + ")";
+  }
+  $("sleepSub").textContent = state.items.some(i => i.lag) ? "Vul in, dan wordt je bedtijd-taak vanzelf afgevinkt" : "Hoe laat ging je gisteravond slapen?";
+}
+$("bedInput").addEventListener("change", e => {
+  state.bedtime = e.target.value || "";
+  if (state.bedtime) {
+    const ok = toMin(state.bedtime) <= toMin(state.bedGoal);
+    activeItems().filter(i => i.lag).forEach(i => { i.done = ok; });
+    if (ok) sfx.tick();
+  }
+  commit();
+});
+function renderSleepChart() {
+  const es = state.history.filter(h => h.bed).slice(-14);
+  $("sleepChartCard").hidden = !es.length;
+  if (!es.length) return;
+  const vals = es.map(h => toMin(h.bed)), goal = toMin(state.bedGoal);
+  const avg = vals.reduce((a, b) => a + b, 0) / vals.length;
+  const onTime = vals.filter(v => v <= goal).length;
+  $("sleepAvg").textContent = `Gemiddeld ${fmtMin(avg)} · ${onTime} van ${vals.length} keer op tijd`;
+  const lo = Math.floor((Math.min(...vals, goal) - 30) / 60) * 60, hi = Math.ceil((Math.max(...vals, goal) + 30) / 60) * 60;
+  const W = 320, H = 170, L = 40, R = 10, T = 10, B = 24;
+  const n = es.length, bw = Math.min(18, (W - L - R) / n - 6);
+  const x = i => L + (i + .5) * (W - L - R) / n;
+  const y = v => T + (H - T - B) * (v - lo) / (hi - lo); // later = lager
+  let g = "";
+  for (let v = lo; v <= hi; v += 60) g += `<line x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}" stroke="var(--grid)"/><text x="${L - 6}" y="${y(v) + 4}" text-anchor="end" font-size="10" font-weight="600" fill="var(--muted)">${fmtMin(v)}</text>`;
+  const bars = es.map((h, i) => { const v = vals[i], ok = v <= goal; return `<rect x="${x(i) - bw / 2}" y="${y(lo)}" width="${bw}" height="${Math.max(2, y(v) - y(lo))}" rx="4" fill="${ok ? "var(--chart-future)" : "var(--chart-old)"}"><title>${esc(h.date)}: ${h.bed}</title></rect>`; }).join("");
+  $("sleepChart").innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Bedtijden van de laatste ${n} nachten, gemiddeld ${fmtMin(avg)}">${g}${bars}
+    <line x1="${L}" x2="${W - R}" y1="${y(goal)}" y2="${y(goal)}" stroke="var(--gold)" stroke-width="1.5" stroke-dasharray="4 3"/>
+    <text x="${W - R}" y="${y(goal) - 5}" text-anchor="end" font-size="10" font-weight="800" fill="var(--gold)">doel ${state.bedGoal}</text>
+    <text x="${L}" y="${H - 6}" font-size="10" font-weight="600" fill="var(--muted)">${esc(es[0].date)}</text>
+    <text x="${W - R}" y="${H - 6}" font-size="10" font-weight="600" fill="var(--muted)" text-anchor="end">${esc(es[n - 1].date)}</text></svg>`;
+}
+
+// ---------- jaaroverzicht ----------
+let yearScrolled = false;
+function renderYear() {
+  const today = gameIso(), yr = Number(today.slice(0, 4));
+  const byDate = {}; state.history.forEach(h => { if (h.iso) byDate[h.iso] = h; });
+  const inYear = state.history.filter(h => h.iso && h.iso.startsWith(String(yr)));
+  $("yearTitle").textContent = "Jaaroverzicht " + yr;
+  $("yearSub").textContent = `${inYear.filter(h => h.winner === "future").length} gewonnen · ${inYear.filter(h => h.perfect).length} perfect · ${inYear.filter(h => h.winner === "old").length} verloren`;
+  let start = weekKey(yr + "-01-01"), html = "", lastMonth = -1;
+  for (let w = 0; w < 54; w++) {
+    const ws = addDays(start, w * 7);
+    if (ws > yr + "-12-31") break;
+    const m = Number(ws.slice(5, 7)) - 1;
+    const label = ws.slice(0, 4) == yr && m !== lastMonth ? dateOf(ws).toLocaleDateString("nl-NL", { month: "short" }) : "";
+    if (label) lastMonth = m;
+    html += `<div class="m">${label}</div>`;
+    for (let d = 0; d < 7; d++) {
+      const iso = addDays(ws, d), e = byDate[iso];
+      let cls = "d";
+      if (!iso.startsWith(String(yr))) cls += " out";
+      else if (e) cls += e.perfect ? " perfect" : " " + e.winner;
+      else if (isRest(iso) && iso <= today) cls += " rest";
+      if (iso === today) cls += " today";
+      html += `<div class="${cls}" title="${iso}${e ? ": " + esc(LABEL[e.winner]) : ""}"></div>`;
+    }
+  }
+  $("year").innerHTML = html;
+  if (!yearScrolled && !$("view-overzicht").hidden) {
+    const t = $("year").querySelector(".today");
+    if (t) { $("yearWrap").scrollLeft = Math.max(0, t.offsetLeft - $("yearWrap").clientWidth + 60); yearScrolled = true; }
+  }
+}
+
+// ---------- instellingen ----------
+function renderSettings() {
+  const box = $("restDays");
+  box.replaceChildren();
+  DAY_ORDER.forEach(d => {
+    const b = document.createElement("button"); b.type = "button"; b.className = "day"; b.textContent = DAYS[d];
+    b.setAttribute("aria-pressed", state.restDays.includes(d) ? "true" : "false"); b.disabled = !canWrite;
+    b.onclick = () => {
+      const s = new Set(state.restDays); s.has(d) ? s.delete(d) : s.add(d);
+      if (s.size >= 7) return toast("Minstens één dag moet een speeldag zijn");
+      state.restDays = [...s].sort(); commit();
+    };
+    box.appendChild(b);
+  });
+  if (document.activeElement !== $("bedGoal")) $("bedGoal").value = state.bedGoal;
+  $("bedGoal").disabled = !canWrite;
+}
+$("bedGoal").addEventListener("change", e => { if (/^\d\d:\d\d$/.test(e.target.value)) { state.bedGoal = e.target.value; commit(); } });
+
 // ---------- opstarten ----------
 function loadLocal() {
   // Standaard-checklist voor de eerste keer (aan te passen via Bewerken in de app)
@@ -1505,7 +1847,7 @@ function loadLocal() {
   try { const s = JSON.parse(localStorage.getItem(LOCAL_KEY)); if (s) state = normalize(s); } catch (e) {}
   loaded = true; render(); checkMissed();
 }
-try { const tab = localStorage.getItem(LOCAL_KEY + "-tab"); if (tab === "overzicht") showTab("overzicht"); } catch (e) {}
+try { const tab = localStorage.getItem(LOCAL_KEY + "-tab"); if (tab === "overzicht" || tab === "winkel") showTab(tab); } catch (e) {}
 render();
 (async () => {
   const use = n => window.claude && window.claude.use ? window.claude.use(n).catch(() => null) : Promise.resolve(null);
